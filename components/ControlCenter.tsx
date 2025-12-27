@@ -58,51 +58,54 @@ const ControlCenter: React.FC<ControlCenterProps> = ({
                 </div>
 
                 {/* Top Grid: Connectivity & Sliders */}
-                <div className="grid grid-cols-2 gap-4 h-[190px]">
+                {/* Top Grid: Connectivity & Sliders */}
+                <div className="grid grid-cols-2 gap-3 h-[180px]">
                     {/* Connectivity Group */}
-                    <div className={`p-5 rounded-[42px] ${moduleStyle} border shadow-xl flex flex-wrap gap-4 items-center justify-center`}>
+                    <div className={`p-3 rounded-[32px] ${moduleStyle} border shadow-xl flex flex-wrap gap-2 items-center justify-center content-center`}>
                         <div
                             onClick={() => setIsWifiEnabled(!isWifiEnabled)}
-                            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${isWifiEnabled ? 'bg-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]' : inactiveIconStyle}`}
+                            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${isWifiEnabled ? 'bg-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]' : inactiveIconStyle}`}
                         >
-                            {isWifiEnabled ? <Wifi size={24} strokeWidth={2.5} /> : <WifiOff size={24} strokeWidth={2.5} />}
+                            {isWifiEnabled ? <Wifi size={22} strokeWidth={2.5} /> : <WifiOff size={22} strokeWidth={2.5} />}
                         </div>
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center opacity-40 ${inactiveIconStyle}`}>
-                            <Bluetooth size={24} strokeWidth={2.5} />
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center opacity-40 ${inactiveIconStyle}`}>
+                            <Bluetooth size={22} strokeWidth={2.5} />
                         </div>
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center opacity-40 ${inactiveIconStyle}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center opacity-40 ${inactiveIconStyle}`}>
                             <div className="rotate-45 font-black text-[18px]">✈</div>
                         </div>
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center opacity-40 ${inactiveIconStyle}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center opacity-40 ${inactiveIconStyle}`}>
                             <div className="font-black text-[10px] tracking-tighter">LTE</div>
                         </div>
                     </div>
 
-                    {/* Vertical Brightness Slider (iPhone iOS 18 Design) */}
-                    <div className={`relative rounded-[42px] ${moduleStyle} border shadow-xl overflow-hidden group active:scale-[0.98] transition-transform`}>
-                        {/* The Background Fill (White bar) */}
+                    {/* Vertical Brightness Slider */}
+                    <div className={`relative rounded-[32px] ${moduleStyle} border shadow-xl overflow-hidden group active:scale-[0.96] transition-transform`}>
                         <div
-                            className="absolute bottom-0 left-0 right-0 bg-white shadow-[0_-2px_15px_rgba(255,255,255,0.4)] transition-all duration-75 origin-bottom"
+                            className="absolute bottom-0 left-0 right-0 bg-white shadow-[0_-2px_15px_rgba(255,255,255,0.4)] transition-all duration-150 ease-out origin-bottom"
                             style={{ height: `${brightness}%` }}
                         ></div>
 
-                        {/* The Vertical Input Overlay */}
+                        {/* Invisible Vertical Range Input */}
                         <input
-                            type="range" min="10" max="100" value={brightness}
+                            type="range" min="0" max="100" value={brightness}
                             onChange={(e) => setBrightness(parseInt(e.target.value))}
-                            className="absolute inset-0 w-full h-full opacity-0 z-20 cursor-pointer"
+                            className="absolute inset-0 w-full h-full opacity-0 z-20 cursor-pointer touch-none"
                             style={{
-                                appearance: 'slider-vertical' as any,
-                                WebkitAppearance: 'slider-vertical' as any,
-                                width: '100%',
-                                height: '100%'
+                                appearance: 'none',
+                                WebkitAppearance: 'none',
+                                transform: 'rotate(-90deg)',
+                                width: '180px', /* Height of container */
+                                height: '100%', /* Width of container */
+                                transformOrigin: 'center',
+                                margin: '-40px' /* Adjust for rotation shift */
                             }}
                         />
 
-                        {/* Icon Overlay - Centered vertically and switching color based on "submergence" */}
+                        {/* Icon Overlay */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 pt-4">
                             <Sun
-                                size={32}
+                                size={28}
                                 strokeWidth={2.5}
                                 className={`transition-colors duration-300 ${brightness > 50 ? 'text-black/60' : 'text-white/30'}`}
                             />

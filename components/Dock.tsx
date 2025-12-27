@@ -16,19 +16,27 @@ interface DockProps {
 }
 
 const Dock: React.FC<DockProps> = ({ onAppClick, activeApp, windows, isMobile, isTablet, lang, getAppTitle }) => {
+    const isAnyWindowOpen = React.useMemo(() => windows.some(w => w.isOpen && !w.isMinimized), [windows]);
+
     if (isMobile) {
+        if (isAnyWindowOpen) return null;
+
         return (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-[9998]">
-                <div className="bg-white/20 backdrop-blur-3xl rounded-[32px] p-4 flex justify-between items-center shadow-2xl border border-white/10 ring-1 ring-white/5">
-                    {APPS.slice(0, 4).map((app) => (
-                        <div
-                            key={app.id}
-                            className="w-[62px] h-[62px] active:scale-90 transition-transform"
-                            onClick={() => onAppClick(app.id)}
-                        >
-                            <img src={app.iconUrl} alt={getAppTitle(app.id)} className="w-full h-full rounded-[15px] shadow-lg" />
-                        </div>
-                    ))}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[400px] z-[9998]">
+                <div className="bg-white/20 backdrop-blur-3xl rounded-[24px] p-3 flex justify-evenly items-center shadow-2xl border border-white/10 ring-1 ring-white/5 w-full">
+                    <div className="flex items-center gap-6 justify-center w-full">
+                        <a href="https://github.com/hsemihaktas" target="_blank" className="w-[48px] h-[48px] bg-black/10 hover:bg-black/20 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all active:scale-90 shadow-sm">
+                            <Github size={24} className="text-white/90" />
+                        </a>
+                        <a href="https://linkedin.com/in/hsemihaktas" target="_blank" className="w-[48px] h-[48px] bg-[#0077b5]/20 hover:bg-[#0077b5]/30 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all active:scale-90 border border-[#0077b5]/10 shadow-sm">
+                            <Linkedin size={24} className="text-white/90 fill-white/20" />
+                        </a>
+                        <a href="https://twitter.com/hsemihaktas" target="_blank" className="w-[48px] h-[48px] bg-black/10 hover:bg-black/30 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all active:scale-90 border border-black/10 shadow-sm">
+                            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/90" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         );
