@@ -233,6 +233,7 @@ export const DATA = {
         contact: {
             title: "Mail",
             to: "Alıcı",
+            from: "Gönderen",
             subject: "Konu",
             placeholder: "Mesajınızı buraya yazın...",
             send: "Gönder",
@@ -484,6 +485,7 @@ export const DATA = {
         contact: {
             title: "Mail",
             to: "To",
+            from: "From",
             subject: "Subject",
             placeholder: "Write your message here...",
             send: "Send",

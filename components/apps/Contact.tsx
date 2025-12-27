@@ -84,7 +84,7 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
                 <Trash2 size={16} className="hover:text-red-500 cursor-pointer" />
                 <Paperclip size={16} className="hover:text-black/60 cursor-pointer" />
               </div>
-              <button type="submit" disabled={!formData.message.trim() || sending} className="bg-[#007AFF] hover:bg-[#0062cc] disabled:opacity-30 text-white px-5 py-1.5 rounded-lg text-[13px] font-semibold transition-all shadow-sm">
+              <button type="submit" disabled={!formData.message.trim() || !formData.subject.trim() || !formData.senderEmail.trim() || sending} className="bg-[#007AFF] hover:bg-[#0062cc] disabled:opacity-30 disabled:cursor-not-allowed text-white px-5 py-1.5 rounded-lg text-[13px] font-semibold transition-all shadow-sm">
                 {sending ? (
                   <span className="flex items-center gap-2">
                     <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -97,15 +97,19 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
             </div>
             <div className={isDarkMode ? 'bg-white/[0.02]' : 'bg-[#FCFCFC]'}>
               <div className={`px-6 py-3 flex items-center gap-4 border-b ${borderStyle}`}>
-                <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-[#8E8E93]'} w-12 text-right`}>{d.to}:</span>
-                <div className={`flex items-center gap-1.5 ${isDarkMode ? 'bg-white/10 text-white' : 'bg-white text-black'} border ${borderStyle} px-2.5 py-0.5 rounded-md text-[13px] font-medium shadow-sm`}>
+                <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-[#8E8E93]'} w-16 text-right font-medium`}>{d.to}:</span>
+                <div className={`flex items-center gap-1.5 ${isDarkMode ? 'bg-white/10 text-white' : 'bg-white text-black'} border ${borderStyle} px-2.5 py-0.5 rounded-md text-[13px] font-medium shadow-sm transition-all hover:bg-opacity-80`}>
                   <div className="w-4 h-4 bg-blue-500/20 rounded-full flex items-center justify-center"><User size={10} className="text-blue-500" /></div>
                   {personal.email}
                 </div>
               </div>
-              <div className={`px-6 py-3 flex items-center gap-4 border-b ${borderStyle}`}>
-                <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-[#8E8E93]'} w-12 text-right`}>{d.subject}:</span>
-                <input type="text" value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} placeholder={lang === 'tr' ? "Konu" : "Subject"} className={`text-[13px] font-semibold ${textColor} flex-1 outline-none bg-transparent`} />
+              <div className={`px-6 py-3 flex items-center gap-4 border-b ${borderStyle} group focus-within:bg-blue-500/[0.03] transition-colors`}>
+                <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-[#8E8E93]'} w-16 text-right font-medium group-focus-within:text-blue-500 transition-colors`}>{d.from}:</span>
+                <input type="email" value={formData.senderEmail} onChange={(e) => setFormData({ ...formData, senderEmail: e.target.value })} placeholder={lang === 'tr' ? "user@example.com" : "user@example.com"} className={`text-[13px] ${textColor} flex-1 outline-none bg-transparent placeholder:opacity-30 font-medium`} required />
+              </div>
+              <div className={`px-6 py-3 flex items-center gap-4 border-b ${borderStyle} group focus-within:bg-blue-500/[0.03] transition-colors`}>
+                <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-[#8E8E93]'} w-16 text-right font-medium group-focus-within:text-blue-500 transition-colors`}>{d.subject}:</span>
+                <input type="text" value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} placeholder={lang === 'tr' ? "Konu başlığı..." : "Subject..."} className={`text-[13px] font-semibold ${textColor} flex-1 outline-none bg-transparent placeholder:opacity-30`} required />
               </div>
             </div>
             <div className="flex-1 relative">

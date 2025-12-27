@@ -7,7 +7,7 @@ import Dock from '@/components/Dock';
 import Window from '@/components/Window';
 import Spotlight from '@/components/Spotlight';
 import ControlCenter from '@/components/ControlCenter';
-import Launchpad from '@/components/Launchpad';
+
 import AboutApp from '@/components/apps/About';
 import ProjectsApp from '@/components/apps/Projects';
 import SkillsApp from '@/components/apps/Skills';
@@ -23,7 +23,7 @@ export default function Home() {
   const [lang, setLang] = useState<Language>('tr');
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
   const [isControlCenterOpen, setIsControlCenterOpen] = useState(false);
-  const [isLaunchpadOpen, setIsLaunchpadOpen] = useState(false);
+
   const [isDarkMode, setDarkMode] = useState(false);
   const [isWifiEnabled, setIsWifiEnabled] = useState(true);
   const [brightness, setBrightness] = useState(100);
@@ -81,7 +81,7 @@ export default function Home() {
     }));
     setTopZ(prev => prev + 2);
     setActiveApp(id);
-    setIsLaunchpadOpen(false);
+
     setIsSpotlightOpen(false);
     setIsControlCenterOpen(false);
   }, [topZ]);
@@ -220,7 +220,7 @@ export default function Home() {
         </>
       )}
 
-      <Launchpad isOpen={isLaunchpadOpen} onClose={() => setIsLaunchpadOpen(false)} onSelectApp={openWindow} lang={lang} />
+
       <Spotlight isOpen={isSpotlightOpen} onClose={() => setIsSpotlightOpen(false)} onSelectApp={openWindow} lang={lang} />
 
       <ControlCenter
@@ -240,7 +240,7 @@ export default function Home() {
           windows={windows}
           isMobile={isMobile}
           isTablet={isTablet}
-          onLaunchpadClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
+
           lang={lang}
           getAppTitle={getAppTitle}
         />
