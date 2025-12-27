@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { APPS } from '@/lib/constants';
 import { AppID, WindowState, Language } from '@/lib/types';
 import { Github, Linkedin } from 'lucide-react';
@@ -49,10 +50,16 @@ const Dock: React.FC<DockProps> = ({ onAppClick, activeApp, windows, isMobile, i
                     {APPS.map((app) => (
                         <div
                             key={app.id}
-                            className="w-[64px] h-[64px] active:scale-90 transition-transform"
+                            className="w-[64px] h-[64px] active:scale-90 transition-transform relative"
                             onClick={() => onAppClick(app.id)}
                         >
-                            <img src={app.iconUrl} alt={getAppTitle(app.id)} className="w-full h-full rounded-[15px] shadow-lg" />
+                            <Image
+                                src={app.iconUrl}
+                                alt={getAppTitle(app.id)}
+                                fill
+                                sizes="64px"
+                                className="object-contain rounded-[15px] shadow-lg"
+                            />
                         </div>
                     ))}
                 </div>
@@ -73,8 +80,15 @@ const Dock: React.FC<DockProps> = ({ onAppClick, activeApp, windows, isMobile, i
                             <div className="absolute -top-[55px] left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-[#1d1d1f] text-[12px] font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap shadow-xl pointer-events-none transform translate-y-2 group-hover:translate-y-0 border border-black/5">
                                 {getAppTitle(app.id)}
                             </div>
-                            <div className="w-[50px] h-[50px] transition-all duration-300 transform group-hover:scale-[1.3] group-hover:-translate-y-4 group-active:scale-95 group-active:translate-y-0 origin-bottom ease-[cubic-bezier(0.25,1,0.5,1)]">
-                                <img src={app.iconUrl} alt={getAppTitle(app.id)} className="w-full h-full object-contain drop-shadow-md" draggable={false} />
+                            <div className="w-[50px] h-[50px] transition-all duration-300 transform group-hover:scale-[1.3] group-hover:-translate-y-4 group-active:scale-95 group-active:translate-y-0 origin-bottom ease-[cubic-bezier(0.25,1,0.5,1)] relative">
+                                <Image
+                                    src={app.iconUrl}
+                                    alt={getAppTitle(app.id)}
+                                    fill
+                                    sizes="50px"
+                                    className="object-contain drop-shadow-md"
+                                    draggable={false}
+                                />
                             </div>
                             {isOpen && <div className="absolute -bottom-1 w-[4px] h-[4px] bg-white rounded-full shadow-sm"></div>}
                         </div>

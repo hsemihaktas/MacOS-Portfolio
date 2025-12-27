@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import Image from 'next/image';
 import MenuBar from '@/components/MenuBar';
 import Desktop from '@/components/Desktop';
 import Dock from '@/components/Dock';
@@ -52,7 +53,7 @@ export default function Home() {
 
   const [activeApp, setActiveApp] = useState<AppID | null>(null);
   const [topZ, setTopZ] = useState(INITIAL_Z_INDEX + 1);
-  const [wallpaper, setWallpaper] = useState("https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop");
+  const [wallpaper, setWallpaper] = useState("/images/wallpaper.jpg");
 
   const getAppTitle = useCallback((id: AppID): string => {
     const appMap: Record<AppID, string> = {
@@ -136,15 +137,18 @@ export default function Home() {
   }, [activeApp, lang, getAppTitle]);
 
   return (
-    <div
-      className={`w-full h-full relative flex flex-col overflow-hidden no-select transition-all duration-700`}
-      style={{
-        backgroundImage: `url(${wallpaper})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: '#000'
-      }}
-    >
+    <div className={`w-full h-full relative flex flex-col overflow-hidden no-select transition-all duration-700 bg-black`}>
+      <Image
+        src={wallpaper}
+        alt="Wallpaper"
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectPosition: isMobile ? '70% center' : 'center' }}
+        className="object-cover select-none pointer-events-none"
+        quality={85}
+      />
+
       <div
         className="fixed inset-0 bg-black pointer-events-none z-[10020] transition-opacity duration-300"
         style={{ opacity: (1 - brightness / 100) * 0.65 }}

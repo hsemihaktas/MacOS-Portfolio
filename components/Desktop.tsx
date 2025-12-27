@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { APPS } from '@/lib/constants';
 import { AppID, Language } from '@/lib/types';
 
@@ -32,10 +33,12 @@ const Desktop: React.FC<DesktopProps> = ({ onIconClick, isMobile, isTablet, lang
                     onClick={() => (isMobile || isTablet) && onIconClick(app.id)}
                 >
                     <div className={`relative ${iconSize} transition-all duration-200 group-active:scale-90 group-hover:scale-105 group-active:brightness-90`}>
-                        <img
+                        <Image
                             src={app.iconUrl}
                             alt={getAppTitle(app.id)}
-                            className={`w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] ${iconRadius}`}
+                            fill
+                            sizes="(max-width: 768px) 62px, (max-width: 1024px) 72px, 54px"
+                            className={`object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] ${iconRadius}`}
                             draggable={false}
                         />
                     </div>
