@@ -12,19 +12,46 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
   const d = DATA[lang].contact;
   const personal = DATA[lang].about;
   const [sent, setSent] = useState(false);
-  const [formData, setFormData] = useState({ subject: '', message: '' });
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({ subject: '', message: '', senderEmail: '' });
 
   const bgPrimary = isDarkMode ? 'bg-[#121212]' : 'bg-white';
   const bgSidebar = isDarkMode ? 'bg-[#1E1E1E]' : 'bg-[#F9F9F9]';
   const textColor = isDarkMode ? 'text-white' : 'text-black';
   const borderStyle = isDarkMode ? 'border-white/5' : 'border-black/[0.04]';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.message.trim()) return;
-    window.location.href = `mailto:${personal.email}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(formData.message)}`;
-    setSent(true);
-    setTimeout(() => { setSent(false); setFormData({ subject: '', message: '' }); }, 3000);
+
+    setSending(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send email');
+      }
+
+      setSent(true);
+      setTimeout(() => {
+        setSent(false);
+        setFormData({ subject: '', message: '', senderEmail: '' });
+      }, 3000);
+    } catch (err: any) {
+      setError(err.message || 'Failed to send email');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -57,8 +84,15 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
                 <Trash2 size={16} className="hover:text-red-500 cursor-pointer" />
                 <Paperclip size={16} className="hover:text-black/60 cursor-pointer" />
               </div>
-              <button type="submit" disabled={!formData.message.trim()} className="bg-[#007AFF] hover:bg-[#0062cc] disabled:opacity-30 text-white px-5 py-1.5 rounded-lg text-[13px] font-semibold transition-all shadow-sm">
-                <Send size={14} className="inline mr-2" /> {d.send}
+              <button type="submit" disabled={!formData.message.trim() || sending} className="bg-[#007AFF] hover:bg-[#0062cc] disabled:opacity-30 text-white px-5 py-1.5 rounded-lg text-[13px] font-semibold transition-all shadow-sm">
+                {sending ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    {lang === 'tr' ? 'Gönderiliyor...' : 'Sending...'}
+                  </span>
+                ) : (
+                  <><Send size={14} className="inline mr-2" /> {d.send}</>
+                )}
               </button>
             </div>
             <div className={isDarkMode ? 'bg-white/[0.02]' : 'bg-[#FCFCFC]'}>
@@ -71,11 +105,11 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
               </div>
               <div className={`px-6 py-3 flex items-center gap-4 border-b ${borderStyle}`}>
                 <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-[#8E8E93]'} w-12 text-right`}>{d.subject}:</span>
-                <input type="text" value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})} placeholder={lang === 'tr' ? "Konu" : "Subject"} className={`text-[13px] font-semibold ${textColor} flex-1 outline-none bg-transparent`} />
+                <input type="text" value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} placeholder={lang === 'tr' ? "Konu" : "Subject"} className={`text-[13px] font-semibold ${textColor} flex-1 outline-none bg-transparent`} />
               </div>
             </div>
             <div className="flex-1 relative">
-              <textarea value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} className={`w-full h-full p-8 text-[15px] leading-relaxed ${textColor} outline-none resize-none bg-transparent placeholder:opacity-30`} placeholder={d.placeholder}></textarea>
+              <textarea value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className={`w-full h-full p-8 text-[15px] leading-relaxed ${textColor} outline-none resize-none bg-transparent placeholder:opacity-30`} placeholder={d.placeholder}></textarea>
             </div>
           </form>
         )}

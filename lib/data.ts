@@ -34,7 +34,7 @@ export const DATA = {
             ],
             education: "İstanbul Medeniyet Üniversitesi • Bilgisayar Mühendisliği",
             location: "İstanbul, Türkiye",
-            email: "hsemihaktas@outlook.com.tr"
+            email: "hsemihaktas@gmail.com"
         },
         skills: {
             title: "Sistem Kaynakları",
@@ -284,7 +284,7 @@ export const DATA = {
             ],
             education: "Istanbul Medeniyet University • Computer Engineering",
             location: "Istanbul, Turkey",
-            email: "hsemihaktas@outlook.com.tr"
+            email: "hsemihaktas@gmail.com"
         },
         skills: {
             title: "System Resources",
