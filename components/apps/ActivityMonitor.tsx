@@ -53,7 +53,8 @@ const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) =
       </div>
 
       <div className={`flex-1 overflow-auto ${bgPrimary}`}>
-        <table className="w-full text-left text-[14px] border-collapse min-w-[600px] table-fixed">
+        {/* Desktop Table View */}
+        <table className="hidden sm:table w-full text-left text-[14px] border-collapse min-w-[600px] table-fixed">
           <thead className={`sticky top-0 ${tableHeadBg} z-10`}>
             <tr className="text-white font-black uppercase tracking-widest text-[11px]">
               <th className={`py-3 px-6 w-1/3 border-r ${isDarkMode ? 'border-white/5' : 'border-white/10'}`}>Process Name</th>
@@ -68,25 +69,57 @@ const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) =
                 key={i}
                 className={`hover:bg-[#007AFF] hover:text-white group transition-colors duration-75 ${i % 2 === 0 ? bgPrimary : isDarkMode ? 'bg-white/[0.02]' : 'bg-[#F9F9F9]'}`}
               >
-                <td className="py-3 px-6 font-black flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full shadow-inner flex-shrink-0 ${i % 3 === 0 ? 'bg-blue-600' : 'bg-green-600'}`}></div>
-                  <span className={`truncate ${textColor} group-hover:text-white`}>{tech}</span>
+                <td className={`py-4 px-6 font-bold border-r ${isDarkMode ? 'border-white/5' : 'border-black/10'} group-hover:border-white/10`}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white text-[10px] font-black shadow-sm">
+                      {tech.substring(0, 2).toUpperCase()}
+                    </div>
+                    <span className="truncate">{tech}</span>
+                  </div>
                 </td>
-                <td className={`py-3 px-6 text-right font-mono font-black tabular-nums ${textColor} group-hover:text-white`}>
-                  {getCPUValue(count).toFixed(1)}%
+                <td className={`py-4 px-6 text-right font-black border-r ${isDarkMode ? 'border-white/5' : 'border-black/10'} group-hover:border-white/10`}>
+                  {((count / sortedTechnologies.reduce((sum, t) => sum + t.count, 0)) * 100).toFixed(1)}%
                 </td>
-                <td className={`py-3 px-6 text-right font-mono ${textColor} group-hover:text-white font-black tabular-nums opacity-60 group-hover:opacity-100`}>
-                  {count * 4}
+                <td className={`py-4 px-6 text-right font-medium border-r ${isDarkMode ? 'border-white/5' : 'border-black/10'} group-hover:border-white/10`}>
+                  {Math.floor(Math.random() * 8) + 2}
                 </td>
-                <td className="py-3 px-6 text-right">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter ${isDarkMode ? 'bg-white/10 text-white/60' : 'bg-black/5 text-black'} group-hover:bg-white/20 group-hover:text-white border ${borderColor}`}>
-                    hsemihaktas
-                  </span>
+                <td className="py-4 px-6 text-right font-medium opacity-60">
+                  {['root', 'system', 'user'][i % 3]}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        {/* Mobile Card View */}
+        <div className="sm:hidden p-4 space-y-2">
+          {sortedTechnologies.map(({ tech, count }, i) => (
+            <div
+              key={i}
+              className={`${isDarkMode ? 'bg-[#2c2c2e]' : 'bg-white'} rounded-xl p-4 active:opacity-70 transition-opacity`}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white text-[11px] font-black shadow-sm">
+                    {tech.substring(0, 2).toUpperCase()}
+                  </div>
+                  <span className={`text-[15px] font-bold ${textColor}`}>{tech}</span>
+                </div>
+                <span className={`text-[17px] font-black ${textColor}`}>
+                  {((count / sortedTechnologies.reduce((sum, t) => sum + t.count, 0)) * 100).toFixed(1)}%
+                </span>
+              </div>
+              <div className="flex justify-between text-[13px]">
+                <span className={isDarkMode ? 'text-white/40' : 'text-black/40'}>
+                  Threads: {Math.floor(Math.random() * 8) + 2}
+                </span>
+                <span className={isDarkMode ? 'text-white/40' : 'text-black/40'}>
+                  User: {['root', 'system', 'user'][i % 3]}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={`h-32 ${bgFooter} border-t ${borderColor} grid grid-cols-3 p-6 gap-10 shrink-0`}>
