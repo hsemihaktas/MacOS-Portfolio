@@ -1,5 +1,5 @@
 
-export type AppID = 'about' | 'projects' | 'skills' | 'settings' | 'contact' | 'ai-asistan' | 'activity-monitor';
+export type AppID = 'about' | 'projects' | 'skills' | 'settings' | 'contact' | 'activity-monitor';
 export type Language = 'tr' | 'en';
 
 export interface WindowState {

@@ -13,7 +13,6 @@ import ProjectsApp from '@/components/apps/Projects';
 import SkillsApp from '@/components/apps/Skills';
 import ContactApp from '@/components/apps/Contact';
 import SettingsApp from '@/components/apps/Settings';
-import AIAsistanApp from '@/components/apps/AIAsistan';
 import ActivityMonitorApp from '@/components/apps/ActivityMonitor';
 import { WindowState, AppID, Language } from '@/lib/types';
 import { INITIAL_Z_INDEX, APPS } from '@/lib/constants';
@@ -62,7 +61,6 @@ export default function Home() {
       'skills': DATA[lang].apps.skills,
       'settings': DATA[lang].apps.settings,
       'contact': DATA[lang].apps.contact,
-      'ai-asistan': DATA[lang].apps.ai,
       'activity-monitor': DATA[lang].apps.system
     };
     return appMap[id] || id;
@@ -114,7 +112,6 @@ export default function Home() {
       case 'projects': return <ProjectsApp lang={lang} isDarkMode={isDarkMode} initialFilter={win.params?.filterTag} initialProjectId={win.params?.projectId} />;
       case 'skills': return <SkillsApp lang={lang} isDarkMode={isDarkMode} />;
       case 'contact': return <ContactApp lang={lang} isDarkMode={isDarkMode} />;
-      case 'ai-asistan': return <AIAsistanApp lang={lang} isWifiEnabled={isWifiEnabled} isDarkMode={isDarkMode} />;
       case 'settings':
         return (
           <SettingsApp

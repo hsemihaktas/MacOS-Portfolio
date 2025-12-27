@@ -17,10 +17,27 @@ const AIAsistan: React.FC<AIAsistanProps> = ({ lang, isWifiEnabled, isDarkMode }
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [cvContent, setCvContent] = useState<string>('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const d = DATA[lang].about;
   const p = DATA[lang].projects.items;
+
+  // Fetch CV content on mount
+  useEffect(() => {
+    const fetchCV = async () => {
+      try {
+        const response = await fetch('/api/cv');
+        const data = await response.json();
+        if (data.success) {
+          setCvContent(data.text);
+        }
+      } catch (error) {
+        console.error('Failed to fetch CV:', error);
+      }
+    };
+    fetchCV();
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -41,10 +58,39 @@ const AIAsistan: React.FC<AIAsistanProps> = ({ lang, isWifiEnabled, isDarkMode }
       const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-      const systemPrompt = `Sen Enes Şahin'in portfolyosundaki Siri asistanısın. 
-      KURALLAR: 1. Sadece düz metin kullan. 2. Kısa ve cana yakın konuş.
-      Veriler: İsim: Enes Şahin, Rol: ${d.role}, Projeler: ${p.map(x => x.title).join(',')}`;
-
+      const systemPrompt = `Sen Hasan Semih Aktaş'ın portfolyosundaki Siri asistanısın. 
+      
+      KİŞİSEL BİLGİLER:
+      - İsim: Hasan Semih Aktaş
+      - Rol: ${d.role}
+      - Konum: İstanbul, Türkiye
+      - Email: hsemihaktas@outlook.com.tr
+      - LinkedIn: linkedin.com/in/hsemihaktas
+      - Portfolio: hsemihaktas.vercel.app
+      
+      EĞİTİM:
+      - İstanbul Medeniyet Üniversitesi, Bilgisayar Mühendisliği (Ekim 2019 - Haziran 2023)
+      
+      DENEYİM:
+      - Strajedi - Yazılım Geliştirici Stajyeri (Temmuz 2023 - Ağustos 2023): React.js ile responsive UI'lar, DOM optimizasyonu, SASS/SCSS, component-driven architecture
+      - hub.studio - Frontend Geliştirici Stajyeri (Temmuz 2022 - Ağustos 2022): React.js, Redux, Tailwind CSS, RESTful API entegrasyonu
+      
+      YETENEKLER:
+      - Frontend: React.js, React Native, Redux, Tailwind CSS, SASS/SCSS, HTML5, CSS3
+      - Backend: Node.js, REST APIs
+      - Araçlar: Git, Agile/Scrum
+      - Diller: Türkçe (ana dil), İngilizce (B2)
+      
+      SERTİFİKALAR:
+      - Applied React.js, Redux Training (2023), Frontend Web Development, Java Programming, English Certificate (B2)
+      
+      PROJELER: ${p.map(x => x.title).join(', ')}
+      
+      KURALLAR: 
+      1. Sadece düz metin kullan, markdown veya özel karakterler kullanma
+      2. Kısa, cana yakın ve profesyonel konuş
+      3. Hasan Semih hakkında sorulara yukarıdaki bilgilerle cevap ver
+      4. Bilmediğin bir şey sorulursa dürüstçe söyle`;
       const result = await model.generateContent([systemPrompt, userMsg]);
       const response = await result.response;
       const aiText = response.text() || (lang === 'tr' ? 'Şu an yanıt veremiyorum.' : 'I cannot respond right now.');

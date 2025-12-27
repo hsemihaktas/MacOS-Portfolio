@@ -4,21 +4,21 @@
 import React, { useState } from 'react';
 import { Language } from '@/lib/types';
 import { DATA } from '@/lib/data';
-import { 
-  Globe, 
-  Sun, 
-  Moon, 
-  Check, 
-  Wifi, 
-  WifiOff, 
-  Monitor, 
-  Palette, 
+import {
+  Globe,
+  Sun,
+  Moon,
+  Check,
+  Wifi,
+  WifiOff,
+  Monitor,
+  Palette,
   Smartphone,
   ChevronRight
 } from 'lucide-react';
 
-interface SettingsProps { 
-  lang: Language; 
+interface SettingsProps {
+  lang: Language;
   setLang: (l: Language) => void;
   isDarkMode: boolean;
   setDarkMode: (d: boolean) => void;
@@ -30,10 +30,10 @@ interface SettingsProps {
 
 type SettingsSection = 'appearance' | 'display' | 'wifi' | 'language';
 
-const Settings: React.FC<SettingsProps> = ({ 
-  lang, 
-  setLang, 
-  isDarkMode, 
+const Settings: React.FC<SettingsProps> = ({
+  lang,
+  setLang,
+  isDarkMode,
   setDarkMode,
   brightness,
   setBrightness,
@@ -50,29 +50,29 @@ const Settings: React.FC<SettingsProps> = ({
   const borderStyle = isDarkMode ? 'border-white/10' : 'border-black/5';
 
   const sidebarItems: { id: SettingsSection; label: string; icon: React.ReactNode; color: string }[] = [
-    { 
-      id: 'appearance', 
-      label: lang === 'tr' ? 'Görünüm' : 'Appearance', 
-      icon: <Palette size={18} />, 
-      color: 'bg-pink-500' 
+    {
+      id: 'appearance',
+      label: lang === 'tr' ? 'Görünüm' : 'Appearance',
+      icon: <Palette size={18} />,
+      color: 'bg-pink-500'
     },
-    { 
-      id: 'display', 
-      label: lang === 'tr' ? 'Ekran' : 'Display', 
-      icon: <Monitor size={18} />, 
-      color: 'bg-blue-500' 
+    {
+      id: 'display',
+      label: lang === 'tr' ? 'Ekran' : 'Display',
+      icon: <Monitor size={18} />,
+      color: 'bg-blue-500'
     },
-    { 
-      id: 'wifi', 
-      label: 'Wi-Fi', 
-      icon: <Wifi size={18} />, 
-      color: 'bg-blue-600' 
+    {
+      id: 'wifi',
+      label: 'Wi-Fi',
+      icon: <Wifi size={18} />,
+      color: 'bg-blue-600'
     },
-    { 
-      id: 'language', 
-      label: lang === 'tr' ? 'Dil' : 'Language', 
-      icon: <Globe size={18} />, 
-      color: 'bg-orange-500' 
+    {
+      id: 'language',
+      label: lang === 'tr' ? 'Dil' : 'Language',
+      icon: <Globe size={18} />,
+      color: 'bg-orange-500'
     }
   ];
 
@@ -84,7 +84,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div>
               <h2 className={`text-[20px] font-black mb-6 ${textColor}`}>{lang === 'tr' ? 'Görünüm' : 'Appearance'}</h2>
               <div className="grid grid-cols-2 gap-8">
-                <div 
+                <div
                   onClick={() => setDarkMode(false)}
                   className="flex flex-col items-center gap-3 cursor-default group"
                 >
@@ -96,7 +96,7 @@ const Settings: React.FC<SettingsProps> = ({
                   </div>
                   <span className={`text-[13px] font-bold ${textColor}`}>{lang === 'tr' ? 'Açık' : 'Light'}</span>
                 </div>
-                <div 
+                <div
                   onClick={() => setDarkMode(true)}
                   className="flex flex-col items-center gap-3 cursor-default group"
                 >
@@ -126,14 +126,14 @@ const Settings: React.FC<SettingsProps> = ({
                 <div className="flex items-center gap-4">
                   <Sun size={18} className="opacity-40" />
                   <div className={`flex-1 h-8 rounded-full relative overflow-hidden ${isDarkMode ? 'bg-white/10' : 'bg-black/10'}`}>
-                    <input 
-                      type="range" 
-                      min="10" max="100" 
-                      value={brightness} 
+                    <input
+                      type="range"
+                      min="10" max="100"
+                      value={brightness}
                       onChange={(e) => setBrightness(parseInt(e.target.value))}
                       className="absolute inset-0 w-full h-full opacity-0 z-20 cursor-pointer"
                     />
-                    <div 
+                    <div
                       className="absolute top-0 left-0 bottom-0 bg-white shadow-[2px_0_10px_rgba(0,0,0,0.1)] transition-all"
                       style={{ width: `${brightness}%` }}
                     ></div>
@@ -160,7 +160,7 @@ const Settings: React.FC<SettingsProps> = ({
                     <div className={`text-[12px] font-medium ${textColor} opacity-40`}>{isWifiEnabled ? 'Home_Net (Bağlı)' : 'Kapalı'}</div>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={() => setIsWifiEnabled(!isWifiEnabled)}
                   className={`w-12 h-6 rounded-full p-1 transition-all ${isWifiEnabled ? 'bg-blue-500' : 'bg-black/20'}`}
                 >
@@ -178,8 +178,8 @@ const Settings: React.FC<SettingsProps> = ({
               <h2 className={`text-[20px] font-black mb-6 ${textColor}`}>{lang === 'tr' ? 'Dil ve Bölge' : 'Language & Region'}</h2>
               <div className={`rounded-2xl ${isDarkMode ? 'bg-white/5' : 'bg-[#fcfcfc]'} border ${borderStyle} shadow-sm overflow-hidden`}>
                 {['tr', 'en'].map((l, idx) => (
-                  <button 
-                    key={l} 
+                  <button
+                    key={l}
                     onClick={() => setLang(l as Language)}
                     className={`w-full flex items-center justify-between px-5 py-4 transition-all ${idx !== 1 ? `border-b ${borderStyle}` : ''} ${lang === l ? 'bg-blue-500/10' : 'hover:bg-black/5'}`}
                   >
@@ -202,16 +202,16 @@ const Settings: React.FC<SettingsProps> = ({
       {/* Settings Sidebar */}
       <div className={`w-[240px] ${bgSidebar} border-r ${borderStyle} flex flex-col pt-6 shrink-0`}>
         <div className="px-6 mb-8 flex items-center gap-3">
-          <div className="w-12 h-12 bg-blue-600 rounded-full shadow-lg flex items-center justify-center text-white font-black text-lg">EŞ</div>
+          <div className="w-12 h-12 bg-blue-600 rounded-full shadow-lg flex items-center justify-center text-white font-black text-lg">HS</div>
           <div className="flex flex-col">
-            <span className={`text-[15px] font-black tracking-tight ${textColor}`}>Enes Şahin</span>
+            <span className={`text-[15px] font-black tracking-tight ${textColor}`}>Hasan Semih Aktaş</span>
             <span className={`text-[11px] font-bold ${textColor} opacity-40`}>Apple ID</span>
           </div>
         </div>
 
         <div className="flex-1 overflow-auto px-3 space-y-1">
           {sidebarItems.map((item) => (
-            <button 
+            <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${activeSection === item.id ? (isDarkMode ? 'bg-blue-600 text-white' : 'bg-white shadow-sm border border-black/5') : `hover:bg-black/5 ${textColor} opacity-80`}`}

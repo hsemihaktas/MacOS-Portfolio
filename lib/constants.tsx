@@ -15,11 +15,6 @@ export const APPS: { id: AppID; title: string; iconUrl: string }[] = [
         iconUrl: '/images/icons/devFolder.png'
     },
     {
-        id: 'ai-asistan',
-        title: 'Siri',
-        iconUrl: '/images/icons/siri.png'
-    },
-    {
         id: 'activity-monitor',
         title: 'Sistem',
         iconUrl: '/images/icons/taskManager.png'
