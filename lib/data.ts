@@ -2,11 +2,11 @@
 export const DATA = {
     tr: {
         menu: {
-            finder: "Finder",
+            finder: "Masaüstü",
             help: "Yardım"
         },
         apps: {
-            about: "Finder",
+            about: "Hakkımda",
             projects: "Projeler",
             skills: "Yetenekler",
             settings: "Ayarlar",
@@ -252,11 +252,11 @@ export const DATA = {
     },
     en: {
         menu: {
-            finder: "Finder",
+            finder: "Desktop",
             help: "Help"
         },
         apps: {
-            about: "Finder",
+            about: "About Me",
             projects: "Projects",
             skills: "Skills",
             settings: "Settings",

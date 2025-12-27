@@ -165,6 +165,7 @@ export default function Home() {
         isMobile={isMobile}
         isTablet={isTablet}
         isWifiEnabled={isWifiEnabled}
+        isDarkMode={isDarkMode}
         activeAppTitle={currentActiveTitle}
         onSearchClick={() => setIsSpotlightOpen(true)}
         onControlClick={() => setIsControlCenterOpen(!isControlCenterOpen)}
@@ -235,19 +236,20 @@ export default function Home() {
         isMobile={isMobile}
       />
 
-      <Dock
-        onAppClick={openWindow}
-        activeApp={activeApp}
-        windows={windows}
-        isMobile={isMobile}
-        isTablet={isTablet}
-        onLaunchpadClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
-        lang={lang}
-        getAppTitle={getAppTitle}
-      />
+      {!isMobile && (
+        <Dock
+          onAppClick={openWindow}
+          activeApp={activeApp}
+          windows={windows}
+          isMobile={isMobile}
+          isTablet={isTablet}
+          onLaunchpadClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
+          lang={lang}
+          getAppTitle={getAppTitle}
+        />
+      )}
 
       <div className="absolute inset-0 glossy-reflection z-[50]"></div>
-      {(isMobile || isTablet) && <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-white/40 rounded-full z-[10001]"></div>}
     </div>
   );
 }

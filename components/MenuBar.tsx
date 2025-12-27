@@ -13,16 +13,19 @@ interface MenuBarProps {
     isMobile?: boolean;
     isTablet?: boolean;
     isWifiEnabled?: boolean;
+    isDarkMode?: boolean;
 }
 
-const MenuBar: React.FC<MenuBarProps> = ({ activeAppTitle, lang, onSearchClick, onControlClick, isMobile, isTablet, isWifiEnabled = true }) => {
+const MenuBar: React.FC<MenuBarProps> = ({ activeAppTitle, lang, onSearchClick, onControlClick, isMobile, isTablet, isWifiEnabled = true, isDarkMode = false }) => {
     const [time, setTime] = useState(new Date());
     const [showHelpMenu, setShowHelpMenu] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const helpMenuRef = useRef<HTMLDivElement>(null);
     const t = DATA[lang].menu;
     const d = DATA[lang].about;
 
     useEffect(() => {
+        setMounted(true);
         const timer = setInterval(() => setTime(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
@@ -38,18 +41,20 @@ const MenuBar: React.FC<MenuBarProps> = ({ activeAppTitle, lang, onSearchClick, 
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const formattedTime = time.toLocaleTimeString(lang === 'tr' ? 'tr-TR' : 'en-US', { hour: '2-digit', minute: '2-digit' });
-    const formattedDate = time.toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+    const formattedTime = mounted ? time.toLocaleTimeString(lang === 'tr' ? 'tr-TR' : 'en-US', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+    const formattedDate = mounted ? time.toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' }) : '---';
 
     const WifiIcon = isWifiEnabled
         ? <Wifi size={17} strokeWidth={2.5} className="text-white" />
         : <WifiOff size={17} strokeWidth={2.5} className="text-white/40" />;
 
-    // Apple Logo - High Fidelity SVG Path
+    // Apple Logo
     const AppleLogo = (
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" className="mt-[-1px]">
-            <path d="M17.057 12.896c-.024-2.126 1.737-3.146 1.815-3.194-.986-1.44-2.518-1.637-3.064-1.66-1.305-.133-2.548.77-3.21.77-.662 0-1.7-.754-2.8-.733-1.447.022-2.78.84-3.523 2.13-1.5 2.592-.383 6.427 1.077 8.53.714 1.03 1.564 2.186 2.678 2.145 1.073-.042 1.479-.691 2.775-.691 1.296 0 1.663.691 2.8.67 1.157-.021 1.9-.104 2.611-1.144.821-1.2 1.161-2.355 1.182-2.413-.025-.01-2.31-.885-2.336-3.41zm-2.032-8.312c.586-.71 1-1.697.892-2.684-.848.034-1.872.564-2.481 1.274-.545.633-1.023 1.645-.898 2.61.947.073 1.902-.489 2.487-1.2z" />
-        </svg>
+        <img
+            src='/images/icons/apple-logo-white.png'
+            alt="Apple"
+            className="w-4 h-4 object-contain"
+        />
     );
 
     // MOBILE VIEW (iPhone Style Status Bar)
@@ -95,18 +100,18 @@ const MenuBar: React.FC<MenuBarProps> = ({ activeAppTitle, lang, onSearchClick, 
                     </button>
 
                     {showHelpMenu && (
-                        <div className="absolute top-full left-0 mt-1 w-64 bg-[#1e1e1e]/90 backdrop-blur-3xl border border-white/10 rounded-xl shadow-2xl p-4 animate-in fade-in zoom-in-95 duration-150 z-[10000]">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                                    <Mail size={20} className="text-white" />
+                        <div className="absolute top-full left-0 mt-1 w-80 bg-[#1e1e1e]/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl p-5 animate-in fade-in zoom-in-95 duration-150 z-[10000]">
+                            <div className="flex items-start gap-3 mb-4">
+                                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center shrink-0 border border-white/10">
+                                    <img src="/images/icons/mail.png" alt="Mail" className="w-6 h-6 object-contain" />
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-[11px] font-black opacity-50 uppercase tracking-widest">{lang === 'tr' ? 'BANA ULAŞIN' : 'GET IN TOUCH'}</span>
-                                    <span className="text-[13px] font-bold text-white/90">{d.email}</span>
+                                <div className="flex flex-col flex-1 min-w-0">
+                                    <span className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1.5">{lang === 'tr' ? 'İLETİŞİM' : 'CONTACT'}</span>
+                                    <a href={`mailto:${d.email}`} className="text-[12px] font-bold text-white/90 hover:text-blue-400 transition-colors break-all leading-tight">{d.email}</a>
                                 </div>
                             </div>
-                            <div className="h-[1px] bg-white/5 w-full my-2"></div>
-                            <p className="text-[11px] text-white/40 leading-relaxed font-medium">
+                            <div className="h-[1px] bg-white/10 w-full my-3"></div>
+                            <p className="text-[11px] text-white/50 leading-relaxed font-medium">
                                 {lang === 'tr'
                                     ? 'Herhangi bir soru veya proje fikriniz için yukarıdaki adrese e-posta gönderebilirsiniz.'
                                     : 'Feel free to send an email for any questions or project ideas.'}
