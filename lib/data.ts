@@ -15,26 +15,26 @@ export const DATA = {
             system: "Etkinlik Monitörü"
         },
         about: {
-            name: "Enes Şahin",
-            role: "Senior Frontend Engineer & UI Designer",
-            summary: "Apple estetiğine ve kullanıcı deneyimine aşık bir yazılım geliştiricisi. Karmaşık problemleri basit, zarif ve performanslı çözümlere dönüştürmeyi seviyorum. Son 5 yılımı modern web teknolojileri üzerine çalışarak geçirdim.",
+            name: "Hasan Semih Aktaş",
+            role: "Full Stack Developer · React.js · Node.js · React Native",
+            summary: "Bilgisayar Mühendisliği mezunu, React.js ve modern JavaScript ekosistemi kullanarak duyarlı, performans odaklı web ve mobil uygulamalar geliştirme deneyimine sahip. Kullanıcı odaklı arayüzler tasarlıyor, Agile ekiplerde etkili bir şekilde çalışıyor ve sürdürülebilir kod ile ölçülebilir performans iyileştirmelerine öncelik veriyorum. Şu anda React Native mobil geliştirme ve pratik yardımcı uygulamalar yayınlama üzerine odaklanıyorum.",
             experience: [
                 {
-                    company: "Tech Solutions",
-                    role: "Senior Web Developer",
-                    period: "2021 - Günümüz",
-                    desc: "E-ticaret platformlarının frontend mimarisini yönetiyorum."
+                    company: "Strajedi",
+                    role: "Yazılım Geliştirici Stajyeri",
+                    period: "Tem 2023 - Ağu 2023",
+                    desc: "React.js ile duyarlı, yüksek performanslı kullanıcı arayüzleri oluşturdum; DOM optimizasyon tekniklerini uyguladım. Bileşen odaklı mimari kullanarak SASS/SCSS ile ölçeklenebilir stiller uyguladım."
                 },
                 {
-                    company: "Design Studio",
-                    role: "UI/UX Specialist",
-                    period: "2019 - 2021",
-                    desc: "Mobil ve web arayüz tasarımları geliştirdim."
+                    company: "hub.studio",
+                    role: "Frontend Geliştirici Stajyeri",
+                    period: "Tem 2022 - Ağu 2022",
+                    desc: "React.js, Redux ve modern JavaScript kalıpları kullanarak etkileşimli özellikler geliştirdim. Sürdürülebilirliği artırmak için Tailwind CSS ile yeniden kullanılabilir UI bileşenleri oluşturdum."
                 }
             ],
-            education: "YTÜ • Bilgisayar Mühendisliği (2020)",
+            education: "İstanbul Medeniyet Üniversitesi • Bilgisayar Mühendisliği",
             location: "İstanbul, Türkiye",
-            email: "enes@shn.dev"
+            email: "hsemihaktas@outlook.com.tr"
         },
         skills: {
             title: "Sistem Kaynakları",
@@ -265,20 +265,26 @@ export const DATA = {
             system: "Activity Monitor"
         },
         about: {
-            name: "Enes Sahin",
-            role: "Senior Frontend Engineer & UI Designer",
-            summary: "Software developer in love with Apple aesthetics and UX. I love transforming complex problems into simple, elegant, and performant solutions.",
+            name: "Hasan Semih Aktas",
+            role: "Full Stack Developer · React.js · Node.js · React Native",
+            summary: "Computer Engineering graduate with hands-on experience building responsive, performance-focused web and mobile applications using React.js and modern JavaScript ecosystems. I design user-centric front ends, work effectively in Agile teams, and prioritize maintainable code and measurable performance improvements. Currently focused on React Native mobile development and publishing practical utility apps.",
             experience: [
                 {
-                    company: "Tech Solutions",
-                    role: "Senior Web Developer",
-                    period: "2021 - Present",
-                    desc: "Managing frontend architecture of e-commerce platforms."
+                    company: "Strajedi",
+                    role: "Software Engineer Intern",
+                    period: "Jul 2023 - Aug 2023",
+                    desc: "Built responsive, high-performance UIs with React.js; applied DOM optimization techniques. Implemented scalable styles with SASS/SCSS using component-driven architecture."
+                },
+                {
+                    company: "hub.studio",
+                    role: "Frontend Developer Intern",
+                    period: "Jul 2022 - Aug 2022",
+                    desc: "Developed interactive features using React.js, Redux and modern JavaScript patterns. Created reusable UI elements with Tailwind CSS to improve maintainability."
                 }
             ],
-            education: "YTU • Computer Engineering (2020)",
+            education: "Istanbul Medeniyet University • Computer Engineering",
             location: "Istanbul, Turkey",
-            email: "enes@shn.dev"
+            email: "hsemihaktas@outlook.com.tr"
         },
         skills: {
             title: "System Resources",
