@@ -42,12 +42,22 @@ const Settings: React.FC<SettingsProps> = ({
 }) => {
   const d = DATA[lang].settings;
   const [activeSection, setActiveSection] = useState<SettingsSection>('appearance');
+  const [showMobileDetail, setShowMobileDetail] = useState(false);
+  const [openSections, setOpenSections] = useState<SettingsSection[]>([]);
 
   const bgPrimary = isDarkMode ? 'bg-[#1e1e1e]' : 'bg-[#f2f2f7]';
   const bgSidebar = isDarkMode ? 'bg-white/5' : 'bg-black/5';
   const bgContent = isDarkMode ? 'bg-[#121212]' : 'bg-white';
   const textColor = isDarkMode ? 'text-white' : 'text-black';
   const borderStyle = isDarkMode ? 'border-white/10' : 'border-black/5';
+
+  const toggleMobileSection = (section: SettingsSection) => {
+    if (openSections.includes(section)) {
+      setOpenSections(openSections.filter(s => s !== section));
+    } else {
+      setOpenSections([...openSections, section]);
+    }
+  };
 
   const sidebarItems: { id: SettingsSection; label: string; icon: React.ReactNode; color: string }[] = [
     {
@@ -199,8 +209,8 @@ const Settings: React.FC<SettingsProps> = ({
 
   return (
     <div className={`h-full ${bgContent} flex font-sans transition-colors duration-500`}>
-      {/* Settings Sidebar */}
-      <div className={`w-[240px] ${bgSidebar} border-r ${borderStyle} flex flex-col pt-6 shrink-0`}>
+      {/* Settings Sidebar - Hidden on mobile */}
+      <div className={`hidden sm:flex w-[240px] ${bgSidebar} border-r ${borderStyle} flex-col pt-6 shrink-0`}>
         <div className="px-6 mb-8 flex items-center gap-3">
           <div className="w-12 h-12 bg-blue-600 rounded-full shadow-lg flex items-center justify-center text-white font-black text-lg">HS</div>
           <div className="flex flex-col">
@@ -226,8 +236,58 @@ const Settings: React.FC<SettingsProps> = ({
         </div>
       </div>
 
-      {/* Settings Content Area */}
-      <div className="flex-1 overflow-auto p-12 max-w-4xl mx-auto w-full custom-scrollbar">
+      {/* Mobile Navigation - iOS Style Accordion */}
+      <div className="sm:hidden flex-1 overflow-auto">
+        <div className={`${isDarkMode ? 'bg-[#1c1c1e]' : 'bg-[#f2f2f7]'} min-h-full`}>
+          {/* Profile Section */}
+          <div className={`${isDarkMode ? 'bg-[#2c2c2e]' : 'bg-white'} px-4 py-4 mb-6`}>
+            <div className="flex items-center gap-3">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full shadow-lg flex items-center justify-center text-white font-black text-xl">HS</div>
+              <div className="flex flex-col">
+                <span className={`text-[17px] font-semibold ${textColor}`}>Hasan Semih Aktaş</span>
+                <span className={`text-[13px] ${isDarkMode ? 'text-white/40' : 'text-black/40'}`}>Apple ID, iCloud</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Settings Accordion List */}
+          <div className="px-4 pb-8 space-y-2">
+            {sidebarItems.map((item) => (
+              <div key={item.id} className={`${isDarkMode ? 'bg-[#2c2c2e]' : 'bg-white'} rounded-xl overflow-hidden`}>
+                <button
+                  onClick={() => toggleMobileSection(item.id)}
+                  className="w-full p-4 flex items-center gap-3 active:opacity-70 transition-opacity"
+                >
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white ${item.color}`}>
+                    {item.icon}
+                  </div>
+                  <span className={`text-[17px] font-medium ${textColor} flex-1 text-left`}>{item.label}</span>
+                  <ChevronRight
+                    size={20}
+                    className={`${isDarkMode ? 'text-white/30' : 'text-black/30'} transition-transform ${openSections.includes(item.id) ? 'rotate-90' : ''}`}
+                  />
+                </button>
+
+                {openSections.includes(item.id) && (() => {
+                  if (activeSection !== item.id) {
+                    setActiveSection(item.id);
+                  }
+                  return null;
+                })()}
+
+                {openSections.includes(item.id) && activeSection === item.id && (
+                  <div className={`px-4 pb-4 border-t ${borderStyle} animate-in slide-in-from-top-2 duration-200`}>
+                    {renderSection()}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Content Area */}
+      <div className="hidden sm:block flex-1 overflow-auto p-6 sm:p-12 max-w-4xl mx-auto w-full custom-scrollbar">
         {renderSection()}
       </div>
     </div>

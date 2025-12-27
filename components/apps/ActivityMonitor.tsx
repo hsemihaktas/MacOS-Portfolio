@@ -41,12 +41,12 @@ const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) =
 
   return (
     <div className={`h-full ${bgPrimary} flex flex-col font-sans select-none overflow-hidden ${textColor} transition-colors duration-500`}>
-      <div className={`h-14 ${bgHeader} border-b ${borderColor} flex items-center px-4 gap-2 shrink-0`}>
-        <button className={`flex items-center gap-2 px-4 py-2 ${isDarkMode ? 'bg-white/10 text-white' : 'bg-white shadow-sm text-[#007AFF]'} border ${borderColor} rounded-lg text-[13px] font-black`}>
+      <div className={`h-14 ${bgHeader} border-b ${borderColor} flex items-center px-2 sm:px-4 gap-1 sm:gap-2 shrink-0 overflow-x-auto`}>
+        <button className={`flex items-center gap-2 px-3 sm:px-4 py-2 ${isDarkMode ? 'bg-white/10 text-white' : 'bg-white shadow-sm text-[#007AFF]'} border ${borderColor} rounded-lg text-[12px] sm:text-[13px] font-black whitespace-nowrap`}>
           <Cpu size={15} /> CPU
         </button>
         {['Memory', 'Energy', 'Disk', 'Network'].map((label, idx) => (
-          <button key={label} className={`flex items-center gap-2 px-4 py-2 hover:bg-black/5 rounded-lg text-[13px] font-black ${isDarkMode ? 'text-white/40' : 'text-black/50'} transition-colors`}>
+          <button key={label} className={`hidden sm:flex items-center gap-2 px-4 py-2 hover:bg-black/5 rounded-lg text-[13px] font-black ${isDarkMode ? 'text-white/40' : 'text-black/50'} transition-colors`}>
             {idx === 0 ? <Activity size={15} /> : idx === 1 ? <Zap size={15} /> : idx === 2 ? <HardDrive size={15} /> : <Network size={15} />} {label}
           </button>
         ))}
