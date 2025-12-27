@@ -37,6 +37,9 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, onClose, onSelectApp, lan
 
     if (!isOpen) return null;
 
+    // Extract all unique tags from projects dynamically
+    const allTags = Array.from(new Set(d.projects.items.flatMap(p => p.tags)));
+
     // Explicitly typing the results array using SearchResult interface
     const results: SearchResult[] = [
         // Projeleri ara
@@ -47,17 +50,28 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, onClose, onSelectApp, lan
             icon: <FolderKanban size={18} className="text-blue-500" />,
             params: { projectId: p.id }
         })),
-        // Yetenekleri ara -> Tıklanınca Projeler sayfasını o etiketle açacak
-        ...d.skills.categories.flatMap(c => c.items.map(s => ({
+        // Tüm teknolojileri ara (projelerden + skills'den)
+        ...allTags.map(tag => ({
             id: 'projects' as AppID,
-            title: s,
-            subtitle: lang === 'tr' ? `${s} kullanan projeleri göster` : `Show projects using ${s}`,
+            title: tag,
+            subtitle: lang === 'tr' ? `${tag} kullanan projeleri göster` : `Show projects using ${tag}`,
             icon: <Code2 size={18} className="text-purple-500" />,
-            params: { filterTag: s }
-        }))),
+            params: { filterTag: tag }
+        })),
+        // Skills categories'den de ekle (eğer projede yoksa)
+        ...d.skills.categories.flatMap(c => c.items
+            .filter(s => !allTags.includes(s))
+            .map(s => ({
+                id: 'projects' as AppID,
+                title: s,
+                subtitle: lang === 'tr' ? `${s} kullanan projeleri göster` : `Show projects using ${s}`,
+                icon: <Code2 size={18} className="text-purple-500" />,
+                params: { filterTag: s }
+            }))
+        ),
         { id: 'about' as AppID, title: d.about.name, subtitle: lang === 'tr' ? 'Özgeçmiş ve Profil' : 'Resume and Profile', icon: <User2 size={18} className="text-orange-500" /> },
-        { id: 'ai-asistan' as AppID, title: 'Siri AI', subtitle: lang === 'tr' ? 'Yapay zeka ile konuş' : 'Talk to AI', icon: <Sparkles size={18} className="text-indigo-500" /> },
-        { id: 'contact' as AppID, title: 'Mail', subtitle: lang === 'tr' ? 'İletişime geç' : 'Get in touch', icon: <Mail size={18} className="text-red-500" /> }
+        { id: 'contact' as AppID, title: 'Mail', subtitle: lang === 'tr' ? 'İletişime geç' : 'Get in touch', icon: <Mail size={18} className="text-red-500" /> },
+        { id: 'activity-monitor' as AppID, title: lang === 'tr' ? 'Etkinlik İzleyici' : 'Activity Monitor', subtitle: lang === 'tr' ? 'Sistem kaynakları' : 'System resources', icon: <Code2 size={18} className="text-green-500" /> }
     ].filter(item =>
         item.title.toLowerCase().includes(query.toLowerCase()) ||
         item.subtitle.toLowerCase().includes(query.toLowerCase())
