@@ -9,15 +9,28 @@ import { Activity, Cpu, HardDrive, Network, Zap } from 'lucide-react';
 interface ActivityMonitorProps { lang: Language; isDarkMode?: boolean; }
 
 const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) => {
-  const skills = DATA[lang].skills.categories;
-  const allSkills = skills.flatMap(cat => cat.items);
+  const projects = DATA[lang].projects.items;
 
-  const getCPUValue = (index: number) => {
-    const baseValues = [12.4, 8.7, 5.2, 3.1, 1.8, 1.2, 0.8, 0.4, 0.2, 0.1];
-    return baseValues[index] || 0.1;
+  // Count how many times each technology is used across all projects
+  const techCount = new Map<string, number>();
+  projects.forEach(project => {
+    project.tags.forEach(tag => {
+      techCount.set(tag, (techCount.get(tag) || 0) + 1);
+    });
+  });
+
+  // Sort technologies by usage count (most used first)
+  const sortedTechnologies = Array.from(techCount.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(([tech, count]) => ({ tech, count }));
+
+  // Calculate CPU percentage based on usage count
+  const totalUsage = sortedTechnologies.reduce((acc, { count }) => acc + count, 0);
+  const getCPUValue = (count: number) => {
+    return (count / totalUsage) * 100;
   };
 
-  const totalCPULoad = allSkills.reduce((acc, _, i) => acc + getCPUValue(i), 0) + 4.2;
+  const totalCPULoad = sortedTechnologies.reduce((acc, { count }) => acc + getCPUValue(count), 0);
 
   const bgPrimary = isDarkMode ? 'bg-[#121212]' : 'bg-white';
   const bgHeader = isDarkMode ? 'bg-[#2D2D2D]' : 'bg-[#EBEBEB]';
@@ -50,24 +63,24 @@ const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) =
             </tr>
           </thead>
           <tbody className={`divide-y ${isDarkMode ? 'divide-white/5' : 'divide-black/10'}`}>
-            {allSkills.map((skill, i) => (
-              <tr 
-                key={i} 
+            {sortedTechnologies.map(({ tech, count }, i) => (
+              <tr
+                key={i}
                 className={`hover:bg-[#007AFF] hover:text-white group transition-colors duration-75 ${i % 2 === 0 ? bgPrimary : isDarkMode ? 'bg-white/[0.02]' : 'bg-[#F9F9F9]'}`}
               >
                 <td className="py-3 px-6 font-black flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full shadow-inner flex-shrink-0 ${i % 3 === 0 ? 'bg-blue-600' : 'bg-green-600'}`}></div>
-                  <span className={`truncate ${textColor} group-hover:text-white`}>{skill}</span>
+                  <span className={`truncate ${textColor} group-hover:text-white`}>{tech}</span>
                 </td>
                 <td className={`py-3 px-6 text-right font-mono font-black tabular-nums ${textColor} group-hover:text-white`}>
-                  {getCPUValue(i).toFixed(1)}%
+                  {getCPUValue(count).toFixed(1)}%
                 </td>
                 <td className={`py-3 px-6 text-right font-mono ${textColor} group-hover:text-white font-black tabular-nums opacity-60 group-hover:opacity-100`}>
-                  {Math.floor(Math.random() * 40) + 10}
+                  {count * 4}
                 </td>
                 <td className="py-3 px-6 text-right">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter ${isDarkMode ? 'bg-white/10 text-white/60' : 'bg-black/5 text-black'} group-hover:bg-white/20 group-hover:text-white border ${borderColor}`}>
-                    enessahin
+                    hsemihaktas
                   </span>
                 </td>
               </tr>
@@ -79,8 +92,8 @@ const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) =
       <div className={`h-32 ${bgFooter} border-t ${borderColor} grid grid-cols-3 p-6 gap-10 shrink-0`}>
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
-             <span className={`text-[12px] font-black uppercase tracking-widest ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>CPU LOAD</span>
-             <span className="text-[14px] font-black text-[#007AFF]">{totalCPULoad.toFixed(1)}%</span>
+            <span className={`text-[12px] font-black uppercase tracking-widest ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>CPU LOAD</span>
+            <span className="text-[14px] font-black text-[#007AFF]">{totalCPULoad.toFixed(1)}%</span>
           </div>
           <div className={`flex-1 ${isDarkMode ? 'bg-white/5' : 'bg-black/10'} rounded-lg border ${borderColor} relative overflow-hidden shadow-inner`}>
             <div className="absolute inset-y-0 left-0 bg-[#007AFF] transition-all duration-1000 shadow-[0_0_15px_rgba(0,122,255,0.4)]" style={{ width: `${totalCPULoad}%` }}></div>
@@ -88,11 +101,11 @@ const ActivityMonitor: React.FC<ActivityMonitorProps> = ({ lang, isDarkMode }) =
         </div>
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
-             <span className={`text-[12px] font-black uppercase tracking-widest ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>Memory PRESSURE</span>
-             <span className="text-[14px] font-black text-green-700 uppercase">HEALTHY</span>
+            <span className={`text-[12px] font-black uppercase tracking-widest ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>Memory PRESSURE</span>
+            <span className="text-[14px] font-black text-green-700 uppercase">HEALTHY</span>
           </div>
           <div className={`flex-1 ${isDarkMode ? 'bg-white/5' : 'bg-black/10'} rounded-lg border ${borderColor} relative overflow-hidden shadow-inner`}>
-             <div className="absolute inset-y-0 left-0 bg-green-500 w-[38%]"></div>
+            <div className="absolute inset-y-0 left-0 bg-green-500 w-[38%]"></div>
           </div>
         </div>
         <div className={`flex flex-col justify-center border-l ${borderColor} pl-10`}>
