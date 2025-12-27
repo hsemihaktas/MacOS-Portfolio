@@ -28,9 +28,9 @@ export default function Home() {
   const [isWifiEnabled, setIsWifiEnabled] = useState(true);
   const [brightness, setBrightness] = useState(100);
 
-  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
-  const isMobile = width < 768;
-  const isTablet = width >= 768 && width < 1024;
+  const [width, setWidth] = useState<number | null>(null);
+  const isMobile = width ? width < 768 : false; // Default to desktop (false) for initial render to match server
+  const isTablet = width ? width >= 768 && width < 1024 : false;
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -233,18 +233,16 @@ export default function Home() {
         isMobile={isMobile}
       />
 
-      {!isMobile && (
-        <Dock
-          onAppClick={openWindow}
-          activeApp={activeApp}
-          windows={windows}
-          isMobile={isMobile}
-          isTablet={isTablet}
+      <Dock
+        onAppClick={openWindow}
+        activeApp={activeApp}
+        windows={windows}
+        isMobile={isMobile}
+        isTablet={isTablet}
 
-          lang={lang}
-          getAppTitle={getAppTitle}
-        />
-      )}
+        lang={lang}
+        getAppTitle={getAppTitle}
+      />
 
       <div className="absolute inset-0 glossy-reflection z-[50]"></div>
     </div>
