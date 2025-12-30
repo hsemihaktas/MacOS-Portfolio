@@ -9,8 +9,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
-  description: "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
+  description:
+    "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
   keywords: [
+    "hsemihaktas",
+    "h semihaktas",
+    "h semih aktas",
+    "hsemihaktaş",
+    "h semihaktaş",
+    "h semih aktaş",
     "Hasan Semih Aktaş",
     "Hasan Semih Aktas",
     "hasan semih aktaş",
@@ -34,7 +41,8 @@ export const metadata: Metadata = {
   robots: "index, follow",
   openGraph: {
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
-    description: "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
+    description:
+      "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
     url: "https://hsemihaktas.vercel.app",
     siteName: "Hasan Semih Aktaş Portfolio",
     images: [
@@ -51,7 +59,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
-    description: "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
+    description:
+      "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
     images: ["/og-image.png"],
   },
   other: {
@@ -66,11 +75,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${inter.variable} antialiased`}>{children}</body>
     </html>
   );
 }
