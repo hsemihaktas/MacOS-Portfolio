@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Hasan Semih Aktaş Portfolio",
     images: [
       {
-        url: "/og-image.png",
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Hasan Semih Aktaş - Full Stack Developer Portfolio",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
     description:
       "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
-    images: ["/og-image.png"],
+    images: ["/images/og-image.jpg"],
   },
   other: {
     "google-site-verification": "RIHQYNOqayD5Y5TpWlG4qkDvQzg9eKkZxcPx2z-DD6g",
