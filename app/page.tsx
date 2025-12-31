@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import Image from 'next/image';
-import MenuBar from '@/components/MenuBar';
-import Desktop from '@/components/Desktop';
-import Dock from '@/components/Dock';
-import Window from '@/components/Window';
-import Spotlight from '@/components/Spotlight';
-import ControlCenter from '@/components/ControlCenter';
+import React, { useState, useCallback, useEffect, useMemo } from "react";
+import Image from "next/image";
+import MenuBar from "@/components/MenuBar";
+import Desktop from "@/components/Desktop";
+import Dock from "@/components/Dock";
+import Window from "@/components/Window";
+import Spotlight from "@/components/Spotlight";
+import ControlCenter from "@/components/ControlCenter";
 
-import AboutApp from '@/components/apps/About';
-import ProjectsApp from '@/components/apps/Projects';
-import SkillsApp from '@/components/apps/Skills';
-import ContactApp from '@/components/apps/Contact';
-import SettingsApp from '@/components/apps/Settings';
-import ActivityMonitorApp from '@/components/apps/ActivityMonitor';
-import { WindowState, AppID, Language } from '@/lib/types';
-import { INITIAL_Z_INDEX, APPS } from '@/lib/constants';
-import { DATA } from '@/lib/data';
-import { WifiOff } from 'lucide-react';
+import AboutApp from "@/components/apps/About";
+import ProjectsApp from "@/components/apps/Projects";
+import SkillsApp from "@/components/apps/Skills";
+import ContactApp from "@/components/apps/Contact";
+import SettingsApp from "@/components/apps/Settings";
+import ActivityMonitorApp from "@/components/apps/ActivityMonitor";
+import { WindowState, AppID, Language } from "@/lib/types";
+import { INITIAL_Z_INDEX, APPS } from "@/lib/constants";
+import { DATA } from "@/lib/data";
+import { WifiOff } from "lucide-react";
 
 export default function Home() {
-  const [lang, setLang] = useState<Language>('tr');
+  const [lang, setLang] = useState<Language>("tr");
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
   const [isControlCenterOpen, setIsControlCenterOpen] = useState(false);
 
@@ -35,19 +35,20 @@ export default function Home() {
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    handleResize(); // Sayfa ilk yüklendiğinde width değerini set et
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const [windows, setWindows] = useState<WindowState[]>(
-    APPS.map(app => ({
+    APPS.map((app) => ({
       id: app.id as AppID,
       title: app.title,
       isOpen: false,
       isMinimized: false,
       isMaximized: false,
       zIndex: INITIAL_Z_INDEX,
-      params: null
+      params: null,
     }))
   );
 
@@ -55,65 +56,103 @@ export default function Home() {
   const [topZ, setTopZ] = useState(INITIAL_Z_INDEX + 1);
   const [wallpaper, setWallpaper] = useState("/images/wallpaper.jpg");
 
-  const getAppTitle = useCallback((id: AppID): string => {
-    const appMap: Record<AppID, string> = {
-      'about': DATA[lang].apps.about,
-      'projects': DATA[lang].apps.projects,
-      'skills': DATA[lang].apps.skills,
-      'settings': DATA[lang].apps.settings,
-      'contact': DATA[lang].apps.contact,
-      'activity-monitor': DATA[lang].apps.system
-    };
-    return appMap[id] || id;
-  }, [lang]);
+  const getAppTitle = useCallback(
+    (id: AppID): string => {
+      const appMap: Record<AppID, string> = {
+        about: DATA[lang].apps.about,
+        projects: DATA[lang].apps.projects,
+        skills: DATA[lang].apps.skills,
+        settings: DATA[lang].apps.settings,
+        contact: DATA[lang].apps.contact,
+        "activity-monitor": DATA[lang].apps.system,
+      };
+      return appMap[id] || id;
+    },
+    [lang]
+  );
 
-  const openWindow = useCallback((id: AppID, params?: any) => {
-    setWindows(prev => prev.map(w => {
-      if (w.id === id) {
-        return {
-          ...w,
-          isOpen: true,
-          isMinimized: false,
-          zIndex: topZ + 1,
-          params: params || null
-        };
-      }
-      return w;
-    }));
-    setTopZ(prev => prev + 2);
-    setActiveApp(id);
+  const openWindow = useCallback(
+    (id: AppID, params?: any) => {
+      setWindows((prev) =>
+        prev.map((w) => {
+          if (w.id === id) {
+            return {
+              ...w,
+              isOpen: true,
+              isMinimized: false,
+              zIndex: topZ + 1,
+              params: params || null,
+            };
+          }
+          return w;
+        })
+      );
+      setTopZ((prev) => prev + 2);
+      setActiveApp(id);
 
-    setIsSpotlightOpen(false);
-    setIsControlCenterOpen(false);
-  }, [topZ]);
+      setIsSpotlightOpen(false);
+      setIsControlCenterOpen(false);
+    },
+    [topZ]
+  );
 
-  const closeWindow = useCallback((id: AppID) => {
-    setWindows(prev => prev.map(w => w.id === id ? { ...w, isOpen: false, params: null } : w));
-    if (activeApp === id) setActiveApp(null);
-  }, [activeApp]);
+  const closeWindow = useCallback(
+    (id: AppID) => {
+      setWindows((prev) =>
+        prev.map((w) =>
+          w.id === id ? { ...w, isOpen: false, params: null } : w
+        )
+      );
+      if (activeApp === id) setActiveApp(null);
+    },
+    [activeApp]
+  );
 
-  const minimizeWindow = useCallback((id: AppID) => {
-    setWindows(prev => prev.map(w => w.id === id ? { ...w, isMinimized: true } : w));
-    if (activeApp === id) setActiveApp(null);
-  }, [activeApp]);
+  const minimizeWindow = useCallback(
+    (id: AppID) => {
+      setWindows((prev) =>
+        prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
+      );
+      if (activeApp === id) setActiveApp(null);
+    },
+    [activeApp]
+  );
 
-  const focusWindow = useCallback((id: AppID) => {
-    setWindows(prev => prev.map(w => w.id === id ? { ...w, zIndex: topZ + 1 } : w));
-    setTopZ(prev => prev + 1);
-    setActiveApp(id);
-  }, [topZ]);
+  const focusWindow = useCallback(
+    (id: AppID) => {
+      setWindows((prev) =>
+        prev.map((w) => (w.id === id ? { ...w, zIndex: topZ + 1 } : w))
+      );
+      setTopZ((prev) => prev + 1);
+      setActiveApp(id);
+    },
+    [topZ]
+  );
 
   const toggleMaximize = useCallback((id: AppID) => {
-    setWindows(prev => prev.map(w => w.id === id ? { ...w, isMaximized: !w.isMaximized } : w));
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, isMaximized: !w.isMaximized } : w))
+    );
   }, []);
 
   const renderAppContent = (win: WindowState) => {
     switch (win.id) {
-      case 'about': return <AboutApp lang={lang} isDarkMode={isDarkMode} />;
-      case 'projects': return <ProjectsApp lang={lang} isDarkMode={isDarkMode} initialFilter={win.params?.filterTag} initialProjectId={win.params?.projectId} />;
-      case 'skills': return <SkillsApp lang={lang} isDarkMode={isDarkMode} />;
-      case 'contact': return <ContactApp lang={lang} isDarkMode={isDarkMode} />;
-      case 'settings':
+      case "about":
+        return <AboutApp lang={lang} isDarkMode={isDarkMode} />;
+      case "projects":
+        return (
+          <ProjectsApp
+            lang={lang}
+            isDarkMode={isDarkMode}
+            initialFilter={win.params?.filterTag}
+            initialProjectId={win.params?.projectId}
+          />
+        );
+      case "skills":
+        return <SkillsApp lang={lang} isDarkMode={isDarkMode} />;
+      case "contact":
+        return <ContactApp lang={lang} isDarkMode={isDarkMode} />;
+      case "settings":
         return (
           <SettingsApp
             lang={lang}
@@ -126,8 +165,10 @@ export default function Home() {
             setIsWifiEnabled={setIsWifiEnabled}
           />
         );
-      case 'activity-monitor': return <ActivityMonitorApp lang={lang} isDarkMode={isDarkMode} />;
-      default: return null;
+      case "activity-monitor":
+        return <ActivityMonitorApp lang={lang} isDarkMode={isDarkMode} />;
+      default:
+        return null;
     }
   };
 
@@ -137,14 +178,16 @@ export default function Home() {
   }, [activeApp, lang, getAppTitle]);
 
   return (
-    <div className={`w-full h-full relative flex flex-col overflow-hidden no-select transition-all duration-700 bg-black`}>
+    <div
+      className={`w-full h-full relative flex flex-col overflow-hidden no-select transition-all duration-700 bg-black`}
+    >
       <Image
         src={wallpaper}
         alt="Wallpaper"
         fill
         priority
         sizes="100vw"
-        style={{ objectPosition: isMobile ? '70% center' : 'center' }}
+        style={{ objectPosition: isMobile ? "70% center" : "center" }}
         className="object-cover select-none pointer-events-none"
         quality={85}
       />
@@ -179,18 +222,18 @@ export default function Home() {
               <WifiOff size={40} className="text-white/40" />
             </div>
             <h2 className="text-white text-2xl font-black mb-4 tracking-tight">
-              {lang === 'tr' ? 'Bağlantı Kesildi' : 'Connection Lost'}
+              {lang === "tr" ? "Bağlantı Kesildi" : "Connection Lost"}
             </h2>
             <p className="text-white/50 text-[15px] font-medium leading-relaxed mb-10">
-              {lang === 'tr'
-                ? 'Sistem özelliklerine erişmek için lütfen denetim masasından Wi-Fi özelliğini etkinleştirin.'
-                : 'Please enable Wi-Fi in the control center to access system features.'}
+              {lang === "tr"
+                ? "Sistem özelliklerine erişmek için lütfen denetim masasından Wi-Fi özelliğini etkinleştirin."
+                : "Please enable Wi-Fi in the control center to access system features."}
             </p>
             <button
               onClick={() => setIsWifiEnabled(true)}
               className="bg-blue-600 hover:bg-blue-500 text-white px-12 py-3.5 rounded-full font-black text-[15px] shadow-2xl transition-all active:scale-95"
             >
-              {lang === 'tr' ? 'Hızlı Bağlan' : 'Quick Connect'}
+              {lang === "tr" ? "Hızlı Bağlan" : "Quick Connect"}
             </button>
           </div>
         </div>
@@ -204,36 +247,48 @@ export default function Home() {
             getAppTitle={getAppTitle}
           />
           <div className="absolute inset-0 pointer-events-none z-40">
-            {windows.map((win) => win.isOpen && !win.isMinimized && (
-              <div key={win.id} className="pointer-events-auto contents">
-                <Window
-                  window={{ ...win, title: getAppTitle(win.id) }}
-                  lang={lang}
-                  isMobile={isMobile || isTablet}
-                  isDarkMode={isDarkMode}
-                  onClose={() => closeWindow(win.id)}
-                  onMinimize={() => minimizeWindow(win.id)}
-                  onFocus={() => focusWindow(win.id)}
-                  onMaximize={() => toggleMaximize(win.id)}
-                >
-                  {renderAppContent(win)}
-                </Window>
-              </div>
-            ))}
+            {windows.map(
+              (win) =>
+                win.isOpen &&
+                !win.isMinimized && (
+                  <div key={win.id} className="pointer-events-auto contents">
+                    <Window
+                      window={{ ...win, title: getAppTitle(win.id) }}
+                      lang={lang}
+                      isMobile={isMobile || isTablet}
+                      isDarkMode={isDarkMode}
+                      onClose={() => closeWindow(win.id)}
+                      onMinimize={() => minimizeWindow(win.id)}
+                      onFocus={() => focusWindow(win.id)}
+                      onMaximize={() => toggleMaximize(win.id)}
+                    >
+                      {renderAppContent(win)}
+                    </Window>
+                  </div>
+                )
+            )}
           </div>
         </>
       )}
 
-
-      <Spotlight isOpen={isSpotlightOpen} onClose={() => setIsSpotlightOpen(false)} onSelectApp={openWindow} lang={lang} />
+      <Spotlight
+        isOpen={isSpotlightOpen}
+        onClose={() => setIsSpotlightOpen(false)}
+        onSelectApp={openWindow}
+        lang={lang}
+      />
 
       <ControlCenter
         isOpen={isControlCenterOpen}
         onClose={() => setIsControlCenterOpen(false)}
-        lang={lang} setLang={setLang}
-        isDarkMode={isDarkMode} setDarkMode={setDarkMode}
-        isWifiEnabled={isWifiEnabled} setIsWifiEnabled={setIsWifiEnabled}
-        brightness={brightness} setBrightness={setBrightness}
+        lang={lang}
+        setLang={setLang}
+        isDarkMode={isDarkMode}
+        setDarkMode={setDarkMode}
+        isWifiEnabled={isWifiEnabled}
+        setIsWifiEnabled={setIsWifiEnabled}
+        brightness={brightness}
+        setBrightness={setBrightness}
         isMobile={isMobile}
       />
 
@@ -243,7 +298,6 @@ export default function Home() {
         windows={windows}
         isMobile={isMobile}
         isTablet={isTablet}
-
         lang={lang}
         getAppTitle={getAppTitle}
       />
