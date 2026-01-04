@@ -4,6 +4,7 @@
   background: #000;
 }
 
+html,
 body {
   font-family: "Inter", sans-serif;
   overflow: hidden;
@@ -15,16 +16,8 @@ body {
   align-items: center;
   justify-content: center;
   width: 100vw;
-  /* Mobil tarayıcılar için viewport yüksekliği - fallback sistemi */
-  height: 100vh; /* Fallback for older browsers */
-  height: 100dvh; /* Dynamic viewport height - mobil adres çubuğunu hesaba katar */
-  height: -webkit-fill-available; /* iOS Safari için ek fallback */
-}
-
-html {
-  height: 100vh;
-  height: 100dvh;
-  height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: 100svh; /* Small viewport height - en güvenli mobil değer */
 }
 
 .custom-scrollbar::-webkit-scrollbar {
