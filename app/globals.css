@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -14,8 +14,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   width: 100vw;
+  /* Mobil tarayıcılar için viewport yüksekliği - fallback sistemi */
+  height: 100vh; /* Fallback for older browsers */
+  height: 100dvh; /* Dynamic viewport height - mobil adres çubuğunu hesaba katar */
+  height: -webkit-fill-available; /* iOS Safari için ek fallback */
+}
+
+html {
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -33,6 +42,11 @@ body {
 }
 
 .glossy-reflection {
-  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 45%, rgba(255,255,255,0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   pointer-events: none;
 }
