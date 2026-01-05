@@ -39,6 +39,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Hasan Semih Aktaş" }],
   robots: "index, follow",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   openGraph: {
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
     description:
