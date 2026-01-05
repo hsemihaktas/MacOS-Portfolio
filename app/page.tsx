@@ -19,6 +19,13 @@ import { WindowState, AppID, Language } from "@/lib/types";
 import { INITIAL_Z_INDEX, APPS } from "@/lib/constants";
 import { DATA } from "@/lib/data";
 import { WifiOff } from "lucide-react";
+import {
+  trackAboutOpen,
+  trackProjectsOpen,
+  trackSkillsOpen,
+  trackContactOpen,
+  trackSettingsOpen,
+} from "@/lib/analytics";
 
 export default function Home() {
   const [lang, setLang] = useState<Language>("tr");
@@ -73,6 +80,17 @@ export default function Home() {
 
   const openWindow = useCallback(
     (id: AppID, params?: any) => {
+      // Track app open events
+      const trackingMap: Record<AppID, () => void> = {
+        about: trackAboutOpen,
+        projects: trackProjectsOpen,
+        skills: trackSkillsOpen,
+        contact: trackContactOpen,
+        settings: trackSettingsOpen,
+        "activity-monitor": () => {}, // No tracking for activity monitor
+      };
+      trackingMap[id]?.();
+
       setWindows((prev) =>
         prev.map((w) => {
           if (w.id === id) {

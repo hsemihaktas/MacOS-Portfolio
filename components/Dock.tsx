@@ -5,6 +5,11 @@ import Image from "next/image";
 import { APPS } from "@/lib/constants";
 import { AppID, WindowState, Language } from "@/lib/types";
 import { Github, Linkedin } from "lucide-react";
+import {
+  trackGithubOpen,
+  trackLinkedinOpen,
+  trackTwitterOpen,
+} from "@/lib/analytics";
 
 interface DockProps {
   onAppClick: (id: AppID) => void;
@@ -40,6 +45,7 @@ const Dock: React.FC<DockProps> = ({
             <a
               href="https://github.com/hsemihaktas"
               target="_blank"
+              onClick={trackGithubOpen}
               className="w-[52px] h-[52px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg border border-white/30"
             >
               <Github size={26} className="text-white" />
@@ -47,6 +53,7 @@ const Dock: React.FC<DockProps> = ({
             <a
               href="https://linkedin.com/in/hsemihaktas"
               target="_blank"
+              onClick={trackLinkedinOpen}
               className="w-[52px] h-[52px] bg-[#0077b5] hover:bg-[#0088cc] backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-[#0099dd]/50 shadow-lg"
             >
               <Linkedin size={26} className="text-white fill-white" />
@@ -54,6 +61,7 @@ const Dock: React.FC<DockProps> = ({
             <a
               href="https://twitter.com/hsemihaktas"
               target="_blank"
+              onClick={trackTwitterOpen}
               className="w-[52px] h-[52px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-white/30 shadow-lg"
             >
               <svg
@@ -131,6 +139,7 @@ const Dock: React.FC<DockProps> = ({
           <a
             href="https://github.com/hsemihaktas"
             target="_blank"
+            onClick={trackGithubOpen}
             className="group relative w-[48px] h-[48px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-white/30"
           >
             <Github size={24} className="text-white" />
@@ -138,6 +147,7 @@ const Dock: React.FC<DockProps> = ({
           <a
             href="https://linkedin.com/in/hsemihaktas"
             target="_blank"
+            onClick={trackLinkedinOpen}
             className="group relative w-[48px] h-[48px] bg-[#0077b5] hover:bg-[#0088cc] backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-[#0099dd]/50"
           >
             <Linkedin size={24} className="text-white fill-white" />
@@ -145,6 +155,7 @@ const Dock: React.FC<DockProps> = ({
           <a
             href="https://twitter.com/hsemihaktas"
             target="_blank"
+            onClick={trackTwitterOpen}
             className="group relative w-[48px] h-[48px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-white/30"
           >
             <svg
