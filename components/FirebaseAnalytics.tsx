@@ -16,21 +16,14 @@ const firebaseConfig = {
 
 export function FirebaseAnalytics() {
   useEffect(() => {
-    console.log("Firebase Config:", firebaseConfig);
-
-    if (!firebaseConfig.apiKey) {
-      console.error("Firebase API Key is missing! Check .env.local");
-      return;
-    }
+    if (!firebaseConfig.apiKey) return;
 
     const app =
       getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
     isSupported().then((supported) => {
-      console.log("Firebase Analytics supported:", supported);
       if (supported) {
-        const analytics = getAnalytics(app);
-        console.log("Firebase Analytics initialized:", analytics);
+        getAnalytics(app);
       }
     });
   }, []);
