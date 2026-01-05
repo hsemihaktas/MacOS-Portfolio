@@ -40,25 +40,25 @@ const Dock: React.FC<DockProps> = ({
             <a
               href="https://github.com/hsemihaktas"
               target="_blank"
-              className="w-[48px] h-[48px] bg-black/10 hover:bg-black/20 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all active:scale-90 shadow-sm"
+              className="w-[52px] h-[52px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg border border-white/30"
             >
-              <Github size={24} className="text-white/90" />
+              <Github size={26} className="text-white" />
             </a>
             <a
               href="https://linkedin.com/in/hsemihaktas"
               target="_blank"
-              className="w-[48px] h-[48px] bg-[#0077b5]/20 hover:bg-[#0077b5]/30 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all active:scale-90 border border-[#0077b5]/10 shadow-sm"
+              className="w-[52px] h-[52px] bg-[#0077b5] hover:bg-[#0088cc] backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-[#0099dd]/50 shadow-lg"
             >
-              <Linkedin size={24} className="text-white/90 fill-white/20" />
+              <Linkedin size={26} className="text-white fill-white" />
             </a>
             <a
               href="https://twitter.com/hsemihaktas"
               target="_blank"
-              className="w-[48px] h-[48px] bg-black/10 hover:bg-black/30 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all active:scale-90 border border-black/10 shadow-sm"
+              className="w-[52px] h-[52px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-white/30 shadow-lg"
             >
               <svg
                 viewBox="0 0 24 24"
-                className="w-5 h-5 fill-white/90"
+                className="w-6 h-6 fill-white"
                 fill="currentColor"
               >
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -131,25 +131,25 @@ const Dock: React.FC<DockProps> = ({
           <a
             href="https://github.com/hsemihaktas"
             target="_blank"
-            className="group relative w-[48px] h-[48px] bg-black/10 hover:bg-black/20 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom"
+            className="group relative w-[48px] h-[48px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-white/30"
           >
-            <Github size={24} className="text-white/80" />
+            <Github size={24} className="text-white" />
           </a>
           <a
             href="https://linkedin.com/in/hsemihaktas"
             target="_blank"
-            className="group relative w-[48px] h-[48px] bg-[#0077b5]/20 hover:bg-[#0077b5]/30 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-[#0077b5]/10"
+            className="group relative w-[48px] h-[48px] bg-[#0077b5] hover:bg-[#0088cc] backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-[#0099dd]/50"
           >
-            <Linkedin size={24} className="text-white/80 fill-white/20" />
+            <Linkedin size={24} className="text-white fill-white" />
           </a>
           <a
             href="https://twitter.com/hsemihaktas"
             target="_blank"
-            className="group relative w-[48px] h-[48px] bg-black/10 hover:bg-black/30 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-black/10"
+            className="group relative w-[48px] h-[48px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-white/30"
           >
             <svg
               viewBox="0 0 24 24"
-              className="w-5 h-5 fill-white/80"
+              className="w-5 h-5 fill-white"
               fill="currentColor"
             >
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
