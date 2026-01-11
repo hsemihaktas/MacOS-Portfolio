@@ -8,6 +8,7 @@ import Dock from "@/components/Dock";
 import Window from "@/components/Window";
 import Spotlight from "@/components/Spotlight";
 import ControlCenter from "@/components/ControlCenter";
+import { AnimatePresence } from "framer-motion";
 
 import AboutApp from "@/components/apps/About";
 import ProjectsApp from "@/components/apps/Projects";
@@ -265,12 +266,13 @@ export default function Home() {
             getAppTitle={getAppTitle}
           />
           <div className="absolute inset-0 pointer-events-none z-40">
-            {windows.map(
-              (win) =>
-                win.isOpen &&
-                !win.isMinimized && (
-                  <div key={win.id} className="pointer-events-auto contents">
+            <AnimatePresence>
+              {windows.map(
+                (win) =>
+                  win.isOpen &&
+                  !win.isMinimized && (
                     <Window
+                      key={win.id}
                       window={{ ...win, title: getAppTitle(win.id) }}
                       lang={lang}
                       isMobile={isMobile || isTablet}
@@ -282,9 +284,9 @@ export default function Home() {
                     >
                       {renderAppContent(win)}
                     </Window>
-                  </div>
-                )
-            )}
+                  )
+              )}
+            </AnimatePresence>
           </div>
         </>
       )}
