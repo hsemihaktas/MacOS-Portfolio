@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { FirebaseAnalytics } from "@/components/FirebaseAnalytics";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
@@ -81,7 +75,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body className="antialiased">
         <FirebaseAnalytics />
         {children}
       </body>
