@@ -16,6 +16,7 @@ import SkillsApp from "@/components/apps/Skills";
 import ContactApp from "@/components/apps/Contact";
 import SettingsApp from "@/components/apps/Settings";
 import ActivityMonitorApp from "@/components/apps/ActivityMonitor";
+import AppStore from "@/components/apps/AppStore";
 import { WindowState, AppID, Language } from "@/lib/types";
 import { INITIAL_Z_INDEX, APPS } from "@/lib/constants";
 import { DATA } from "@/lib/data";
@@ -73,6 +74,7 @@ export default function Home() {
         settings: DATA[lang].apps.settings,
         contact: DATA[lang].apps.contact,
         "activity-monitor": DATA[lang].apps.system,
+        "app-store": DATA[lang].apps["app-store"],
       };
       return appMap[id] || id;
     },
@@ -89,6 +91,7 @@ export default function Home() {
         contact: trackContactOpen,
         settings: trackSettingsOpen,
         "activity-monitor": () => {}, // No tracking for activity monitor
+        "app-store": () => {},
       };
       trackingMap[id]?.();
 
@@ -186,6 +189,8 @@ export default function Home() {
         );
       case "activity-monitor":
         return <ActivityMonitorApp lang={lang} isDarkMode={isDarkMode} />;
+      case "app-store":
+        return <AppStore lang={lang} isDarkMode={isDarkMode} />;
       default:
         return null;
     }

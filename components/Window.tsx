@@ -202,7 +202,7 @@ const Window: React.FC<WindowProps> = ({
           <div className="flex items-center justify-between w-full">
             <button
               onClick={onClose}
-              className="flex items-center gap-1 text-[#007AFF] font-bold text-[17px]"
+              className="flex items-center gap-1 text-[#007AFF] font-bold text-[17px] opacity-0 pointer-events-none"
             >
               <ChevronLeft size={26} /> {lang === "tr" ? "Geri" : "Back"}
             </button>
@@ -265,9 +265,7 @@ const Window: React.FC<WindowProps> = ({
         )}
       </div>
 
-      <div className={`flex-1 overflow-hidden ${isMobile ? "pb-10" : ""}`}>
-        {children}
-      </div>
+      <div className={`flex-1 overflow-hidden`}>{children}</div>
 
       {/* Resize Handles */}
       {!isMobile && !win.isMaximized && (
@@ -308,6 +306,20 @@ const Window: React.FC<WindowProps> = ({
             onMouseDown={(e) => handleResizeStart(e, "se")}
           />
         </>
+      )}
+
+      {/* Mobile Global Home Indicator (Tap to Close Window) - invisible click area with visible bar */}
+      {isMobile && (
+        <div
+          className="absolute bottom-0 left-0 right-0 h-8 flex items-end justify-center pb-2 z-[100] cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+        >
+          {/* visual bar */}
+          <div className="w-32 h-1.5 bg-gray-400/60 dark:bg-gray-500/60 rounded-full active:bg-gray-500/80 dark:active:bg-gray-400/80 transition-colors" />
+        </div>
       )}
     </motion.div>
   );

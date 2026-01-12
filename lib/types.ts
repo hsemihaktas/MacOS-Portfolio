@@ -1,6 +1,12 @@
-
-export type AppID = 'about' | 'projects' | 'skills' | 'settings' | 'contact' | 'activity-monitor';
-export type Language = 'tr' | 'en';
+export type AppID =
+  | "about"
+  | "projects"
+  | "skills"
+  | "settings"
+  | "contact"
+  | "activity-monitor"
+  | "app-store";
+export type Language = "tr" | "en";
 
 export interface WindowState {
   id: AppID;
@@ -10,6 +16,7 @@ export interface WindowState {
   isMaximized: boolean;
   zIndex: number;
   params?: any;
+  // added to enable passing language to specific apps if needed through window params
 }
 
 export interface Project {
@@ -21,4 +28,9 @@ export interface Project {
   gallery?: string[];
   features?: string[];
   link: string;
+}
+
+export interface AppStoreProps {
+  lang: Language;
+  isDarkMode: boolean;
 }
