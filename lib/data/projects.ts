@@ -141,6 +141,22 @@ const projectItemsTr: Project[] = [
   },
   {
     id: 8,
+    title: "RepackStudio Web Sitesi",
+    description:
+      "Repack Studio mobil uygulama ajansının kurumsal web sitesi, ürünlerini ve hizmetlerini sergiler.",
+    tags: ["Next.js", "TailwindCSS", "TypeScript", "Framer Motion"],
+    image: "/images/RepackStudio/cover.png",
+    features: [
+      "Mobil uygulama ajansının ürün vitrini ve portföyünü sergiler",
+      "Modern ve duyarlı tasarım için Next.js ve TailwindCSS ile geliştirildi",
+      "Framer Motion ile akıcı animasyonlar ve geçiş efektleri",
+      "FaceRateMax, Effease ve Hydra gibi ürünleri tanıtır",
+    ],
+    websiteLink: "https://repackstudio.tech/",
+    platform: "web",
+  },
+  {
+    id: 9,
     title: "FaceRateMax Web Sitesi",
     description:
       "FaceRateMax uygulaması için bir web sitesi, özelliklerini sergiler ve mobil kullanıcılar için bilgi sağlar.",
@@ -155,7 +171,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "Task Flow - Görev Yönetim Uygulaması",
     description:
       "Next.js, Supabase ve TypeScript kullanılarak geliştirilmiş modern ve güvenli bir görev yönetim sistemi.",
@@ -171,7 +187,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "E-Ticaret Web Sitesi",
     description:
       "Next.js ve Firebase ile geliştirilmiş, kullanıcıların mağaza oluşturup ürün ve sipariş yönetimi yapabildiği tam kapsamlı bir e-ticaret platformu.",
@@ -187,7 +203,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "IMDB Dizi Sıralama Listesi",
     description:
       "Sürükle bırak işlevselliği ve Python scraper ile veri çekme özellikli dizi sıralama web uygulaması.",
@@ -203,7 +219,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "Oyun Web Sitesi",
     description:
       "Mock veriler kullanarak tasarım ve geliştirme becerilerini sergilemek için Next.js ile inşa edilmiş front-end odaklı bir oyun web sitesi.",
@@ -219,7 +235,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 13,
+    id: 14,
     title: "Emlak Web Sitesi",
     description:
       "React, Node.js ve MySQL kullanılarak inşa edilen, güvenli kimlik doğrulama ile emlak listelemelerini yönetmek için bir platform.",
@@ -235,7 +251,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 14,
+    id: 15,
     title: "Doğum Günü Organizasyon Web Sitesi",
     description:
       "EmailJS ile iletişim formu ve online rezervasyon özellikli doğum günü organizasyon web sitesi.",
@@ -251,7 +267,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 15,
+    id: 16,
     title: "Blurface - Fotoğraf Bulanıklaştırma",
     description:
       "Python ve OpenCV ile geliştirilen, görüntü ve videolarda yüz bulanıklaştırma için yapay zeka destekli bir uygulama.",
@@ -409,6 +425,22 @@ const projectItemsEn: Project[] = [
   },
   {
     id: 8,
+    title: "RepackStudio Website",
+    description:
+      "Corporate website for Repack Studio mobile app agency, showcasing their products and services.",
+    tags: ["Next.js", "TailwindCSS", "TypeScript", "Framer Motion"],
+    image: "/images/RepackStudio/cover.png",
+    features: [
+      "Showcases the mobile app agency's product portfolio",
+      "Built with Next.js and TailwindCSS for modern and responsive design",
+      "Smooth animations and transition effects with Framer Motion",
+      "Introduces products like FaceRateMax, Effease, and Hydra",
+    ],
+    websiteLink: "https://repackstudio.tech/",
+    platform: "web",
+  },
+  {
+    id: 9,
     title: "FaceRateMax Website",
     description:
       "A website for the FaceRateMax app, showcasing its features and providing information for mobile users.",
@@ -423,7 +455,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "Task Flow - Task Management App",
     description:
       "A modern and secure task management system built with Next.js, Supabase, and TypeScript.",
@@ -439,7 +471,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "E-Commerce Website",
     description:
       "A full-stack e-commerce platform with Next.js and Firebase, allowing users to create stores, manage products, and track orders.",
@@ -455,7 +487,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "IMDB Series Tierlist",
     description:
       "A web app for ranking TV series with drag-and-drop functionality and data fetched via Python scraper.",
@@ -471,7 +503,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "Gaming Website",
     description:
       "A front-end focused gaming website built with Next.js to demonstrate design and development skills using mock data.",
@@ -487,7 +519,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 13,
+    id: 14,
     title: "Property Website",
     description:
       "A platform for managing property listings with secure authentication, built using React, Node.js, and MySQL.",
@@ -503,7 +535,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 14,
+    id: 15,
     title: "Birthday Organization Website",
     description:
       "A birthday party organization website with online reservation and contact form via EmailJS.",
@@ -519,7 +551,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 15,
+    id: 16,
     title: "Blurface - Photo Blurring",
     description:
       "An AI-powered application for face blurring in images and videos, built with Python and OpenCV.",
