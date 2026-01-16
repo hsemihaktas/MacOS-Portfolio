@@ -117,6 +117,30 @@ const projectItemsTr: Project[] = [
   },
   {
     id: 7,
+    title: "Effease - AI Photo Editor Website",
+    description:
+      "Effease yapay zeka destekli fotoğraf düzenleme uygulaması için premium pazarlama web sitesi. Anime, Cyberpunk ve Artistik dönüşüm efektlerini karanlık, modern bir estetikle sergiler.",
+    tags: [
+      "Next.js",
+      "TailwindCSS",
+      "TypeScript",
+      "Framer Motion",
+      "Lucide React",
+    ],
+    image: "/images/EffeaseWebsite/cover.png",
+    features: [
+      "Karanlık mod native OLED uyumlu şık uygulama vitrini",
+      "AI dönüşüm efektlerini gösteren interaktif öncesi/sonrası slider",
+      "Adım adım onboarding akışı: Yükle, Stil Seç, Paylaş",
+      "App Store ve Google Play indirme entegrasyonu",
+      "Yaratıcı ve influencer yorumlarıyla testimonial bölümü",
+      "Smooth scroll animasyonlarıyla modern glassmorphism UI",
+    ],
+    websiteLink: "https://effease.vercel.app/",
+    platform: "web",
+  },
+  {
+    id: 8,
     title: "FaceRateMax Web Sitesi",
     description:
       "FaceRateMax uygulaması için bir web sitesi, özelliklerini sergiler ve mobil kullanıcılar için bilgi sağlar.",
@@ -131,7 +155,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 8,
+    id: 9,
     title: "Task Flow - Görev Yönetim Uygulaması",
     description:
       "Next.js, Supabase ve TypeScript kullanılarak geliştirilmiş modern ve güvenli bir görev yönetim sistemi.",
@@ -147,7 +171,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "E-Ticaret Web Sitesi",
     description:
       "Next.js ve Firebase ile geliştirilmiş, kullanıcıların mağaza oluşturup ürün ve sipariş yönetimi yapabildiği tam kapsamlı bir e-ticaret platformu.",
@@ -163,7 +187,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "IMDB Dizi Sıralama Listesi",
     description:
       "Sürükle bırak işlevselliği ve Python scraper ile veri çekme özellikli dizi sıralama web uygulaması.",
@@ -179,7 +203,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "Oyun Web Sitesi",
     description:
       "Mock veriler kullanarak tasarım ve geliştirme becerilerini sergilemek için Next.js ile inşa edilmiş front-end odaklı bir oyun web sitesi.",
@@ -195,7 +219,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "Emlak Web Sitesi",
     description:
       "React, Node.js ve MySQL kullanılarak inşa edilen, güvenli kimlik doğrulama ile emlak listelemelerini yönetmek için bir platform.",
@@ -211,7 +235,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 13,
+    id: 14,
     title: "Doğum Günü Organizasyon Web Sitesi",
     description:
       "EmailJS ile iletişim formu ve online rezervasyon özellikli doğum günü organizasyon web sitesi.",
@@ -227,7 +251,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 14,
+    id: 15,
     title: "Blurface - Fotoğraf Bulanıklaştırma",
     description:
       "Python ve OpenCV ile geliştirilen, görüntü ve videolarda yüz bulanıklaştırma için yapay zeka destekli bir uygulama.",
@@ -361,6 +385,30 @@ const projectItemsEn: Project[] = [
   },
   {
     id: 7,
+    title: "Effease - AI Photo Editor Website",
+    description:
+      "A premium marketing website for Effease, an AI-powered photo editing app. Showcases Anime, Cyberpunk, and Artistic transformation effects with a dark, modern aesthetic.",
+    tags: [
+      "Next.js",
+      "TailwindCSS",
+      "TypeScript",
+      "Framer Motion",
+      "Lucide React",
+    ],
+    image: "/images/EffeaseWebsite/cover.png",
+    features: [
+      "Sleek app showcase with dark mode native OLED-friendly design",
+      "Interactive before/after slider demonstrating AI transformation effects",
+      "Step-by-step onboarding flow: Upload, Pick Style, Share Magic",
+      "App Store and Google Play download integration",
+      "Testimonials section with user reviews from creators and influencers",
+      "Modern glassmorphism UI with smooth scroll animations",
+    ],
+    websiteLink: "https://effease.vercel.app/",
+    platform: "web",
+  },
+  {
+    id: 8,
     title: "FaceRateMax Website",
     description:
       "A website for the FaceRateMax app, showcasing its features and providing information for mobile users.",
@@ -375,7 +423,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 8,
+    id: 9,
     title: "Task Flow - Task Management App",
     description:
       "A modern and secure task management system built with Next.js, Supabase, and TypeScript.",
@@ -391,7 +439,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "E-Commerce Website",
     description:
       "A full-stack e-commerce platform with Next.js and Firebase, allowing users to create stores, manage products, and track orders.",
@@ -407,7 +455,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "IMDB Series Tierlist",
     description:
       "A web app for ranking TV series with drag-and-drop functionality and data fetched via Python scraper.",
@@ -423,7 +471,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "Gaming Website",
     description:
       "A front-end focused gaming website built with Next.js to demonstrate design and development skills using mock data.",
@@ -439,7 +487,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "Property Website",
     description:
       "A platform for managing property listings with secure authentication, built using React, Node.js, and MySQL.",
@@ -455,7 +503,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 13,
+    id: 14,
     title: "Birthday Organization Website",
     description:
       "A birthday party organization website with online reservation and contact form via EmailJS.",
@@ -471,7 +519,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 14,
+    id: 15,
     title: "Blurface - Photo Blurring",
     description:
       "An AI-powered application for face blurring in images and videos, built with Python and OpenCV.",
