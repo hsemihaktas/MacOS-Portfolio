@@ -77,6 +77,23 @@ const projectItemsTr: Project[] = [
   },
   {
     id: 5,
+    title: "Loki History Web Sitesi",
+    description:
+      "İskandinav mitolojisinin kaos tanrısı Loki'nin gerçek hikayesini anlatan sinematik bir web deneyimi. Mitoloji, soy ağacı ve efsanevi hikayeleri keşfedin.",
+    tags: ["Next.js", "TailwindCSS", "TypeScript", "Lucide React"],
+    image: "/images/Loki-History/cover.png",
+    features: [
+      "Loki'nin kökenlerinden Ragnarök'e kadar tüm mitolojik hikayelerini interaktif olarak sunar",
+      "Next.js 16 ve TailwindCSS 4 ile modern, responsive ve sinematik tasarım",
+      "Özel animasyonlar, custom cursor ve parallax efektleriyle immersive kullanıcı deneyimi",
+      "Soy ağacı (Genealogy Tree), eserler (Artifacts) ve dönüşüm hikayeleri gibi zengin içerik bölümleri",
+      "Karanlık tema ve mitolojik estetiğe uygun görsel tasarım",
+    ],
+    websiteLink: "https://loki-history.vercel.app/",
+    platform: "web",
+  },
+  {
+    id: 6,
     title: "FaceRateMax Web Sitesi",
     description:
       "FaceRateMax uygulaması için bir web sitesi, özelliklerini sergiler ve mobil kullanıcılar için bilgi sağlar.",
@@ -91,7 +108,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 6,
+    id: 7,
     title: "Task Flow - Görev Yönetim Uygulaması",
     description:
       "Next.js, Supabase ve TypeScript kullanılarak geliştirilmiş modern ve güvenli bir görev yönetim sistemi.",
@@ -107,7 +124,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 7,
+    id: 8,
     title: "E-Ticaret Web Sitesi",
     description:
       "Next.js ve Firebase ile geliştirilmiş, kullanıcıların mağaza oluşturup ürün ve sipariş yönetimi yapabildiği tam kapsamlı bir e-ticaret platformu.",
@@ -123,7 +140,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 8,
+    id: 9,
     title: "IMDB Dizi Sıralama Listesi",
     description:
       "Sürükle bırak işlevselliği ve Python scraper ile veri çekme özellikli dizi sıralama web uygulaması.",
@@ -139,7 +156,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "Oyun Web Sitesi",
     description:
       "Mock veriler kullanarak tasarım ve geliştirme becerilerini sergilemek için Next.js ile inşa edilmiş front-end odaklı bir oyun web sitesi.",
@@ -155,7 +172,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "Emlak Web Sitesi",
     description:
       "React, Node.js ve MySQL kullanılarak inşa edilen, güvenli kimlik doğrulama ile emlak listelemelerini yönetmek için bir platform.",
@@ -171,7 +188,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "Doğum Günü Organizasyon Web Sitesi",
     description:
       "EmailJS ile iletişim formu ve online rezervasyon özellikli doğum günü organizasyon web sitesi.",
@@ -187,7 +204,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "Blurface - Fotoğraf Bulanıklaştırma",
     description:
       "Python ve OpenCV ile geliştirilen, görüntü ve videolarda yüz bulanıklaştırma için yapay zeka destekli bir uygulama.",
@@ -281,6 +298,23 @@ const projectItemsEn: Project[] = [
   },
   {
     id: 5,
+    title: "Loki History Website",
+    description:
+      "A cinematic web experience telling the true story of Loki, the Norse god of chaos. Explore mythology, genealogy tree, and legendary tales.",
+    tags: ["Next.js", "TailwindCSS", "TypeScript", "Lucide React"],
+    image: "/images/Loki-History/cover.png",
+    features: [
+      "Interactive presentation of all mythological stories from Loki's origins to Ragnarök",
+      "Modern, responsive and cinematic design with Next.js 16 and TailwindCSS 4",
+      "Immersive user experience with custom animations, custom cursor and parallax effects",
+      "Rich content sections like Genealogy Tree, Artifacts and transformation stories",
+      "Visual design appropriate for dark theme and mythological aesthetics",
+    ],
+    websiteLink: "https://loki-history.vercel.app/",
+    platform: "web",
+  },
+  {
+    id: 6,
     title: "FaceRateMax Website",
     description:
       "A website for the FaceRateMax app, showcasing its features and providing information for mobile users.",
@@ -295,7 +329,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 6,
+    id: 7,
     title: "Task Flow - Task Management App",
     description:
       "A modern and secure task management system built with Next.js, Supabase, and TypeScript.",
@@ -311,7 +345,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 7,
+    id: 8,
     title: "E-Commerce Website",
     description:
       "A full-stack e-commerce platform with Next.js and Firebase, allowing users to create stores, manage products, and track orders.",
@@ -327,7 +361,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 8,
+    id: 9,
     title: "IMDB Series Tierlist",
     description:
       "A web app for ranking TV series with drag-and-drop functionality and data fetched via Python scraper.",
@@ -343,7 +377,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "Gaming Website",
     description:
       "A front-end focused gaming website built with Next.js to demonstrate design and development skills using mock data.",
@@ -359,7 +393,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "Property Website",
     description:
       "A platform for managing property listings with secure authentication, built using React, Node.js, and MySQL.",
@@ -375,7 +409,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "Birthday Organization Website",
     description:
       "A birthday party organization website with online reservation and contact form via EmailJS.",
@@ -391,7 +425,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "Blurface - Photo Blurring",
     description:
       "An AI-powered application for face blurring in images and videos, built with Python and OpenCV.",
