@@ -1,0 +1,31 @@
+// Contact/Mail Data
+export const contactData = {
+  tr: {
+    title: "Mail",
+    to: "Alıcı",
+    from: "Gönderen",
+    subject: "Konu",
+    placeholder: "Mesajınızı buraya yazın...",
+    send: "Gönder",
+    sentTitle: "Mesaj Hazır!",
+    sentDesc: "Mail uygulamanız üzerinden gönderim yapabilirsiniz.",
+    inbox: "Gelen Kutusu",
+    sent: "Gönderilenler",
+    drafts: "Taslaklar",
+    trash: "Çöp",
+  },
+  en: {
+    title: "Mail",
+    to: "To",
+    from: "From",
+    subject: "Subject",
+    placeholder: "Write your message here...",
+    send: "Send",
+    sentTitle: "Ready to Send!",
+    sentDesc: "You can send the message via your mail application.",
+    inbox: "Inbox",
+    sent: "Sent",
+    drafts: "Drafts",
+    trash: "Trash",
+  },
+};
