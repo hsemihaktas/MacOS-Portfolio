@@ -17,17 +17,71 @@ interface DockProps {
   windows: WindowState[];
   isMobile?: boolean;
   isTablet?: boolean;
+  isOnline?: boolean;
   lang: Language;
   getAppTitle: (id: AppID) => string;
 }
 
+const X_PATH =
+  "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z";
+
+// Reusable Social Links Component
+const SocialLinks = ({
+  size = 48,
+  isMobile = false,
+}: {
+  size?: number;
+  isMobile?: boolean;
+}) => {
+  const baseClass = isMobile
+    ? "backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg"
+    : "group relative backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom";
+
+  return (
+    <>
+      <a
+        href="https://github.com/hsemihaktas"
+        target="_blank"
+        onClick={trackGithubOpen}
+        style={{ width: size, height: size }}
+        className={`${baseClass} bg-black/70 hover:bg-black/80 border border-white/30`}
+      >
+        <Github size={size * 0.5} className="text-white" />
+      </a>
+      <a
+        href="https://linkedin.com/in/hsemihaktas"
+        target="_blank"
+        onClick={trackLinkedinOpen}
+        style={{ width: size, height: size }}
+        className={`${baseClass} bg-[#0077b5] hover:bg-[#0088cc] border border-[#0099dd]/50`}
+      >
+        <Linkedin size={size * 0.5} className="text-white fill-white" />
+      </a>
+      <a
+        href="https://twitter.com/hsemihaktas"
+        target="_blank"
+        onClick={trackTwitterOpen}
+        style={{ width: size, height: size }}
+        className={`${baseClass} bg-black/70 hover:bg-black/80 border border-white/30`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          style={{ width: size * 0.42, height: size * 0.42 }}
+          className="fill-white"
+        >
+          <path d={X_PATH} />
+        </svg>
+      </a>
+    </>
+  );
+};
+
 const Dock: React.FC<DockProps> = ({
   onAppClick,
-  activeApp,
   windows,
   isMobile,
   isTablet,
-  lang,
+  isOnline = true,
   getAppTitle,
 }) => {
   const isAnyWindowOpen = React.useMemo(
@@ -35,50 +89,31 @@ const Dock: React.FC<DockProps> = ({
     [windows]
   );
 
+  // Mobile View
   if (isMobile) {
-    if (isAnyWindowOpen) return null;
-
+    if (isAnyWindowOpen && isOnline) return null;
     return (
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[400px] z-[9998]">
-        <div className="bg-white/20 backdrop-blur-3xl rounded-[24px] p-3 flex justify-evenly items-center shadow-2xl border border-white/10 ring-1 ring-white/5 w-full">
-          <div className="flex items-center gap-6 justify-center w-full">
-            <a
-              href="https://github.com/hsemihaktas"
-              target="_blank"
-              onClick={trackGithubOpen}
-              className="w-[52px] h-[52px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg border border-white/30"
-            >
-              <Github size={26} className="text-white" />
-            </a>
-            <a
-              href="https://linkedin.com/in/hsemihaktas"
-              target="_blank"
-              onClick={trackLinkedinOpen}
-              className="w-[52px] h-[52px] bg-[#0077b5] hover:bg-[#0088cc] backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-[#0099dd]/50 shadow-lg"
-            >
-              <Linkedin size={26} className="text-white fill-white" />
-            </a>
-            <a
-              href="https://twitter.com/hsemihaktas"
-              target="_blank"
-              onClick={trackTwitterOpen}
-              className="w-[52px] h-[52px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-white/30 shadow-lg"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                className="w-6 h-6 fill-white"
-                fill="currentColor"
-              >
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </a>
+        <div className="bg-white/20 backdrop-blur-3xl rounded-[24px] p-3 shadow-2xl border border-white/10 ring-1 ring-white/5">
+          <div className="flex items-center gap-6 justify-center">
+            <SocialLinks size={52} isMobile />
           </div>
         </div>
       </div>
     );
   }
 
+  // Tablet View
   if (isTablet) {
+    if (!isOnline) {
+      return (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[9998]">
+          <div className="bg-white/15 backdrop-blur-3xl rounded-[28px] px-5 py-3 flex gap-4 items-center shadow-2xl border border-white/10 ring-1 ring-white/5">
+            <SocialLinks size={64} isMobile />
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[9998]">
         <div className="bg-white/15 backdrop-blur-3xl rounded-[28px] px-5 py-3 flex gap-4 items-center shadow-2xl border border-white/10 ring-1 ring-white/5">
@@ -102,6 +137,18 @@ const Dock: React.FC<DockProps> = ({
     );
   }
 
+  // Desktop View - Offline
+  if (!isOnline) {
+    return (
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 p-2 z-[9999]">
+        <div className="flex items-end gap-2 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-[22px] px-3 py-2 shadow-[0_30px_60px_rgba(0,0,0,0.4)] ring-1 ring-black/5">
+          <SocialLinks size={48} />
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop View - Online
   return (
     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 p-2 z-[9999]">
       <div className="flex items-end gap-3 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-[22px] px-3 py-2 shadow-[0_30px_60px_rgba(0,0,0,0.4)] ring-1 ring-black/5">
@@ -127,45 +174,14 @@ const Dock: React.FC<DockProps> = ({
                 />
               </div>
               {isOpen && (
-                <div className="absolute -bottom-1 w-[4px] h-[4px] bg-white rounded-full shadow-sm"></div>
+                <div className="absolute -bottom-1 w-[4px] h-[4px] bg-white rounded-full shadow-sm" />
               )}
             </div>
           );
         })}
-
-        <div className="w-[1px] h-10 bg-white/20 mx-1.5 self-center"></div>
-
+        <div className="w-[1px] h-10 bg-white/20 mx-1.5 self-center" />
         <div className="flex items-center gap-2">
-          <a
-            href="https://github.com/hsemihaktas"
-            target="_blank"
-            onClick={trackGithubOpen}
-            className="group relative w-[48px] h-[48px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-white/30"
-          >
-            <Github size={24} className="text-white" />
-          </a>
-          <a
-            href="https://linkedin.com/in/hsemihaktas"
-            target="_blank"
-            onClick={trackLinkedinOpen}
-            className="group relative w-[48px] h-[48px] bg-[#0077b5] hover:bg-[#0088cc] backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-[#0099dd]/50"
-          >
-            <Linkedin size={24} className="text-white fill-white" />
-          </a>
-          <a
-            href="https://twitter.com/hsemihaktas"
-            target="_blank"
-            onClick={trackTwitterOpen}
-            className="group relative w-[48px] h-[48px] bg-black/70 hover:bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom border border-white/30"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="w-5 h-5 fill-white"
-              fill="currentColor"
-            >
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-          </a>
+          <SocialLinks size={48} />
         </div>
       </div>
     </div>

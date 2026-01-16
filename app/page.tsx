@@ -323,6 +323,7 @@ export default function Home() {
         windows={windows}
         isMobile={isMobile}
         isTablet={isTablet}
+        isOnline={isWifiEnabled}
         lang={lang}
         getAppTitle={getAppTitle}
       />
