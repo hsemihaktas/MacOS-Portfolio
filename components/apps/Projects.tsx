@@ -11,6 +11,8 @@ import {
   CheckCircle2,
   X,
   Code2,
+  Smartphone,
+  Monitor,
 } from "lucide-react";
 
 interface ProjectsProps {
@@ -29,6 +31,9 @@ const Projects: React.FC<ProjectsProps> = ({
   const d = DATA[lang].projects;
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string | null>(null);
+  const [platformFilter, setPlatformFilter] = useState<"mobile" | "web" | null>(
+    null
+  );
 
   useEffect(() => {
     if (initialFilter) {
@@ -47,10 +52,18 @@ const Projects: React.FC<ProjectsProps> = ({
   }, [initialFilter, initialProjectId, d.items]);
 
   const filteredItems = useMemo(() => {
-    return filter
-      ? d.items.filter((item) => item.tags.includes(filter))
-      : d.items;
-  }, [filter, d.items]);
+    let items = d.items;
+
+    if (platformFilter) {
+      items = items.filter((item) => item.platform === platformFilter);
+    }
+
+    if (filter) {
+      items = items.filter((item) => item.tags.includes(filter));
+    }
+
+    return items;
+  }, [filter, platformFilter, d.items]);
 
   const allTags = useMemo(() => {
     return Array.from(new Set(d.items.flatMap((p) => p.tags)));
@@ -86,22 +99,65 @@ const Projects: React.FC<ProjectsProps> = ({
           <ul className="space-y-1">
             <li
               className={`group flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-default transition-all ${
-                !filter && !selectedProject
+                !filter && !selectedProject && !platformFilter
                   ? isDarkMode
                     ? "bg-white/10 text-[#007AFF]"
                     : "bg-white shadow-sm text-[#007AFF]"
-                  : `hover:bg-white/5 ${
-                      isDarkMode ? "text-white/40" : "text-black/50"
-                    } hover:text-white`
+                  : isDarkMode
+                  ? "hover:bg-white/10 text-white/50 hover:text-white"
+                  : "hover:bg-black/5 text-black/50 hover:text-black"
               }`}
               onClick={() => {
                 setFilter(null);
+                setPlatformFilter(null);
                 setSelectedProject(null);
               }}
             >
               <LayoutGrid size={15} />
               <span className="text-[13px] font-bold">
                 {lang === "tr" ? "Tüm Projeler" : "All Projects"}
+              </span>
+            </li>
+            <li
+              className={`group flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-default transition-all ${
+                platformFilter === "mobile"
+                  ? isDarkMode
+                    ? "bg-white/10 text-[#007AFF]"
+                    : "bg-white shadow-sm text-[#007AFF]"
+                  : isDarkMode
+                  ? "hover:bg-white/10 text-white/50 hover:text-white"
+                  : "hover:bg-black/5 text-black/50 hover:text-black"
+              }`}
+              onClick={() => {
+                setPlatformFilter("mobile");
+                setFilter(null);
+                setSelectedProject(null);
+              }}
+            >
+              <Smartphone size={15} />
+              <span className="text-[13px] font-bold">
+                {lang === "tr" ? "Mobil Uygulamalar" : "Mobile Apps"}
+              </span>
+            </li>
+            <li
+              className={`group flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-default transition-all ${
+                platformFilter === "web"
+                  ? isDarkMode
+                    ? "bg-white/10 text-[#007AFF]"
+                    : "bg-white shadow-sm text-[#007AFF]"
+                  : isDarkMode
+                  ? "hover:bg-white/10 text-white/50 hover:text-white"
+                  : "hover:bg-black/5 text-black/50 hover:text-black"
+              }`}
+              onClick={() => {
+                setPlatformFilter("web");
+                setFilter(null);
+                setSelectedProject(null);
+              }}
+            >
+              <Monitor size={15} />
+              <span className="text-[13px] font-bold">
+                {lang === "tr" ? "Web Siteleri" : "Websites"}
               </span>
             </li>
           </ul>
@@ -121,6 +177,7 @@ const Projects: React.FC<ProjectsProps> = ({
                   key={tag}
                   onClick={() => {
                     setFilter(tag);
+                    setPlatformFilter(null);
                     setSelectedProject(null);
                   }}
                   className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all border ${

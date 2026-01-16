@@ -28,6 +28,7 @@ export interface Project {
   gallery?: string[];
   features?: string[];
   link: string;
+  platform: "mobile" | "web";
 }
 
 export interface AppStoreProps {

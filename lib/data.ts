@@ -167,6 +167,7 @@ export const DATA = {
             "Token tabanlı kullanım sistemi ve kullanıcı profil yönetimi",
           ],
           link: "",
+          platform: "mobile" as const,
         },
         {
           id: 2,
@@ -182,6 +183,7 @@ export const DATA = {
             "Hatırlatmalar ve güncellemeler için anlık bildirimler",
           ],
           link: "https://github.com/hsemihaktas/BeautyCenterApp",
+          platform: "mobile" as const,
         },
         {
           id: 3,
@@ -197,6 +199,7 @@ export const DATA = {
             "Minimal ve kullanıcı dostu arayüz tasarımı",
           ],
           link: "https://github.com/hsemihaktas/EncryptDiary",
+          platform: "mobile" as const,
         },
         {
           id: 4,
@@ -212,6 +215,7 @@ export const DATA = {
             "Material Icons ile modern arayüz",
           ],
           link: "https://github.com/hsemihaktas/Lexicon-WordApplication",
+          platform: "mobile" as const,
         },
         {
           id: 5,
@@ -226,6 +230,7 @@ export const DATA = {
             "Mobil cihazlarda kullanılabilen uygulama hakkında bilgi sağlar",
           ],
           link: "https://face-rate-max.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 6,
@@ -247,6 +252,7 @@ export const DATA = {
             "Temiz, duyarlı ve kullanıcı dostu arayüz tasarımı",
           ],
           link: "https://demo-taskflow.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 7,
@@ -268,6 +274,7 @@ export const DATA = {
             "Türk kullanıcıları için telefon numarası formatlaması",
           ],
           link: "https://demo-e-ticaret.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 8,
@@ -283,6 +290,7 @@ export const DATA = {
             "React.js ve TailwindCSS ile duyarlı arayüz",
           ],
           link: "https://imdb-series-tierlist.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 9,
@@ -298,6 +306,7 @@ export const DATA = {
             "Next.js ile dinamik yönlendirme ve SSR",
           ],
           link: "https://hgamepulse.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 10,
@@ -313,6 +322,7 @@ export const DATA = {
             "Kapsamlı emlak detayları ve kullanıcı dostu arayüz",
           ],
           link: "https://github.com/hsemihaktas/EstateWebsite",
+          platform: "web" as const,
         },
         {
           id: 11,
@@ -328,6 +338,7 @@ export const DATA = {
             "Online rezervasyon özellikleri",
           ],
           link: "https://birthday-organization.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 12,
@@ -343,6 +354,7 @@ export const DATA = {
             "Bulanıklık yoğunluğu ve bölgelerini seçmek için kullanıcı dostu arayüz",
           ],
           link: "https://github.com/hsemihaktas/BlurryFace",
+          platform: "web" as const,
         },
       ],
     },
@@ -543,6 +555,7 @@ export const DATA = {
             "Token-based credit system and user profile management",
           ],
           link: "",
+          platform: "mobile" as const,
         },
         {
           id: 2,
@@ -558,6 +571,7 @@ export const DATA = {
             "Push notifications for reminders and updates",
           ],
           link: "https://github.com/hsemihaktas/BeautyCenterApp",
+          platform: "mobile" as const,
         },
         {
           id: 3,
@@ -573,6 +587,7 @@ export const DATA = {
             "Minimal and user-friendly interface design",
           ],
           link: "https://github.com/hsemihaktas/EncryptDiary",
+          platform: "mobile" as const,
         },
         {
           id: 4,
@@ -588,6 +603,7 @@ export const DATA = {
             "Modern interface with Material Icons",
           ],
           link: "https://github.com/hsemihaktas/Lexicon-WordApplication",
+          platform: "mobile" as const,
         },
         {
           id: 5,
@@ -602,6 +618,7 @@ export const DATA = {
             "Provides information about the app, exclusively available on mobile devices",
           ],
           link: "https://face-rate-max.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 6,
@@ -623,6 +640,7 @@ export const DATA = {
             "Clean, responsive, and user-friendly UI design",
           ],
           link: "https://demo-taskflow.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 7,
@@ -644,6 +662,7 @@ export const DATA = {
             "Phone number formatting for Turkish users",
           ],
           link: "https://demo-e-ticaret.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 8,
@@ -659,6 +678,7 @@ export const DATA = {
             "Responsive interface with React.js and TailwindCSS",
           ],
           link: "https://imdb-series-tierlist.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 9,
@@ -674,6 +694,7 @@ export const DATA = {
             "Dynamic routing and SSR with Next.js",
           ],
           link: "https://hgamepulse.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 10,
@@ -689,6 +710,7 @@ export const DATA = {
             "Comprehensive property details and user-friendly interface",
           ],
           link: "https://github.com/hsemihaktas/EstateWebsite",
+          platform: "web" as const,
         },
         {
           id: 11,
@@ -704,6 +726,7 @@ export const DATA = {
             "Online reservation features",
           ],
           link: "https://birthday-organization.vercel.app/",
+          platform: "web" as const,
         },
         {
           id: 12,
@@ -719,6 +742,7 @@ export const DATA = {
             "User-friendly interface for selecting blur intensity and regions",
           ],
           link: "https://github.com/hsemihaktas/BlurryFace",
+          platform: "web" as const,
         },
       ],
     },
