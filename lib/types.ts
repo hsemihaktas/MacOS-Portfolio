@@ -27,7 +27,10 @@ export interface Project {
   image: string;
   gallery?: string[];
   features?: string[];
-  link: string;
+  githubLink?: string;
+  websiteLink?: string;
+  appStoreLink?: string;
+  androidStoreLink?: string;
   platform: "mobile" | "web";
 }
 

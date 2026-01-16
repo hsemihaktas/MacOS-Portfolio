@@ -166,7 +166,10 @@ export const DATA = {
             "Firebase Authentication ile Google Sign-In entegrasyonu",
             "Token tabanlı kullanım sistemi ve kullanıcı profil yönetimi",
           ],
-          link: "",
+          appStoreLink:
+            "https://apps.apple.com/us/app/effease-ai-photo-studio/id6756782812",
+          androidStoreLink:
+            "https://play.google.com/store/apps/details?id=com.repackstudio.effease",
           platform: "mobile" as const,
         },
         {
@@ -182,7 +185,7 @@ export const DATA = {
             "Tamamlanan randevuları fotoğraf yüklemeleriyle puanlayın",
             "Hatırlatmalar ve güncellemeler için anlık bildirimler",
           ],
-          link: "https://github.com/hsemihaktas/BeautyCenterApp",
+          githubLink: "https://github.com/hsemihaktas/BeautyCenterApp",
           platform: "mobile" as const,
         },
         {
@@ -198,7 +201,7 @@ export const DATA = {
             "Sadece doğru anahtarla erişilebilen expo-crypto şifreleme",
             "Minimal ve kullanıcı dostu arayüz tasarımı",
           ],
-          link: "https://github.com/hsemihaktas/EncryptDiary",
+          githubLink: "https://github.com/hsemihaktas/EncryptDiary",
           platform: "mobile" as const,
         },
         {
@@ -214,7 +217,7 @@ export const DATA = {
             "Context API ile durum yönetimi",
             "Material Icons ile modern arayüz",
           ],
-          link: "https://github.com/hsemihaktas/Lexicon-WordApplication",
+          githubLink: "https://github.com/hsemihaktas/Lexicon-WordApplication",
           platform: "mobile" as const,
         },
         {
@@ -229,7 +232,7 @@ export const DATA = {
             "Modern ve duyarlı bir tasarım için Next.js ve TailwindCSS ile oluşturuldu",
             "Mobil cihazlarda kullanılabilen uygulama hakkında bilgi sağlar",
           ],
-          link: "https://face-rate-max.vercel.app/",
+          websiteLink: "https://face-rate-max.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -251,7 +254,7 @@ export const DATA = {
             "Optimize edilmiş polling yöntemiyle gerçek zamanlı güncellemeler",
             "Temiz, duyarlı ve kullanıcı dostu arayüz tasarımı",
           ],
-          link: "https://demo-taskflow.vercel.app/",
+          websiteLink: "https://demo-taskflow.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -273,7 +276,7 @@ export const DATA = {
             "Gerçek zamanlı envanter takibi ve düşük stok uyarıları",
             "Türk kullanıcıları için telefon numarası formatlaması",
           ],
-          link: "https://demo-e-ticaret.vercel.app/",
+          websiteLink: "https://demo-e-ticaret.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -289,7 +292,7 @@ export const DATA = {
             "Python script tabanlı scraper ile IMDB dizi verileri",
             "React.js ve TailwindCSS ile duyarlı arayüz",
           ],
-          link: "https://imdb-series-tierlist.vercel.app/",
+          websiteLink: "https://imdb-series-tierlist.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -305,7 +308,7 @@ export const DATA = {
             "Hover efektleri ve animasyonlarla etkileşimli UI",
             "Next.js ile dinamik yönlendirme ve SSR",
           ],
-          link: "https://hgamepulse.vercel.app/",
+          websiteLink: "https://hgamepulse.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -321,7 +324,7 @@ export const DATA = {
             "Güvenli kullanıcı kimlik doğrulama sistemi",
             "Kapsamlı emlak detayları ve kullanıcı dostu arayüz",
           ],
-          link: "https://github.com/hsemihaktas/EstateWebsite",
+          githubLink: "https://github.com/hsemihaktas/EstateWebsite",
           platform: "web" as const,
         },
         {
@@ -337,7 +340,7 @@ export const DATA = {
             "Kişiye özel doğum günü paketleri",
             "Online rezervasyon özellikleri",
           ],
-          link: "https://birthday-organization.vercel.app/",
+          websiteLink: "https://birthday-organization.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -353,7 +356,7 @@ export const DATA = {
             "Hem görüntü hem de video işleme desteği",
             "Bulanıklık yoğunluğu ve bölgelerini seçmek için kullanıcı dostu arayüz",
           ],
-          link: "https://github.com/hsemihaktas/BlurryFace",
+          githubLink: "https://github.com/hsemihaktas/BlurryFace",
           platform: "web" as const,
         },
       ],
@@ -554,7 +557,10 @@ export const DATA = {
             "Google Sign-In integration with Firebase Authentication",
             "Token-based credit system and user profile management",
           ],
-          link: "",
+          appStoreLink:
+            "https://apps.apple.com/us/app/effease-ai-photo-studio/id6756782812",
+          androidStoreLink:
+            "https://play.google.com/store/apps/details?id=com.repackstudio.effease",
           platform: "mobile" as const,
         },
         {
@@ -570,7 +576,7 @@ export const DATA = {
             "Rate and review completed appointments with photo uploads",
             "Push notifications for reminders and updates",
           ],
-          link: "https://github.com/hsemihaktas/BeautyCenterApp",
+          githubLink: "https://github.com/hsemihaktas/BeautyCenterApp",
           platform: "mobile" as const,
         },
         {
@@ -586,7 +592,7 @@ export const DATA = {
             "Encryption powered by expo-crypto, accessible only with the correct key",
             "Minimal and user-friendly interface design",
           ],
-          link: "https://github.com/hsemihaktas/EncryptDiary",
+          githubLink: "https://github.com/hsemihaktas/EncryptDiary",
           platform: "mobile" as const,
         },
         {
@@ -602,7 +608,7 @@ export const DATA = {
             "State management with Context API",
             "Modern interface with Material Icons",
           ],
-          link: "https://github.com/hsemihaktas/Lexicon-WordApplication",
+          githubLink: "https://github.com/hsemihaktas/Lexicon-WordApplication",
           platform: "mobile" as const,
         },
         {
@@ -617,7 +623,7 @@ export const DATA = {
             "Built with Next.js and TailwindCSS for a modern and responsive design",
             "Provides information about the app, exclusively available on mobile devices",
           ],
-          link: "https://face-rate-max.vercel.app/",
+          websiteLink: "https://face-rate-max.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -639,7 +645,7 @@ export const DATA = {
             "Real-time updates through optimized polling",
             "Clean, responsive, and user-friendly UI design",
           ],
-          link: "https://demo-taskflow.vercel.app/",
+          websiteLink: "https://demo-taskflow.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -661,7 +667,7 @@ export const DATA = {
             "Real-time inventory tracking and low stock alerts",
             "Phone number formatting for Turkish users",
           ],
-          link: "https://demo-e-ticaret.vercel.app/",
+          websiteLink: "https://demo-e-ticaret.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -677,7 +683,7 @@ export const DATA = {
             "Data fetched using Python script based scraper for IMDB series",
             "Responsive interface with React.js and TailwindCSS",
           ],
-          link: "https://imdb-series-tierlist.vercel.app/",
+          websiteLink: "https://imdb-series-tierlist.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -693,7 +699,7 @@ export const DATA = {
             "Interactive UI with hover effects and animations",
             "Dynamic routing and SSR with Next.js",
           ],
-          link: "https://hgamepulse.vercel.app/",
+          websiteLink: "https://hgamepulse.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -709,7 +715,7 @@ export const DATA = {
             "Secure user authentication system",
             "Comprehensive property details and user-friendly interface",
           ],
-          link: "https://github.com/hsemihaktas/EstateWebsite",
+          githubLink: "https://github.com/hsemihaktas/EstateWebsite",
           platform: "web" as const,
         },
         {
@@ -725,7 +731,7 @@ export const DATA = {
             "Customized birthday packages",
             "Online reservation features",
           ],
-          link: "https://birthday-organization.vercel.app/",
+          websiteLink: "https://birthday-organization.vercel.app/",
           platform: "web" as const,
         },
         {
@@ -741,7 +747,7 @@ export const DATA = {
             "Supports both image and video processing",
             "User-friendly interface for selecting blur intensity and regions",
           ],
-          link: "https://github.com/hsemihaktas/BlurryFace",
+          githubLink: "https://github.com/hsemihaktas/BlurryFace",
           platform: "web" as const,
         },
       ],
