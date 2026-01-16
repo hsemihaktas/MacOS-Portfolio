@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Project, Language } from "@/lib/types";
 import { DATA } from "@/lib/data";
 import {
@@ -34,6 +34,14 @@ const Projects: React.FC<ProjectsProps> = ({
   const [platformFilter, setPlatformFilter] = useState<"mobile" | "web" | null>(
     null
   );
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Reset scroll position when navigating between list and detail views
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [selectedProject]);
 
   useEffect(() => {
     if (initialFilter) {
@@ -226,7 +234,10 @@ const Projects: React.FC<ProjectsProps> = ({
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto p-4 md:p-8 custom-scrollbar">
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-auto p-4 md:p-8 custom-scrollbar"
+        >
           {!selectedProject ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto pb-10">
               {filteredItems.map((project) => (
