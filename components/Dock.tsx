@@ -25,6 +25,59 @@ interface DockProps {
 const X_PATH =
   "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z";
 
+// Social Link Item with Tooltip - Same structure as app icons
+const SocialLinkItem = ({
+  href,
+  onClick,
+  size,
+  isMobile,
+  label,
+  bgClass,
+  children,
+}: {
+  href: string;
+  onClick: () => void;
+  size: number;
+  isMobile: boolean;
+  label: string;
+  bgClass: string;
+  children: React.ReactNode;
+}) => {
+  if (isMobile) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        onClick={onClick}
+        style={{ width: size, height: size }}
+        className={`backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg ${bgClass}`}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  // Desktop - same structure as app icons
+  return (
+    <div className="relative group cursor-default flex flex-col items-center">
+      {/* Tooltip - sibling to icon, not inside it */}
+      <div className="absolute -top-[55px] left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-[#1d1d1f] text-[12px] font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap shadow-xl pointer-events-none transform translate-y-2 group-hover:translate-y-0 border border-black/5">
+        {label}
+      </div>
+      {/* Icon container - transforms independently */}
+      <a
+        href={href}
+        target="_blank"
+        onClick={onClick}
+        style={{ width: size, height: size }}
+        className={`backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 transform group-hover:scale-[1.3] group-hover:-translate-y-4 group-active:scale-95 group-active:translate-y-0 origin-bottom ease-[cubic-bezier(0.25,1,0.5,1)] ${bgClass}`}
+      >
+        {children}
+      </a>
+    </div>
+  );
+};
+
 // Reusable Social Links Component
 const SocialLinks = ({
   size = 48,
@@ -33,36 +86,35 @@ const SocialLinks = ({
   size?: number;
   isMobile?: boolean;
 }) => {
-  const baseClass = isMobile
-    ? "backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg"
-    : "group relative backdrop-blur-xl rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.2] hover:-translate-y-4 origin-bottom";
-
   return (
     <>
-      <a
+      <SocialLinkItem
         href="https://github.com/hsemihaktas"
-        target="_blank"
         onClick={trackGithubOpen}
-        style={{ width: size, height: size }}
-        className={`${baseClass} bg-black/70 hover:bg-black/80 border border-white/30`}
+        size={size}
+        isMobile={isMobile}
+        label="GitHub"
+        bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
       >
         <Github size={size * 0.5} className="text-white" />
-      </a>
-      <a
+      </SocialLinkItem>
+      <SocialLinkItem
         href="https://linkedin.com/in/hsemihaktas"
-        target="_blank"
         onClick={trackLinkedinOpen}
-        style={{ width: size, height: size }}
-        className={`${baseClass} bg-[#0077b5] hover:bg-[#0088cc] border border-[#0099dd]/50`}
+        size={size}
+        isMobile={isMobile}
+        label="LinkedIn"
+        bgClass="bg-[#0077b5] hover:bg-[#0088cc] border border-[#0099dd]/50"
       >
         <Linkedin size={size * 0.5} className="text-white fill-white" />
-      </a>
-      <a
+      </SocialLinkItem>
+      <SocialLinkItem
         href="https://twitter.com/hsemihaktas"
-        target="_blank"
         onClick={trackTwitterOpen}
-        style={{ width: size, height: size }}
-        className={`${baseClass} bg-black/70 hover:bg-black/80 border border-white/30`}
+        size={size}
+        isMobile={isMobile}
+        label="X (Twitter)"
+        bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
       >
         <svg
           viewBox="0 0 24 24"
@@ -71,7 +123,7 @@ const SocialLinks = ({
         >
           <path d={X_PATH} />
         </svg>
-      </a>
+      </SocialLinkItem>
     </>
   );
 };
@@ -86,7 +138,7 @@ const Dock: React.FC<DockProps> = ({
 }) => {
   const isAnyWindowOpen = React.useMemo(
     () => windows.some((w) => w.isOpen && !w.isMinimized),
-    [windows]
+    [windows],
   );
 
   // Mobile View
@@ -180,7 +232,7 @@ const Dock: React.FC<DockProps> = ({
           );
         })}
         <div className="w-[1px] h-10 bg-white/20 mx-1.5 self-center" />
-        <div className="flex items-center gap-2">
+        <div className="flex items-end gap-2">
           <SocialLinks size={48} />
         </div>
       </div>
