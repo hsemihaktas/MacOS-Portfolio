@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import {
   Wifi,
   WifiOff,
@@ -8,7 +9,6 @@ import {
   SlidersHorizontal,
   Battery,
   Signal,
-  Mail,
 } from "lucide-react";
 import { Language } from "@/lib/types";
 import { DATA } from "@/lib/data";
@@ -83,10 +83,12 @@ const MenuBar: React.FC<MenuBarProps> = ({
 
   // Apple Logo
   const AppleLogo = (
-    <img
+    <Image
       src="/images/icons/apple-logo-white.png"
       alt="Apple"
-      className="w-4 h-4 object-contain"
+      width={16}
+      height={16}
+      className="object-contain"
     />
   );
 
@@ -144,11 +146,13 @@ const MenuBar: React.FC<MenuBarProps> = ({
           {showHelpMenu && (
             <div className="absolute top-full left-0 mt-1 w-80 bg-[#1e1e1e]/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl p-5 animate-in fade-in zoom-in-95 duration-150 z-[10000]">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center shrink-0 border border-white/10">
-                  <img
+                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center shrink-0 border border-white/10 relative">
+                  <Image
                     src="/images/icons/mail.png"
                     alt="Mail"
-                    className="w-6 h-6 object-contain"
+                    width={24}
+                    height={24}
+                    className="object-contain"
                   />
                 </div>
                 <div className="flex flex-col flex-1 min-w-0">

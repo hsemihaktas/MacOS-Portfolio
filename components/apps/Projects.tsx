@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
+import Image from "next/image";
 import { Project, Language } from "@/lib/types";
 import { DATA } from "@/lib/data";
 import {
@@ -9,7 +10,6 @@ import {
   Github,
   Globe,
   CheckCircle2,
-  X,
   Code2,
   Smartphone,
   Monitor,
@@ -32,7 +32,7 @@ const Projects: React.FC<ProjectsProps> = ({
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string | null>(null);
   const [platformFilter, setPlatformFilter] = useState<"mobile" | "web" | null>(
-    null
+    null,
   );
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -112,8 +112,8 @@ const Projects: React.FC<ProjectsProps> = ({
                     ? "bg-white/10 text-[#007AFF]"
                     : "bg-white shadow-sm text-[#007AFF]"
                   : isDarkMode
-                  ? "hover:bg-white/10 text-white/50 hover:text-white"
-                  : "hover:bg-black/5 text-black/50 hover:text-black"
+                    ? "hover:bg-white/10 text-white/50 hover:text-white"
+                    : "hover:bg-black/5 text-black/50 hover:text-black"
               }`}
               onClick={() => {
                 setFilter(null);
@@ -133,8 +133,8 @@ const Projects: React.FC<ProjectsProps> = ({
                     ? "bg-white/10 text-[#007AFF]"
                     : "bg-white shadow-sm text-[#007AFF]"
                   : isDarkMode
-                  ? "hover:bg-white/10 text-white/50 hover:text-white"
-                  : "hover:bg-black/5 text-black/50 hover:text-black"
+                    ? "hover:bg-white/10 text-white/50 hover:text-white"
+                    : "hover:bg-black/5 text-black/50 hover:text-black"
               }`}
               onClick={() => {
                 setPlatformFilter("mobile");
@@ -154,8 +154,8 @@ const Projects: React.FC<ProjectsProps> = ({
                     ? "bg-white/10 text-[#007AFF]"
                     : "bg-white shadow-sm text-[#007AFF]"
                   : isDarkMode
-                  ? "hover:bg-white/10 text-white/50 hover:text-white"
-                  : "hover:bg-black/5 text-black/50 hover:text-black"
+                    ? "hover:bg-white/10 text-white/50 hover:text-white"
+                    : "hover:bg-black/5 text-black/50 hover:text-black"
               }`}
               onClick={() => {
                 setPlatformFilter("web");
@@ -228,8 +228,8 @@ const Projects: React.FC<ProjectsProps> = ({
               {selectedProject
                 ? selectedProject.title
                 : filter
-                ? `${filter}`
-                : d.title}
+                  ? `${filter}`
+                  : d.title}
             </h3>
           </div>
         </div>
@@ -247,12 +247,14 @@ const Projects: React.FC<ProjectsProps> = ({
                   onClick={() => setSelectedProject(project)}
                 >
                   <div
-                    className={`aspect-[16/10] ${bgCard} rounded-[32px] overflow-hidden border ${borderStyle} shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-2`}
+                    className={`aspect-[16/10] ${bgCard} rounded-[32px] overflow-hidden border ${borderStyle} shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-2 relative`}
                   >
-                    <img
+                    <Image
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     />
                   </div>
                   <div className="mt-5 px-1">
@@ -274,12 +276,15 @@ const Projects: React.FC<ProjectsProps> = ({
             <div className="animate-in fade-in slide-in-from-bottom-8 duration-500 max-w-6xl mx-auto pb-24">
               {/* Hero Image */}
               <div
-                className={`relative rounded-[40px] overflow-hidden shadow-2xl border ${borderStyle} mb-12 group`}
+                className={`relative rounded-[40px] overflow-hidden shadow-2xl border ${borderStyle} mb-12 group aspect-[16/9]`}
               >
-                <img
+                <Image
                   src={selectedProject.image}
                   alt={selectedProject.title}
-                  className="w-full h-auto max-h-[600px] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                  priority
                 />
                 <div
                   className={`absolute inset-0 bg-gradient-to-t ${
