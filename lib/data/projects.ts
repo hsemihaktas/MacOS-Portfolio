@@ -77,6 +77,34 @@ const projectItemsTr: Project[] = [
   },
   {
     id: 5,
+    title: "Retro Portfolio | Developer Showcase",
+    description:
+      "Brütalist, retro tarzı kişisel portföy web sitesi. Sert gölgeler, neon vurgular ve proje ile deneyim sergilemek için dashboard benzeri düzen sunuyor.",
+    tags: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Lucide React",
+    ],
+    image: "/images/RetroPortfolio/cover.png",
+    features: [
+      "Brütalist tasarım: Sert gölgeler, kalın çerçeveler, keskin köşeler ve neon sarı (#ccff00) vurgular",
+      "Retro film grenajı efekti için noise overlay dokusu ve nokta desen arka planı",
+      "Responsive dashboard düzeni: Profil ile kenar çubuğu, proje grid'li ana içerik alanı",
+      "Proje filtreleme: Mobil/web türüne göre animasyonlu geçişlerle proje filtreleme",
+      "Beceri ticker: Teknoloji yığınını sergileyen sonsuz marquee animasyonu",
+      "Deneyim zaman çizelgesi: Görsel zaman çizelgesi bileşeniyle iş ve eğitim geçmişi",
+      "Özel scrollbar stili ve seçim vurgulama",
+      "SEO optimizasyonu: Open Graph, Twitter Cards, kapsamlı anahtar kelime metadata (TR/EN)",
+      "Tipografi sistemi: Work Sans (display) + Space Mono (monospace) font eşleştirmesi",
+      "Modüler bileşen mimarisi: Sidebar, Home, Project ve Common bileşen dizinleri",
+    ],
+    websiteLink: "https://rewound.vercel.app/",
+    platform: "web",
+  },
+  {
+    id: 6,
     title: "Loki History Web Sitesi",
     description:
       "İskandinav mitolojisinin kaos tanrısı Loki'nin gerçek hikayesini anlatan sinematik bir web deneyimi. Mitoloji, soy ağacı ve efsanevi hikayeleri keşfedin.",
@@ -93,7 +121,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 6,
+    id: 7,
     title: "The Void - Cosmic Experience",
     description:
       "Kozmik boşluğun derinliklerine inen, karanlık uzay temalı sinematik bir web deneyimi. Vakum enerjisi, zaman genişlemesi ve evrenin en büyük gizemlerini interaktif olarak keşfedin.",
@@ -116,7 +144,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 7,
+    id: 8,
     title: "Effease - AI Photo Editor Website",
     description:
       "Effease yapay zeka destekli fotoğraf düzenleme uygulaması için premium pazarlama web sitesi. Anime, Cyberpunk ve Artistik dönüşüm efektlerini karanlık, modern bir estetikle sergiler.",
@@ -140,7 +168,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 8,
+    id: 9,
     title: "ALT F5 | Digital Collective",
     description:
       "Dijital hikaye anlatımının geleceğini inşa eden bir kolektif. Orijinal çizgi romanları, podcast'leri ve indie oyunları tek bir cyberpunk estetikli platformda bir araya getirir.",
@@ -166,7 +194,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "RepackStudio Web Sitesi",
     description:
       "Repack Studio mobil uygulama ajansının kurumsal web sitesi, ürünlerini ve hizmetlerini sergiler.",
@@ -182,7 +210,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "FaceRateMax Web Sitesi",
     description:
       "FaceRateMax uygulaması için bir web sitesi, özelliklerini sergiler ve mobil kullanıcılar için bilgi sağlar.",
@@ -197,7 +225,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "Task Flow - Görev Yönetim Uygulaması",
     description:
       "Next.js, Supabase ve TypeScript kullanılarak geliştirilmiş modern ve güvenli bir görev yönetim sistemi.",
@@ -213,7 +241,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "E-Ticaret Web Sitesi",
     description:
       "Next.js ve Firebase ile geliştirilmiş, kullanıcıların mağaza oluşturup ürün ve sipariş yönetimi yapabildiği tam kapsamlı bir e-ticaret platformu.",
@@ -229,7 +257,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 13,
+    id: 14,
     title: "IMDB Dizi Sıralama Listesi",
     description:
       "Sürükle bırak işlevselliği ve Python scraper ile veri çekme özellikli dizi sıralama web uygulaması.",
@@ -245,7 +273,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 14,
+    id: 15,
     title: "Oyun Web Sitesi",
     description:
       "Mock veriler kullanarak tasarım ve geliştirme becerilerini sergilemek için Next.js ile inşa edilmiş front-end odaklı bir oyun web sitesi.",
@@ -261,7 +289,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 15,
+    id: 16,
     title: "Emlak Web Sitesi",
     description:
       "React, Node.js ve MySQL kullanılarak inşa edilen, güvenli kimlik doğrulama ile emlak listelemelerini yönetmek için bir platform.",
@@ -277,7 +305,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 16,
+    id: 17,
     title: "Doğum Günü Organizasyon Web Sitesi",
     description:
       "EmailJS ile iletişim formu ve online rezervasyon özellikli doğum günü organizasyon web sitesi.",
@@ -293,7 +321,7 @@ const projectItemsTr: Project[] = [
     platform: "web",
   },
   {
-    id: 17,
+    id: 18,
     title: "Blurface - Fotoğraf Bulanıklaştırma",
     description:
       "Python ve OpenCV ile geliştirilen, görüntü ve videolarda yüz bulanıklaştırma için yapay zeka destekli bir uygulama.",
@@ -387,6 +415,34 @@ const projectItemsEn: Project[] = [
   },
   {
     id: 5,
+    title: "Retro Portfolio | Developer Showcase",
+    description:
+      "A brutalist, retro-styled personal portfolio website. Features a unique design aesthetic with hard shadows, neon accents, and a dashboard-like layout for showcasing projects and experience.",
+    tags: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Lucide React",
+    ],
+    image: "/images/RetroPortfolio/cover.png",
+    features: [
+      "Brutalist design: Hard shadows, thick borders, sharp corners with neon yellow (#ccff00) accents",
+      "Noise overlay texture and dot pattern background for retro film grain effect",
+      "Responsive dashboard layout: Sidebar with profile, main content area with project grid",
+      "Project filtering: Filter projects by type (mobile/web) with animated transitions",
+      "Skills ticker: Infinite marquee animation showcasing tech stack",
+      "Experience timeline: Work and education history with visual timeline component",
+      "Custom scrollbar styling and selection highlighting",
+      "SEO optimized: Open Graph, Twitter Cards, comprehensive keyword metadata (TR/EN)",
+      "Typography system: Work Sans (display) + Space Mono (monospace) font pairing",
+      "Modular component architecture: Sidebar, Home, Project, and Common component directories",
+    ],
+    websiteLink: "https://rewound.vercel.app/",
+    platform: "web",
+  },
+  {
+    id: 6,
     title: "Loki History Website",
     description:
       "A cinematic web experience telling the true story of Loki, the Norse god of chaos. Explore mythology, genealogy tree, and legendary tales.",
@@ -403,7 +459,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 6,
+    id: 7,
     title: "The Void - Cosmic Experience",
     description:
       "A cinematic web experience diving into the depths of cosmic void. Interactively explore vacuum energy, time dilation, and the universe's greatest mysteries.",
@@ -426,7 +482,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 7,
+    id: 8,
     title: "Effease - AI Photo Editor Website",
     description:
       "A premium marketing website for Effease, an AI-powered photo editing app. Showcases Anime, Cyberpunk, and Artistic transformation effects with a dark, modern aesthetic.",
@@ -450,7 +506,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 8,
+    id: 9,
     title: "ALT F5 | Digital Collective",
     description:
       "A collective building the future of digital storytelling. Brings together original comics, podcasts, and indie games on a single cyberpunk aesthetic platform.",
@@ -476,7 +532,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 9,
+    id: 10,
     title: "RepackStudio Website",
     description:
       "Corporate website for Repack Studio mobile app agency, showcasing their products and services.",
@@ -492,7 +548,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 10,
+    id: 11,
     title: "FaceRateMax Website",
     description:
       "A website for the FaceRateMax app, showcasing its features and providing information for mobile users.",
@@ -507,7 +563,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 11,
+    id: 12,
     title: "Task Flow - Task Management App",
     description:
       "A modern and secure task management system built with Next.js, Supabase, and TypeScript.",
@@ -523,7 +579,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 12,
+    id: 13,
     title: "E-Commerce Website",
     description:
       "A full-stack e-commerce platform with Next.js and Firebase, allowing users to create stores, manage products, and track orders.",
@@ -539,7 +595,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 13,
+    id: 14,
     title: "IMDB Series Tierlist",
     description:
       "A web app for ranking TV series with drag-and-drop functionality and data fetched via Python scraper.",
@@ -555,7 +611,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 14,
+    id: 15,
     title: "Gaming Website",
     description:
       "A front-end focused gaming website built with Next.js to demonstrate design and development skills using mock data.",
@@ -571,7 +627,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 15,
+    id: 16,
     title: "Property Website",
     description:
       "A platform for managing property listings with secure authentication, built using React, Node.js, and MySQL.",
@@ -587,7 +643,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 16,
+    id: 17,
     title: "Birthday Organization Website",
     description:
       "A birthday party organization website with online reservation and contact form via EmailJS.",
@@ -603,7 +659,7 @@ const projectItemsEn: Project[] = [
     platform: "web",
   },
   {
-    id: 17,
+    id: 18,
     title: "Blurface - Photo Blurring",
     description:
       "An AI-powered application for face blurring in images and videos, built with Python and OpenCV.",
