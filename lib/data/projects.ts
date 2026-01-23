@@ -87,7 +87,7 @@ const projectItemsTr: Project[] = [
       "Tailwind CSS 4",
       "Lucide React",
     ],
-    image: "/images/RetroPortfolio/cover.png",
+    image: "/images/Rewound/cover.png",
     features: [
       "Brütalist tasarım: Sert gölgeler, kalın çerçeveler, keskin köşeler ve neon sarı (#ccff00) vurgular",
       "Retro film grenajı efekti için noise overlay dokusu ve nokta desen arka planı",
@@ -425,7 +425,7 @@ const projectItemsEn: Project[] = [
       "Tailwind CSS 4",
       "Lucide React",
     ],
-    image: "/images/RetroPortfolio/cover.png",
+    image: "/images/Rewound/cover.png",
     features: [
       "Brutalist design: Hard shadows, thick borders, sharp corners with neon yellow (#ccff00) accents",
       "Noise overlay texture and dot pattern background for retro film grain effect",
