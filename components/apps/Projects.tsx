@@ -20,6 +20,7 @@ interface ProjectsProps {
   isDarkMode?: boolean;
   initialFilter?: string;
   initialProjectId?: number;
+  onOpenSafari?: (url: string, title?: string) => void;
 }
 
 const Projects: React.FC<ProjectsProps> = ({
@@ -27,6 +28,7 @@ const Projects: React.FC<ProjectsProps> = ({
   isDarkMode,
   initialFilter,
   initialProjectId,
+  onOpenSafari,
 }) => {
   const d = DATA[lang].projects;
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -306,15 +308,31 @@ const Projects: React.FC<ProjectsProps> = ({
                   {/* Action Buttons - Moved to top */}
                   <div className="flex flex-wrap gap-4">
                     {selectedProject.websiteLink && (
-                      <a
-                        href={selectedProject.websiteLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative inline-flex items-center gap-2 bg-[#007AFF] text-white px-8 py-4 rounded-2xl font-bold hover:brightness-110 transition-all hover:shadow-lg hover:shadow-[#007AFF]/30 hover:-translate-y-0.5"
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onOpenSafari) {
+                            onOpenSafari(
+                              selectedProject.websiteLink!,
+                              selectedProject.title
+                            );
+                          } else {
+                            window.open(selectedProject.websiteLink, "_blank");
+                          }
+                        }}
+                        className="group relative inline-flex items-center gap-2.5 bg-[#007AFF] text-white px-8 py-4 rounded-2xl font-bold hover:brightness-110 transition-all hover:shadow-lg hover:shadow-[#007AFF]/30 hover:-translate-y-0.5 cursor-pointer active:scale-95"
                       >
-                        <Globe size={20} />
+                        <div className="w-5 h-5 relative shrink-0">
+                          <Image
+                            src="/images/icons/safari.png"
+                            alt="Safari"
+                            fill
+                            sizes="20px"
+                            className="object-contain"
+                          />
+                        </div>
                         {d.liveDemo}
-                      </a>
+                      </button>
                     )}
                     {selectedProject.githubLink && (
                       <a

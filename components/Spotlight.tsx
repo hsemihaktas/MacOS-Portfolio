@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Command, ArrowRight, Sparkles, Code2, FolderKanban, User2, Mail } from 'lucide-react';
+import { Search, Command, ArrowRight, Sparkles, Code2, FolderKanban, User2, Mail, Compass } from 'lucide-react';
 import { DATA } from '@/lib/data';
 import { Language, AppID } from '@/lib/types';
 
@@ -70,6 +70,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, onClose, onSelectApp, lan
             }))
         ),
         { id: 'about' as AppID, title: d.about.name, subtitle: lang === 'tr' ? 'Özgeçmiş ve Profil' : 'Resume and Profile', icon: <User2 size={18} className="text-orange-500" /> },
+        { id: 'safari' as AppID, title: 'Safari', subtitle: lang === 'tr' ? 'Web Tarayıcısı ve Canlı Demolar' : 'Web Browser and Live Demos', icon: <Compass size={18} className="text-blue-500" /> },
         { id: 'contact' as AppID, title: 'Mail', subtitle: lang === 'tr' ? 'İletişime geç' : 'Get in touch', icon: <Mail size={18} className="text-red-500" /> },
         { id: 'activity-monitor' as AppID, title: lang === 'tr' ? 'Etkinlik İzleyici' : 'Activity Monitor', subtitle: lang === 'tr' ? 'Sistem kaynakları' : 'System resources', icon: <Code2 size={18} className="text-green-500" /> }
     ].filter(item =>

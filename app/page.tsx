@@ -17,6 +17,7 @@ import ContactApp from "@/components/apps/Contact";
 import SettingsApp from "@/components/apps/Settings";
 import ActivityMonitorApp from "@/components/apps/ActivityMonitor";
 import AppStore from "@/components/apps/AppStore";
+import SafariApp from "@/components/apps/Safari";
 import { WindowState, AppID, Language } from "@/lib/types";
 import { INITIAL_Z_INDEX, APPS } from "@/lib/constants";
 import { DATA } from "@/lib/data";
@@ -27,6 +28,7 @@ import {
   trackSkillsOpen,
   trackContactOpen,
   trackSettingsOpen,
+  trackSafariOpen,
 } from "@/lib/analytics";
 
 export default function Home() {
@@ -69,6 +71,7 @@ export default function Home() {
     (id: AppID): string => {
       const appMap: Record<AppID, string> = {
         about: DATA[lang].apps.about,
+        safari: DATA[lang].apps.safari,
         projects: DATA[lang].apps.projects,
         skills: DATA[lang].apps.skills,
         settings: DATA[lang].apps.settings,
@@ -86,6 +89,7 @@ export default function Home() {
       // Track app open events
       const trackingMap: Record<AppID, () => void> = {
         about: trackAboutOpen,
+        safari: trackSafariOpen,
         projects: trackProjectsOpen,
         skills: trackSkillsOpen,
         contact: trackContactOpen,
@@ -95,27 +99,29 @@ export default function Home() {
       };
       trackingMap[id]?.();
 
-      setWindows((prev) =>
-        prev.map((w) => {
+      setWindows((prev) => {
+        const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
+        const targetZ = highestZ + 2;
+        return prev.map((w) => {
           if (w.id === id) {
             return {
               ...w,
               isOpen: true,
               isMinimized: false,
-              zIndex: topZ + 1,
-              params: params || null,
+              zIndex: targetZ,
+              params: params !== undefined ? params : w.params,
             };
           }
           return w;
-        })
-      );
-      setTopZ((prev) => prev + 2);
+        });
+      });
+      setTopZ((prev) => prev + 5);
       setActiveApp(id);
 
       setIsSpotlightOpen(false);
       setIsControlCenterOpen(false);
     },
-    [topZ]
+    []
   );
 
   const closeWindow = useCallback(
@@ -142,13 +148,20 @@ export default function Home() {
 
   const focusWindow = useCallback(
     (id: AppID) => {
-      setWindows((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, zIndex: topZ + 1 } : w))
-      );
-      setTopZ((prev) => prev + 1);
+      setWindows((prev) => {
+        const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
+        const currentWin = prev.find((w) => w.id === id);
+        if (currentWin && currentWin.zIndex === highestZ) {
+          return prev;
+        }
+        return prev.map((w) =>
+          w.id === id ? { ...w, zIndex: highestZ + 1 } : w
+        );
+      });
+      setTopZ((prev) => prev + 2);
       setActiveApp(id);
     },
-    [topZ]
+    []
   );
 
   const toggleMaximize = useCallback((id: AppID) => {
@@ -161,6 +174,16 @@ export default function Home() {
     switch (win.id) {
       case "about":
         return <AboutApp lang={lang} isDarkMode={isDarkMode} />;
+      case "safari":
+        return (
+          <SafariApp
+            lang={lang}
+            isDarkMode={isDarkMode}
+            isMobile={isMobile}
+            initialUrl={win.params?.url}
+            initialTitle={win.params?.title}
+          />
+        );
       case "projects":
         return (
           <ProjectsApp
@@ -168,6 +191,7 @@ export default function Home() {
             isDarkMode={isDarkMode}
             initialFilter={win.params?.filterTag}
             initialProjectId={win.params?.projectId}
+            onOpenSafari={(url, title) => openWindow("safari", { url, title })}
           />
         );
       case "skills":
@@ -203,7 +227,7 @@ export default function Home() {
 
   return (
     <div
-      className={`w-full h-full relative flex flex-col overflow-hidden no-select transition-all duration-700 bg-black`}
+      className={`w-full h-full relative flex flex-col overflow-hidden no-select bg-black`}
     >
       <Image
         src={wallpaper}
@@ -270,7 +294,10 @@ export default function Home() {
             lang={lang}
             getAppTitle={getAppTitle}
           />
-          <div className="absolute inset-0 pointer-events-none z-40">
+      {/* Glossy reflection behind windows */}
+      <div className="absolute inset-0 glossy-reflection z-[5] pointer-events-none"></div>
+
+      <div className="absolute inset-0 pointer-events-none z-40">
             <AnimatePresence>
               {windows.map(
                 (win) =>
@@ -327,8 +354,6 @@ export default function Home() {
         lang={lang}
         getAppTitle={getAppTitle}
       />
-
-      <div className="absolute inset-0 glossy-reflection z-[50]"></div>
     </div>
   );
 }

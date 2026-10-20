@@ -7,6 +7,7 @@ export const menuData = {
     },
     apps: {
       about: "Hakkımda",
+      safari: "Safari",
       projects: "Projeler",
       skills: "Yetenekler",
       settings: "Ayarlar",
@@ -23,6 +24,7 @@ export const menuData = {
     },
     apps: {
       about: "About Me",
+      safari: "Safari",
       projects: "Projects",
       skills: "Skills",
       settings: "Settings",

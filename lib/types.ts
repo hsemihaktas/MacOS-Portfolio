@@ -5,7 +5,8 @@ export type AppID =
   | "settings"
   | "contact"
   | "activity-monitor"
-  | "app-store";
+  | "app-store"
+  | "safari";
 export type Language = "tr" | "en";
 
 export interface WindowState {

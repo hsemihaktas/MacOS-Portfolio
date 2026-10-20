@@ -9,6 +9,11 @@ export const APPS: { id: AppID; title: string; iconUrl: string }[] = [
     iconUrl: "/images/icons/about.png",
   },
   {
+    id: "safari",
+    title: "Safari",
+    iconUrl: "/images/icons/safari.png",
+  },
+  {
     id: "app-store",
     title: "App Store",
     iconUrl: "/images/icons/AppStore.png",

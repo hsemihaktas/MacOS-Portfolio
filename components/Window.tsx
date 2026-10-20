@@ -32,7 +32,12 @@ const Window: React.FC<WindowProps> = ({
     x: 150 + Math.random() * 50,
     y: 80 + Math.random() * 30,
   });
-  const [size, setSize] = useState({ width: 900, height: 600 });
+  const [size, setSize] = useState(() => {
+    if (win.id === "safari") {
+      return { width: 1040, height: 680 };
+    }
+    return { width: 900, height: 600 };
+  });
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeDirection, setResizeDirection] = useState("");
@@ -180,17 +185,16 @@ const Window: React.FC<WindowProps> = ({
         ${
           isDragging || isResizing
             ? "select-none transition-none"
-            : "transition-[width,height,top,left,border-radius] duration-300"
+            : win.isMaximized
+            ? "transition-[width,height,top,left,border-radius] duration-200 ease-out"
+            : "transition-none"
         }`}
       style={windowStyle}
       onClick={onFocus}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{
-        opacity: isDragging || isResizing ? 0.9 : 1,
-        scale: isDragging || isResizing ? 1.002 : 1,
-      }}
-      exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* Title Bar */}
       <div
@@ -201,10 +205,13 @@ const Window: React.FC<WindowProps> = ({
         {isMobile ? (
           <div className="flex items-center justify-between w-full">
             <button
-              onClick={onClose}
-              className="flex items-center gap-1 text-[#007AFF] font-bold text-[17px] opacity-0 pointer-events-none"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="flex items-center gap-0.5 text-[#007AFF] font-bold text-[16px] active:opacity-60 cursor-pointer -ml-1 z-10"
             >
-              <ChevronLeft size={26} /> {lang === "tr" ? "Geri" : "Back"}
+              <ChevronLeft size={22} /> {lang === "tr" ? "Geri" : "Back"}
             </button>
             <span
               className={`text-[17px] font-black tracking-tight absolute left-1/2 -translate-x-1/2 ${textColor}`}
@@ -265,7 +272,14 @@ const Window: React.FC<WindowProps> = ({
         )}
       </div>
 
-      <div className={`flex-1 overflow-hidden`}>{children}</div>
+      <div
+        className={`flex-1 relative ${
+          isMobile ? "overflow-y-auto" : "overflow-hidden"
+        } ${isDragging || isResizing ? "pointer-events-none select-none" : ""}`}
+        style={isMobile ? { WebkitOverflowScrolling: "touch" } : undefined}
+      >
+        {children}
+      </div>
 
       {/* Resize Handles */}
       {!isMobile && !win.isMaximized && (
@@ -308,17 +322,17 @@ const Window: React.FC<WindowProps> = ({
         </>
       )}
 
-      {/* Mobile Global Home Indicator (Tap to Close Window) - invisible click area with visible bar */}
+      {/* Mobile Global Home Indicator (Tap to Close Window) - pointer-events-none on container so touches pass through to page */}
       {isMobile && (
-        <div
-          className="absolute bottom-0 left-0 right-0 h-8 flex items-end justify-center pb-2 z-[100] cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-        >
+        <div className="absolute bottom-0 left-0 right-0 h-7 flex items-end justify-center pb-1.5 z-[40] pointer-events-none">
           {/* visual bar */}
-          <div className="w-32 h-1.5 bg-gray-400/60 dark:bg-gray-500/60 rounded-full active:bg-gray-500/80 dark:active:bg-gray-400/80 transition-colors" />
+          <div
+            className="w-32 h-1.5 bg-gray-400/60 dark:bg-gray-500/60 rounded-full active:bg-gray-500/80 dark:active:bg-gray-400/80 transition-colors pointer-events-auto cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+          />
         </div>
       )}
     </motion.div>

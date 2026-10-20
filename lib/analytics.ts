@@ -24,6 +24,7 @@ export const trackProjectsOpen = () => trackEvent("projects_open");
 export const trackSkillsOpen = () => trackEvent("skills_open");
 export const trackContactOpen = () => trackEvent("contact_open");
 export const trackSettingsOpen = () => trackEvent("settings_open");
+export const trackSafariOpen = () => trackEvent("safari_open");
 
 // CV indirme
 export const trackCvDownload = () => trackEvent("cv_download");
