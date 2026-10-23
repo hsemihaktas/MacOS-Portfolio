@@ -74,6 +74,49 @@ export const projectDefinitions: ProjectDefinition[] = [
   // ── 2 ───────────────────────────────────────────────────────
   {
     id: 2,
+    platform: "web",
+    tags: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Supabase",
+      "Firebase",
+      "next-intl",
+    ],
+    image: "/images/LiblifyWeb/cover.png",
+    websiteLink: "https://liblify.vercel.app/",
+    tr: {
+      title: "Liblify — Büyüyen Kitaplık (Web)",
+      description:
+        "Liblify mobil uygulamasının resmi web platformu. Kullanıcılar kendilerine özel profil sayfası aracılığıyla okuma kitaplıklarını tek bir linkle arkadaşlarıyla paylaşabilir.",
+      features: [
+        "Herkese açık profil sayfaları: Kitaplığını benzersiz bir linkle paylaş (liblify.vercel.app/u/kullanıcıadın)",
+        "next-intl ile 12 dil desteği (Türkçe, İngilizce, Almanca, Fransızca, İspanyolca ve daha fazlası)",
+        "Kitap bileşenleri: Şu an okunanlar ve tamamlananlar için özel shelf görünümü",
+        "Profil görüntülenme takibi ve Firebase Analytics entegrasyonu",
+        "Supabase ile gerçek zamanlı kullanıcı verileri ve profil senkronizasyonu",
+        "Çok dilli hukuki sayfalar: Gizlilik politikası, kullanım koşulları ve iletişim",
+      ],
+    },
+    en: {
+      title: "Liblify — Growing Library (Web)",
+      description:
+        "The official web platform for the Liblify mobile app. Users get a personalized public profile page to share their reading library with friends via a single link.",
+      features: [
+        "Public profile pages: Share your library with a unique link (liblify.vercel.app/u/username)",
+        "12-language support via next-intl (Turkish, English, German, French, Spanish, and more)",
+        "Book components: Dedicated shelf view for currently reading and completed books",
+        "Profile view tracking and Firebase Analytics integration",
+        "Real-time user data and profile sync powered by Supabase",
+        "Multilingual legal pages: Privacy policy, terms of service, and contact",
+      ],
+    },
+  },
+
+  // ── 3 ───────────────────────────────────────────────────────
+  {
+    id: 3,
     platform: "mobile",
     tags: [
       "React Native",
@@ -135,9 +178,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 3 ───────────────────────────────────────────────────────
+  // ── 4 ───────────────────────────────────────────────────────
   {
-    id: 3,
+    id: 4,
     platform: "mobile",
     tags: ["React Native", "Expo", "TypeScript", "Push Notifications"],
     image: "/images/BeautyCenter/cover.png",
@@ -175,9 +218,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 4 ───────────────────────────────────────────────────────
+  // ── 5 ───────────────────────────────────────────────────────
   {
-    id: 4,
+    id: 5,
     platform: "mobile",
     tags: ["React Native", "Expo", "expo-crypto", "AES"],
     image: "/images/EncryptDiary/cover.png",
@@ -206,9 +249,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 5 ───────────────────────────────────────────────────────
+  // ── 6 ───────────────────────────────────────────────────────
   {
-    id: 5,
+    id: 6,
     platform: "mobile",
     tags: ["React Native", "Expo", "MyMemory API", "Datamuse API"],
     image: "/images/Lexicon/cover.png",
@@ -237,9 +280,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 6 ───────────────────────────────────────────────────────
+  // ── 7 ───────────────────────────────────────────────────────
   {
-    id: 6,
+    id: 7,
     platform: "web",
     tags: [
       "Next.js 16",
@@ -278,9 +321,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 7 ───────────────────────────────────────────────────────
+  // ── 8 ───────────────────────────────────────────────────────
   {
-    id: 7,
+    id: 8,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript", "Lucide React"],
     image: "/images/Loki-History/cover.png",
@@ -309,9 +352,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 8 ───────────────────────────────────────────────────────
+  // ── 9 ───────────────────────────────────────────────────────
   {
-    id: 8,
+    id: 9,
     platform: "web",
     tags: [
       "Next.js",
@@ -346,9 +389,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 9 ───────────────────────────────────────────────────────
+  // ── 10 ───────────────────────────────────────────────────────
   {
-    id: 9,
+    id: 10,
     platform: "web",
     tags: [
       "Next.js",
@@ -385,9 +428,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 10 ──────────────────────────────────────────────────────
+  // ── 11 ──────────────────────────────────────────────────────
   {
-    id: 10,
+    id: 11,
     platform: "web",
     tags: [
       "Next.js",
@@ -425,9 +468,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 11 ──────────────────────────────────────────────────────
+  // ── 12 ──────────────────────────────────────────────────────
   {
-    id: 11,
+    id: 12,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript", "Framer Motion"],
     image: "/images/RepackStudio/cover.png",
@@ -456,9 +499,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 12 ──────────────────────────────────────────────────────
+  // ── 13 ──────────────────────────────────────────────────────
   {
-    id: 12,
+    id: 13,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript"],
     image: "/images/FaceRateMaxWebsite/cover.png",
@@ -485,9 +528,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 13 ──────────────────────────────────────────────────────
+  // ── 14 ──────────────────────────────────────────────────────
   {
-    id: 13,
+    id: 14,
     platform: "web",
     tags: ["Next.js", "Supabase", "PostgreSQL", "TypeScript", "TailwindCSS"],
     image: "/images/TaskFlow/cover.png",
@@ -516,9 +559,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 14 ──────────────────────────────────────────────────────
+  // ── 15 ──────────────────────────────────────────────────────
   {
-    id: 14,
+    id: 15,
     platform: "web",
     tags: ["Next.js", "TypeScript", "Firebase", "Firestore", "TailwindCSS"],
     image: "/images/E-Commerce/cover.png",
@@ -547,9 +590,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 15 ──────────────────────────────────────────────────────
+  // ── 16 ──────────────────────────────────────────────────────
   {
-    id: 15,
+    id: 16,
     platform: "web",
     tags: ["ReactJS", "TailwindCSS", "Python", "Web Scraping"],
     image: "/images/IMDBTierlist/cover.jpeg",
@@ -578,9 +621,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 16 ──────────────────────────────────────────────────────
+  // ── 17 ──────────────────────────────────────────────────────
   {
-    id: 16,
+    id: 17,
     platform: "web",
     tags: ["Next.js", "ReactJS", "TailwindCSS", "TypeScript"],
     image: "/images/GamingWebsite/cover.png",
@@ -609,9 +652,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 17 ──────────────────────────────────────────────────────
+  // ── 18 ──────────────────────────────────────────────────────
   {
-    id: 17,
+    id: 18,
     platform: "web",
     tags: ["ReactJS", "NodeJS", "MySQL", "TailwindCSS"],
     image: "/images/Estate/cover.png",
@@ -640,9 +683,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 18 ──────────────────────────────────────────────────────
+  // ── 19 ──────────────────────────────────────────────────────
   {
-    id: 18,
+    id: 19,
     platform: "web",
     tags: ["Next.js", "EmailJS", "TailwindCSS"],
     image: "/images/Organization/cover.jpeg",
@@ -671,9 +714,9 @@ export const projectDefinitions: ProjectDefinition[] = [
     },
   },
 
-  // ── 19 ──────────────────────────────────────────────────────
+  // ── 20 ──────────────────────────────────────────────────────
   {
-    id: 19,
+    id: 20,
     platform: "web",
     tags: ["Django", "Python", "OpenCV", "AI"],
     image: "/images/BlurFace/cover.png",
