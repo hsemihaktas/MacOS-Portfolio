@@ -1,14 +1,60 @@
-// App Store Data
+import { Language } from "../types";
+import { projectDefinitions } from "./projects";
+
+// ─────────────────────────────────────────────────────────────
+// apps dizisi otomatik türetilir:
+// projectDefinitions içinde appStore alanı olan tüm mobil projeler
+// burada listelenir — ayrıca elle veri girişi gerekmez.
+// ─────────────────────────────────────────────────────────────
+const DEVELOPER = {
+  tr: "Hasan Semih Aktaş",
+  en: "Hasan Semih Aktas",
+};
+
+function getApps(lang: Language) {
+  return projectDefinitions
+    .filter((p) => p.platform === "mobile" && p.appStore)
+    .map((p) => ({
+      id: p.id,
+      title: p[lang].title,
+      subtitle: p.appStore![lang].subtitle,
+      developer: DEVELOPER[lang],
+      category: p.appStore![lang].category,
+      rating: p.appStore!.rating,
+      age: p.appStore!.age,
+      chart: p.appStore![lang].chart,
+      version: p.appStore!.version,
+      size: p.appStore!.size,
+      description: p[lang].description,
+      icon: p.appStore!.icon,
+      screenshots: p.appStore!.screenshots,
+      appStoreUrl: p.appStoreLink ?? "",
+      playStoreUrl: p.androidStoreLink ?? "",
+    }));
+}
+
+// ─────────────────────────────────────────────────────────────
+// Featured: App Store'un hero bölümü (elle ayarlanır)
+// ─────────────────────────────────────────────────────────────
+const featured = {
+  tr: {
+    title: "LİBLİFY",
+    subtitle: "Büyüyen Kitaplık",
+    description: "Okuma alışkanlığını keyifli bir ritüele dönüştür.",
+    image: "/images/Liblify/cover.png",
+  },
+  en: {
+    title: "LIBLIFY",
+    subtitle: "Growing Library",
+    description: "Turn reading into an enjoyable daily ritual.",
+    image: "/images/Liblify/cover.png",
+  },
+};
+
 export const appStoreData = {
   tr: {
     title: "App Store",
-    featured: {
-      title: "EFFEASE",
-      subtitle: "Yapay Zeka Fotoğraf Editörü",
-      description:
-        "Sıradan fotoğrafları olağanüstü sanat eserlerine dönüştürün.",
-      image: "/images/Effease/Cover.jpeg",
-    },
+    featured: featured.tr,
     labels: {
       search: "Ara",
       suggestedApps: "Önerilen Uygulamalar",
@@ -38,43 +84,11 @@ export const appStoreData = {
       { id: "work", name: "Üretkenlik", icon: "Briefcase" },
       { id: "develop", name: "Geliştirici", icon: "Code2" },
     ],
-    apps: [
-      {
-        id: 1,
-        title: "EFFEASE - AI Fotoğraf Editörü",
-        subtitle: "Yapay Zeka ile Sanat",
-        developer: "Hasan Semih Aktaş",
-        category: "Fotoğraf & Video",
-        rating: 4.8,
-        age: "4+",
-        chart: "#1 Fotoğraf ve Video",
-        version: "2.5.0",
-        size: "86.4 MB",
-        description:
-          "Google'ın Gemini AI'ını kullanarak sıradan fotoğrafları olağanüstü sanat eserlerine dönüştüren güçlü bir yapay zeka destekli mobil fotoğraf düzenleme uygulaması. \n\nÖzellikler:\n- Gelişmiş AI Filtreleri\n- Gece Modu İyileştirme\n- Otomatik Portre Düzeltme",
-        icon: "/images/Effease/icon.jpeg",
-        screenshots: [
-          "/images/Effease/store/1.png",
-          "/images/Effease/store/2.png",
-          "/images/Effease/store/3.png",
-          "/images/Effease/store/4.png",
-          "/images/Effease/store/5.png",
-        ],
-        appStoreUrl:
-          "https://apps.apple.com/us/app/effease-ai-photo-studio/id6756782812",
-        playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.repackstudio.effease",
-      },
-    ],
+    apps: getApps("tr"),
   },
   en: {
     title: "App Store",
-    featured: {
-      title: "EFFEASE",
-      subtitle: "AI Photo Editor",
-      description: "Transform ordinary photos into extraordinary works of art.",
-      image: "/images/Effease/Cover.jpeg",
-    },
+    featured: featured.en,
     labels: {
       search: "Search",
       suggestedApps: "Suggested Apps",
@@ -104,33 +118,6 @@ export const appStoreData = {
       { id: "work", name: "Productivity", icon: "Briefcase" },
       { id: "develop", name: "Developer", icon: "Code2" },
     ],
-    apps: [
-      {
-        id: 1,
-        title: "EFFEASE - AI Photo Editor",
-        subtitle: "Art with AI",
-        developer: "Hasan Semih Aktas",
-        category: "Photo & Video",
-        rating: 4.8,
-        age: "4+",
-        chart: "#1 Photo & Video",
-        version: "2.5.0",
-        size: "86.4 MB",
-        description:
-          "A powerful AI-powered mobile photo editing application that transforms ordinary photos into extraordinary works of art using Google's Gemini AI. \n\nFeatures:\n- Advanced AI Filters\n- Night Mode Enhancement\n- Auto Portrait Correction",
-        icon: "/images/Effease/icon.jpeg",
-        screenshots: [
-          "/images/Effease/store/1.png",
-          "/images/Effease/store/2.png",
-          "/images/Effease/store/3.png",
-          "/images/Effease/store/4.png",
-          "/images/Effease/store/5.png",
-        ],
-        appStoreUrl:
-          "https://apps.apple.com/us/app/effease-ai-photo-studio/id6756782812",
-        playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.repackstudio.effease",
-      },
-    ],
+    apps: getApps("en"),
   },
 };

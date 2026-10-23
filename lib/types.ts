@@ -17,9 +17,9 @@ export interface WindowState {
   isMaximized: boolean;
   zIndex: number;
   params?: any;
-  // added to enable passing language to specific apps if needed through window params
 }
 
+// Component-facing type — tek dil, flat yapı (component API değişmiyor)
 export interface Project {
   id: number;
   title: string;
@@ -33,6 +33,34 @@ export interface Project {
   appStoreLink?: string;
   androidStoreLink?: string;
   platform: "mobile" | "web";
+}
+
+// App Store bölümü için mobil uygulama metadatası
+export interface AppStoreMetadata {
+  icon: string;
+  screenshots: string[];
+  rating: number;
+  age: string;
+  version: string;
+  size: string;
+  tr: { subtitle: string; category: string; chart: string };
+  en: { subtitle: string; category: string; chart: string };
+}
+
+// Tek kaynak: bilingual proje tanımı
+export interface ProjectDefinition {
+  id: number;
+  tags: string[];
+  image: string;
+  gallery?: string[]; // Projeye özel galeri; yoksa appStore.screenshots kullanılır
+  platform: "mobile" | "web";
+  websiteLink?: string;
+  githubLink?: string;
+  appStoreLink?: string;
+  androidStoreLink?: string;
+  appStore?: AppStoreMetadata; // Bu alan varsa App Store'da listelenir
+  tr: { title: string; description: string; features?: string[] };
+  en: { title: string; description: string; features?: string[] };
 }
 
 export interface AppStoreProps {

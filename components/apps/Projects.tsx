@@ -15,6 +15,27 @@ import {
   Monitor,
 } from "lucide-react";
 
+// Yükleme sırasında gösterilen shimmer blur placeholder
+const shimmerSvg = (w: number, h: number) => `
+<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#888" stop-opacity="0.08"/>
+      <stop offset="50%"  stop-color="#888" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#888" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="url(#g)"/>
+</svg>`;
+
+const toBase64 = (str: string) =>
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
+
+const blurDataURL = `data:image/svg+xml;base64,${toBase64(shimmerSvg(700, 440))}`;
+const blurPortraitURL = `data:image/svg+xml;base64,${toBase64(shimmerSvg(400, 800))}`;
+
 interface ProjectsProps {
   lang: Language;
   isDarkMode?: boolean;
@@ -242,7 +263,7 @@ const Projects: React.FC<ProjectsProps> = ({
         >
           {!selectedProject ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto pb-10">
-              {filteredItems.map((project) => (
+              {filteredItems.map((project, index) => (
                 <div
                   key={project.id}
                   className="group cursor-pointer flex flex-col"
@@ -257,6 +278,9 @@ const Projects: React.FC<ProjectsProps> = ({
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
                       sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      priority={index < 6}
+                      placeholder="blur"
+                      blurDataURL={blurDataURL}
                     />
                   </div>
                   <div className="mt-5 px-1">
@@ -287,6 +311,8 @@ const Projects: React.FC<ProjectsProps> = ({
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   sizes="(max-width: 1280px) 100vw, 1280px"
                   priority
+                  placeholder="blur"
+                  blurDataURL={blurDataURL}
                 />
                 <div
                   className={`absolute inset-0 bg-gradient-to-t ${
@@ -314,7 +340,7 @@ const Projects: React.FC<ProjectsProps> = ({
                           if (onOpenSafari) {
                             onOpenSafari(
                               selectedProject.websiteLink!,
-                              selectedProject.title
+                              selectedProject.title,
                             );
                           } else {
                             window.open(selectedProject.websiteLink, "_blank");
@@ -411,6 +437,37 @@ const Projects: React.FC<ProjectsProps> = ({
                 >
                   {selectedProject.description}
                 </p>
+
+                {/* Screenshots / Gallery */}
+                {selectedProject.gallery &&
+                  selectedProject.gallery.length > 0 && (
+                    <div className="space-y-6">
+                      <h3 className="text-3xl font-black tracking-tight">
+                        {d.screenshotsTitle}
+                      </h3>
+                      <div className="overflow-x-auto pb-2 custom-scrollbar">
+                        <div className="flex gap-4">
+                          {selectedProject.gallery.map((src, idx) => (
+                            <div
+                              key={idx}
+                              className={`relative flex-shrink-0 rounded-2xl overflow-hidden border ${borderStyle} shadow-md`}
+                              style={{ width: 180, height: 360 }}
+                            >
+                              <Image
+                                src={src}
+                                alt={`${selectedProject.title} screenshot ${idx + 1}`}
+                                fill
+                                className="object-cover"
+                                sizes="180px"
+                                placeholder="blur"
+                                blurDataURL={blurPortraitURL}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                 {/* Features Section - Enhanced Design */}
                 {selectedProject.features &&
