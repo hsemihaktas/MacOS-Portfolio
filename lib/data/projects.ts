@@ -117,6 +117,47 @@ export const projectDefinitions: ProjectDefinition[] = [
   // ── 3 ───────────────────────────────────────────────────────
   {
     id: 3,
+    platform: "web",
+    tags: [
+      "TypeScript",
+      "Next.js",
+      "Supabase",
+      "Chrome Extension",
+      "PWA",
+      "Tailwind CSS",
+    ],
+    image: "/images/Magpie/cover.png",
+    websiteLink: "https://magpie-archive.vercel.app",
+    githubLink: "https://github.com/Rewosama/Magpie",
+    tr: {
+      title: "Sosyal Medya Arşivleyici - Magpie",
+      description:
+        "Instagram, X ve Threads postlarını koleksiyonlara kaydeden Chrome uzantısı ve web görüntüleyicisi.",
+      features: [
+        "Chrome uzantısıyla tek tıkla Instagram, X ve Threads postlarını kaydetme",
+        "Koleksiyon yönetimi: kişisel, paylaşımlı ve ortak koleksiyon türleri",
+        "Etiket sistemi, tam metin arama ve platform filtreleme",
+        "PWA desteği ve Android Share Target ile mobil kaydetme",
+        "Supabase RLS ile veritabanı seviyesinde yetkilendirme ve gerçek zamanlı işbirliği",
+      ],
+    },
+    en: {
+      title: "Social Media Archiver - Magpie",
+      description:
+        "A Chrome extension and web viewer for saving and browsing posts from Instagram, X, and Threads.",
+      features: [
+        "One-click post saving from Instagram, X, and Threads via Chrome extension",
+        "Collection management: personal, shared, and collaborative collection types",
+        "Tag system, full-text search, and platform filtering",
+        "PWA support and Android Share Target for mobile saving",
+        "Database-level authorization with Supabase RLS and real-time collaboration",
+      ],
+    },
+  },
+
+  // ── 4 ───────────────────────────────────────────────────────
+  {
+    id: 4,
     platform: "mobile",
     tags: [
       "React Native",
@@ -180,7 +221,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 4 ───────────────────────────────────────────────────────
   {
-    id: 4,
+    id: 5,
     platform: "mobile",
     tags: ["React Native", "Expo", "TypeScript", "Push Notifications"],
     image: "/images/BeautyCenter/cover.png",
@@ -220,7 +261,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 5 ───────────────────────────────────────────────────────
   {
-    id: 5,
+    id: 6,
     platform: "mobile",
     tags: ["React Native", "Expo", "expo-crypto", "AES"],
     image: "/images/EncryptDiary/cover.png",
@@ -251,7 +292,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 6 ───────────────────────────────────────────────────────
   {
-    id: 6,
+    id: 7,
     platform: "mobile",
     tags: ["React Native", "Expo", "MyMemory API", "Datamuse API"],
     image: "/images/Lexicon/cover.png",
@@ -282,7 +323,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 7 ───────────────────────────────────────────────────────
   {
-    id: 7,
+    id: 8,
     platform: "web",
     tags: [
       "Next.js 16",
@@ -323,7 +364,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 8 ───────────────────────────────────────────────────────
   {
-    id: 8,
+    id: 9,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript", "Lucide React"],
     image: "/images/Loki-History/cover.png",
@@ -354,7 +395,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 9 ───────────────────────────────────────────────────────
   {
-    id: 9,
+    id: 10,
     platform: "web",
     tags: [
       "Next.js",
@@ -391,7 +432,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 10 ───────────────────────────────────────────────────────
   {
-    id: 10,
+    id: 11,
     platform: "web",
     tags: [
       "Next.js",
@@ -430,7 +471,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 11 ──────────────────────────────────────────────────────
   {
-    id: 11,
+    id: 12,
     platform: "web",
     tags: [
       "Next.js",
@@ -470,7 +511,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 12 ──────────────────────────────────────────────────────
   {
-    id: 12,
+    id: 13,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript", "Framer Motion"],
     image: "/images/RepackStudio/cover.png",
@@ -501,7 +542,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 13 ──────────────────────────────────────────────────────
   {
-    id: 13,
+    id: 14,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript"],
     image: "/images/FaceRateMaxWebsite/cover.png",
@@ -530,7 +571,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 14 ──────────────────────────────────────────────────────
   {
-    id: 14,
+    id: 15,
     platform: "web",
     tags: ["Next.js", "Supabase", "PostgreSQL", "TypeScript", "TailwindCSS"],
     image: "/images/TaskFlow/cover.png",
@@ -561,7 +602,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 15 ──────────────────────────────────────────────────────
   {
-    id: 15,
+    id: 16,
     platform: "web",
     tags: ["Next.js", "TypeScript", "Firebase", "Firestore", "TailwindCSS"],
     image: "/images/E-Commerce/cover.png",
@@ -592,7 +633,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 16 ──────────────────────────────────────────────────────
   {
-    id: 16,
+    id: 17,
     platform: "web",
     tags: ["ReactJS", "TailwindCSS", "Python", "Web Scraping"],
     image: "/images/IMDBTierlist/cover.jpeg",
@@ -623,7 +664,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 17 ──────────────────────────────────────────────────────
   {
-    id: 17,
+    id: 18,
     platform: "web",
     tags: ["Next.js", "ReactJS", "TailwindCSS", "TypeScript"],
     image: "/images/GamingWebsite/cover.png",
@@ -654,7 +695,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 18 ──────────────────────────────────────────────────────
   {
-    id: 18,
+    id: 19,
     platform: "web",
     tags: ["ReactJS", "NodeJS", "MySQL", "TailwindCSS"],
     image: "/images/Estate/cover.png",
@@ -685,7 +726,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 19 ──────────────────────────────────────────────────────
   {
-    id: 19,
+    id: 20,
     platform: "web",
     tags: ["Next.js", "EmailJS", "TailwindCSS"],
     image: "/images/Organization/cover.jpeg",
@@ -716,7 +757,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 20 ──────────────────────────────────────────────────────
   {
-    id: 20,
+    id: 21,
     platform: "web",
     tags: ["Django", "Python", "OpenCV", "AI"],
     image: "/images/BlurFace/cover.png",
