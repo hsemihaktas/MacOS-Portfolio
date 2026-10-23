@@ -16,7 +16,12 @@ export interface WindowState {
   isMinimized: boolean;
   isMaximized: boolean;
   zIndex: number;
-  params?: any;
+  params?: {
+    projectId?: number;
+    filterTag?: string;
+    url?: string;
+    title?: string;
+  } | null;
 }
 
 // Component-facing type — tek dil, flat yapı (component API değişmiyor)
