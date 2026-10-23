@@ -35,9 +35,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Hasan Semih Aktaş" }],
   robots: "index, follow",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
@@ -47,7 +49,7 @@ export const metadata: Metadata = {
     siteName: "Hasan Semih Aktaş Portfolio",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "/images/og-image.png",
         width: 1200,
         height: 630,
         alt: "Hasan Semih Aktaş - Full Stack Developer Portfolio",
@@ -61,7 +63,7 @@ export const metadata: Metadata = {
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
     description:
       "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
-    images: ["/images/og-image.jpg"],
+    images: ["/images/og-image.png"],
   },
   other: {
     "google-site-verification": "RIHQYNOqayD5Y5TpWlG4qkDvQzg9eKkZxcPx2z-DD6g",
