@@ -32,7 +32,7 @@ export interface Project {
   websiteLink?: string;
   appStoreLink?: string;
   androidStoreLink?: string;
-  platform: "mobile" | "web";
+  platform: "mobile" | "web" | "discord-bot";
 }
 
 // App Store bölümü için mobil uygulama metadatası
@@ -53,7 +53,7 @@ export interface ProjectDefinition {
   tags: string[];
   image: string;
   gallery?: string[]; // Projeye özel galeri; yoksa appStore.screenshots kullanılır
-  platform: "mobile" | "web";
+  platform: "mobile" | "web" | "discord-bot";
   websiteLink?: string;
   githubLink?: string;
   appStoreLink?: string;

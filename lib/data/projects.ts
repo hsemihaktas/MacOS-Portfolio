@@ -158,6 +158,52 @@ export const projectDefinitions: ProjectDefinition[] = [
   // ── 4 ───────────────────────────────────────────────────────
   {
     id: 4,
+    platform: "discord-bot",
+    tags: [
+      "Discord.js 14",
+      "Node.js",
+      "SQLite3",
+      "Express.js",
+      "React 18",
+      "Vite",
+      "Passport.js",
+    ],
+    image: "/images/RewoBot/cover.png",
+    gallery: ["/images/RewoBot/store/1.png"],
+    websiteLink: "https://bot.rewou.me",
+    tr: {
+      title: "RewoBot — Discord Denetim, Güvenlik & Ekonomi Botu",
+      description:
+        "Discord sunucuları için kurumsal seviyede hepsi-bir-arada yönetim botu. Granular denetim logları, çok katmanlı güvenlik sistemleri, seviye & ekonomi motoru ve React tabanlı web yönetim paneli ile eksiksiz moderasyon deneyimi sunar.",
+      features: [
+        "28 slash komutu: Moderasyon, ekonomi, topluluk ve yapılandırma kategorilerinde kapsamlı komut seti",
+        "15+ olay tipi granular denetim logu: Silinen medya kurtarma, davet takipçisi ve moderatör otomatik tespiti",
+        "Çok katmanlı güvenlik: Chat Guards (Anti-Invite, Anti-Link, Anti-Caps, Anti-Spam), Anti-Raid, Anti-Nuke ve Honeypot tuzağı",
+        "Seviye & Ekonomi: XP/Coin sistemi, Anti-Farm kalkanı, rol marketi ve süreli rol zamanlayıcısı",
+        "5 kategorili bilet sistemi: Claim, öncelik, özel destek rolleri ve renkli HTML transkript motoru",
+        "Reaksiyon Rolleri (buton & menü), Geçici Ses Odaları (JTC), Çekiliş Yönetimi ve Moderatör Karne Raporu",
+        "React 18 + Vite SPA web yönetim paneli: Discord OAuth2 kimlik doğrulama ve canlı dashboard yönetimi",
+      ],
+    },
+    en: {
+      title: "RewoBot — Discord Audit, Security & Economy Bot",
+      description:
+        "An enterprise-grade all-in-one management bot for Discord servers. Delivers a complete moderation experience with granular audit logs, multi-layered security systems, a level & economy engine, and a React-based web management dashboard.",
+      features: [
+        "28 slash commands: Comprehensive command set across moderation, economy, community, and configuration",
+        "15+ event type granular audit logs: Deleted media recovery, invite tracker, and automatic moderator detection",
+        "Multi-layer security: Chat Guards (Anti-Invite, Anti-Link, Anti-Caps, Anti-Spam), Anti-Raid, Anti-Nuke, and Honeypot trap",
+        "Level & Economy: XP/Coin system, Anti-Farm shield, role market, and timed role scheduler",
+        "5-category ticket system: Claim, priority, private support roles, and colorful HTML transcript engine",
+        "Reaction Roles (button & menu), Temporary Voice Rooms (JTC), Giveaway Manager, and Staff Audit Matrix",
+        "React 18 + Vite SPA web dashboard: Discord OAuth2 authentication and live panel management",
+      ],
+    },
+  },
+
+  // ── 5 ───────────────────────────────────────────────────────
+  {
+    id: 5,
     platform: "mobile",
     tags: [
       "React Native",
@@ -221,7 +267,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 4 ───────────────────────────────────────────────────────
   {
-    id: 5,
+    id: 6,
     platform: "mobile",
     tags: ["React Native", "Expo", "TypeScript", "Push Notifications"],
     image: "/images/BeautyCenter/cover.png",
@@ -261,7 +307,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 5 ───────────────────────────────────────────────────────
   {
-    id: 6,
+    id: 7,
     platform: "mobile",
     tags: ["React Native", "Expo", "expo-crypto", "AES"],
     image: "/images/EncryptDiary/cover.png",
@@ -292,7 +338,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 6 ───────────────────────────────────────────────────────
   {
-    id: 7,
+    id: 8,
     platform: "mobile",
     tags: ["React Native", "Expo", "MyMemory API", "Datamuse API"],
     image: "/images/Lexicon/cover.png",
@@ -323,7 +369,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 7 ───────────────────────────────────────────────────────
   {
-    id: 8,
+    id: 9,
     platform: "web",
     tags: [
       "Next.js 16",
@@ -364,7 +410,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 8 ───────────────────────────────────────────────────────
   {
-    id: 9,
+    id: 10,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript", "Lucide React"],
     image: "/images/Loki-History/cover.png",
@@ -395,7 +441,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 9 ───────────────────────────────────────────────────────
   {
-    id: 10,
+    id: 11,
     platform: "web",
     tags: [
       "Next.js",
@@ -432,7 +478,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 10 ───────────────────────────────────────────────────────
   {
-    id: 11,
+    id: 12,
     platform: "web",
     tags: [
       "Next.js",
@@ -471,7 +517,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 11 ──────────────────────────────────────────────────────
   {
-    id: 12,
+    id: 13,
     platform: "web",
     tags: [
       "Next.js",
@@ -511,7 +557,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 12 ──────────────────────────────────────────────────────
   {
-    id: 13,
+    id: 14,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript", "Framer Motion"],
     image: "/images/RepackStudio/cover.png",
@@ -542,7 +588,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 13 ──────────────────────────────────────────────────────
   {
-    id: 14,
+    id: 15,
     platform: "web",
     tags: ["Next.js", "TailwindCSS", "TypeScript"],
     image: "/images/FaceRateMaxWebsite/cover.png",
@@ -571,7 +617,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 14 ──────────────────────────────────────────────────────
   {
-    id: 15,
+    id: 16,
     platform: "web",
     tags: ["Next.js", "Supabase", "PostgreSQL", "TypeScript", "TailwindCSS"],
     image: "/images/TaskFlow/cover.png",
@@ -602,7 +648,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 15 ──────────────────────────────────────────────────────
   {
-    id: 16,
+    id: 17,
     platform: "web",
     tags: ["Next.js", "TypeScript", "Firebase", "Firestore", "TailwindCSS"],
     image: "/images/E-Commerce/cover.png",
@@ -633,7 +679,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 16 ──────────────────────────────────────────────────────
   {
-    id: 17,
+    id: 18,
     platform: "web",
     tags: ["ReactJS", "TailwindCSS", "Python", "Web Scraping"],
     image: "/images/IMDBTierlist/cover.jpeg",
@@ -664,7 +710,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 17 ──────────────────────────────────────────────────────
   {
-    id: 18,
+    id: 19,
     platform: "web",
     tags: ["Next.js", "ReactJS", "TailwindCSS", "TypeScript"],
     image: "/images/GamingWebsite/cover.png",
@@ -695,7 +741,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 18 ──────────────────────────────────────────────────────
   {
-    id: 19,
+    id: 20,
     platform: "web",
     tags: ["ReactJS", "NodeJS", "MySQL", "TailwindCSS"],
     image: "/images/Estate/cover.png",
@@ -726,7 +772,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 19 ──────────────────────────────────────────────────────
   {
-    id: 20,
+    id: 21,
     platform: "web",
     tags: ["Next.js", "EmailJS", "TailwindCSS"],
     image: "/images/Organization/cover.jpeg",
@@ -757,7 +803,7 @@ export const projectDefinitions: ProjectDefinition[] = [
 
   // ── 20 ──────────────────────────────────────────────────────
   {
-    id: 21,
+    id: 22,
     platform: "web",
     tags: ["Django", "Python", "OpenCV", "AI"],
     image: "/images/BlurFace/cover.png",
