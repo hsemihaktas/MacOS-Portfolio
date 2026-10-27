@@ -180,10 +180,6 @@ const MenuBar: React.FC<MenuBarProps> = ({
 
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-4 opacity-90">
-          <div className="flex items-center gap-1 opacity-70">
-            <span className="text-[10px] font-black mr-0.5">98%</span>
-            <Battery size={18} strokeWidth={2.5} />
-          </div>
           {WifiIcon}
           <button
             onClick={(e) => {
