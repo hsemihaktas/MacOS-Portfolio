@@ -163,19 +163,22 @@ export default function ActivityMonitor({
     >
       {/* ── Toolbar ───────────────────────────────────────────────── */}
       <div
-        className="shrink-0 flex items-center gap-2 px-4 py-2.5"
+        className="shrink-0 flex items-center gap-2 px-3 py-2 overflow-x-auto"
         style={{ borderBottom: `1px solid ${BORDER}`, background: TOOLBAR_BG }}
       >
-        <div className="flex flex-col mr-2 min-w-[120px]">
-          <span className="text-[13px] font-bold leading-tight">
+        <div className="flex flex-col shrink-0">
+          <span className="text-[12px] font-bold leading-tight whitespace-nowrap">
             {isTr ? "Etkinlik Monitörü" : "Activity Monitor"}
           </span>
-          <span className="text-[11px]" style={{ color: MUTED }}>
+          <span
+            className="text-[10px] whitespace-nowrap"
+            style={{ color: MUTED }}
+          >
             {isTr ? "Tüm İşlemler" : "All Processes"}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 mr-3">
+        <div className="flex items-center gap-1 shrink-0">
           {[
             <X size={11} />,
             <Info size={11} />,
@@ -183,7 +186,7 @@ export default function ActivityMonitor({
           ].map((icon, i) => (
             <button
               key={i}
-              className="w-7 h-7 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 rounded-lg flex items-center justify-center"
               style={{ background: BTN_BG, color: MUTED }}
             >
               {icon}
@@ -193,14 +196,14 @@ export default function ActivityMonitor({
 
         {/* Segmented control */}
         <div
-          className="flex items-center rounded-lg p-[3px] gap-[2px]"
+          className="flex items-center rounded-lg p-[2px] gap-[2px] shrink-0"
           style={{ background: SEG_BG }}
         >
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className="px-3 py-1 rounded-[6px] text-[12px] font-semibold transition-all"
+              className="px-2 py-0.5 rounded-[5px] text-[11px] font-semibold transition-all whitespace-nowrap"
               style={
                 activeTab === tab.id
                   ? { background: ACTIVE_TAB_BG, color: ACTIVE_TAB_FG }
@@ -212,12 +215,12 @@ export default function ActivityMonitor({
           ))}
         </div>
 
-        {/* Arama */}
+        {/* Arama — sadece geniş ekranda */}
         <div
-          className="ml-auto flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
-          style={{ background: BTN_BG, minWidth: 130 }}
+          className="hidden md:flex ml-auto items-center gap-1.5 px-2 py-1.5 rounded-lg shrink-0"
+          style={{ background: BTN_BG, minWidth: 120 }}
         >
-          <Search size={12} style={{ color: MUTED }} />
+          <Search size={11} style={{ color: MUTED }} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -233,11 +236,18 @@ export default function ActivityMonitor({
         className="shrink-0 flex items-center px-4 py-2 text-[11px] font-semibold uppercase tracking-wide"
         style={{ borderBottom: `1px solid ${BORDER}`, color: MUTED }}
       >
-        <div className="flex-1 flex items-center gap-1 cursor-default">
+        <div className="flex-1 flex items-center gap-1 cursor-default min-w-0">
           {isTr ? "İşlem Adı" : "Process Name"} <ChevronDown size={10} />
         </div>
         {cols.map((col) => (
-          <div key={col.k} className="w-28 text-right cursor-default">
+          <div
+            key={col.k}
+            className={`text-right cursor-default shrink-0 ${
+              col.k === "pid" || col.k === "user"
+                ? "hidden md:block w-24"
+                : "w-20 sm:w-28"
+            }`}
+          >
             {col.label}
           </div>
         ))}
@@ -294,7 +304,11 @@ export default function ActivityMonitor({
                 return (
                   <div
                     key={col.k}
-                    className="w-28 text-right text-[13px] tabular-nums"
+                    className={`text-right text-[12px] tabular-nums shrink-0 ${
+                      col.k === "pid" || col.k === "user"
+                        ? "hidden md:block w-24"
+                        : "w-20 sm:w-28"
+                    }`}
                     style={{ color, fontWeight: isFirst ? 600 : 400 }}
                   >
                     {col.k === "cpu"
@@ -489,13 +503,24 @@ export default function ActivityMonitor({
   );
 }
 
-function StatRow({ label, value, muted, color }: {
-  label: string; value: string; muted: string; color?: string;
+function StatRow({
+  label,
+  value,
+  muted,
+  color,
+}: {
+  label: string;
+  value: string;
+  muted: string;
+  color?: string;
 }) {
   return (
     <div className="flex justify-between items-baseline text-[12px]">
       <span style={{ color: muted }}>{label}</span>
-      <span className="font-semibold tabular-nums" style={color ? { color } : undefined}>
+      <span
+        className="font-semibold tabular-nums"
+        style={color ? { color } : undefined}
+      >
         {value}
       </span>
     </div>
