@@ -34,13 +34,15 @@ import {
 
 export default function Home() {
   const [lang, setLang] = useState<Language>("tr");
-  const [showBoot, setShowBoot] = useState(false);
+  // Başlangıçta true — boot ekranı anında gösterilir, desktop arkada hazırlanır
+  const [showBoot, setShowBoot] = useState(true);
 
   useEffect(() => {
-    // sessionStorage: her oturum açılışında bir kez göster
-    if (!sessionStorage.getItem("booted")) {
-      setShowBoot(true);
+    // Zaten boot olduysa anında kaldır (animasyon yok)
+    if (sessionStorage.getItem("booted")) {
+      setShowBoot(false);
     }
+    // İlk ziyaretse BootScreen kendi animasyonunu oynatır
   }, []);
 
   const handleBootComplete = () => {
