@@ -15,6 +15,7 @@ export const menuData = {
       ai: "Siri AI",
       system: "Etkinlik Monitörü",
       "app-store": "App Store",
+      terminal: "Terminal",
     },
   },
   en: {
@@ -32,6 +33,7 @@ export const menuData = {
       ai: "Siri AI",
       system: "Activity Monitor",
       "app-store": "App Store",
+      terminal: "Terminal",
     },
   },
 };

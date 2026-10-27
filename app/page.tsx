@@ -19,6 +19,7 @@ import SettingsApp from "@/components/apps/Settings";
 import ActivityMonitorApp from "@/components/apps/ActivityMonitor";
 import AppStore from "@/components/apps/AppStore";
 import SafariApp from "@/components/apps/Safari";
+import TerminalApp from "@/components/apps/Terminal";
 import { WindowState, AppID, Language } from "@/lib/types";
 import { INITIAL_Z_INDEX, APPS } from "@/lib/constants";
 import { DATA } from "@/lib/data";
@@ -94,6 +95,7 @@ export default function Home() {
         contact: DATA[lang].apps.contact,
         "activity-monitor": DATA[lang].apps.system,
         "app-store": DATA[lang].apps["app-store"],
+        terminal: DATA[lang].apps.terminal,
       };
       return appMap[id] || id;
     },
@@ -111,6 +113,7 @@ export default function Home() {
       settings: trackSettingsOpen,
       "activity-monitor": () => {}, // No tracking for activity monitor
       "app-store": () => {},
+      terminal: () => {},
     };
     trackingMap[id]?.();
 
@@ -227,6 +230,14 @@ export default function Home() {
         return <ActivityMonitorApp lang={lang} isDarkMode={isDarkMode} />;
       case "app-store":
         return <AppStore lang={lang} isDarkMode={isDarkMode} />;
+      case "terminal":
+        return (
+          <TerminalApp
+            lang={lang}
+            isDarkMode={isDarkMode}
+            onOpenApp={openWindow}
+          />
+        );
       default:
         return null;
     }

@@ -6,7 +6,8 @@ export type AppID =
   | "contact"
   | "activity-monitor"
   | "app-store"
-  | "safari";
+  | "safari"
+  | "terminal";
 export type Language = "tr" | "en";
 
 export interface WindowState {

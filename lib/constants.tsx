@@ -38,4 +38,9 @@ export const APPS: { id: AppID; title: string; iconUrl: string }[] = [
     title: "Ayarlar",
     iconUrl: "/images/icons/settings.png",
   },
+  {
+    id: "terminal",
+    title: "Terminal",
+    iconUrl: "/images/icons/terminal.png",
+  },
 ];
