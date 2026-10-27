@@ -9,6 +9,7 @@ import Window from "@/components/Window";
 import Spotlight from "@/components/Spotlight";
 import ControlCenter from "@/components/ControlCenter";
 import { AnimatePresence } from "framer-motion";
+import BootScreen from "@/components/BootScreen";
 
 import AboutApp from "@/components/apps/About";
 import ProjectsApp from "@/components/apps/Projects";
@@ -33,6 +34,19 @@ import {
 
 export default function Home() {
   const [lang, setLang] = useState<Language>("tr");
+  const [showBoot, setShowBoot] = useState(false);
+
+  useEffect(() => {
+    // sessionStorage: her oturum açılışında bir kez göster
+    if (!sessionStorage.getItem("booted")) {
+      setShowBoot(true);
+    }
+  }, []);
+
+  const handleBootComplete = () => {
+    sessionStorage.setItem("booted", "1");
+    setShowBoot(false);
+  };
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
   const [isControlCenterOpen, setIsControlCenterOpen] = useState(false);
 
@@ -60,7 +74,7 @@ export default function Home() {
       isMaximized: false,
       zIndex: INITIAL_Z_INDEX,
       params: null,
-    }))
+    })),
   );
 
   const [activeApp, setActiveApp] = useState<AppID | null>(null);
@@ -81,92 +95,88 @@ export default function Home() {
       };
       return appMap[id] || id;
     },
-    [lang]
+    [lang],
   );
 
-  const openWindow = useCallback(
-    (id: AppID, params?: any) => {
-      // Track app open events
-      const trackingMap: Record<AppID, () => void> = {
-        about: trackAboutOpen,
-        safari: trackSafariOpen,
-        projects: trackProjectsOpen,
-        skills: trackSkillsOpen,
-        contact: trackContactOpen,
-        settings: trackSettingsOpen,
-        "activity-monitor": () => {}, // No tracking for activity monitor
-        "app-store": () => {},
-      };
-      trackingMap[id]?.();
+  const openWindow = useCallback((id: AppID, params?: any) => {
+    // Track app open events
+    const trackingMap: Record<AppID, () => void> = {
+      about: trackAboutOpen,
+      safari: trackSafariOpen,
+      projects: trackProjectsOpen,
+      skills: trackSkillsOpen,
+      contact: trackContactOpen,
+      settings: trackSettingsOpen,
+      "activity-monitor": () => {}, // No tracking for activity monitor
+      "app-store": () => {},
+    };
+    trackingMap[id]?.();
 
-      setWindows((prev) => {
-        const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
-        const targetZ = highestZ + 2;
-        return prev.map((w) => {
-          if (w.id === id) {
-            return {
-              ...w,
-              isOpen: true,
-              isMinimized: false,
-              zIndex: targetZ,
-              params: params !== undefined ? params : w.params,
-            };
-          }
-          return w;
-        });
+    setWindows((prev) => {
+      const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
+      const targetZ = highestZ + 2;
+      return prev.map((w) => {
+        if (w.id === id) {
+          return {
+            ...w,
+            isOpen: true,
+            isMinimized: false,
+            zIndex: targetZ,
+            params: params !== undefined ? params : w.params,
+          };
+        }
+        return w;
       });
-      setTopZ((prev) => prev + 5);
-      setActiveApp(id);
+    });
+    setTopZ((prev) => prev + 5);
+    setActiveApp(id);
 
-      setIsSpotlightOpen(false);
-      setIsControlCenterOpen(false);
-    },
-    []
-  );
+    setIsSpotlightOpen(false);
+    setIsControlCenterOpen(false);
+  }, []);
 
   const closeWindow = useCallback(
     (id: AppID) => {
       setWindows((prev) =>
         prev.map((w) =>
-          w.id === id ? { ...w, isOpen: false, params: null } : w
-        )
+          w.id === id ? { ...w, isOpen: false, params: null } : w,
+        ),
       );
       if (activeApp === id) setActiveApp(null);
     },
-    [activeApp]
+    [activeApp],
   );
 
   const minimizeWindow = useCallback(
     (id: AppID) => {
       setWindows((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
+        prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w)),
       );
       if (activeApp === id) setActiveApp(null);
     },
-    [activeApp]
+    [activeApp],
   );
 
-  const focusWindow = useCallback(
-    (id: AppID) => {
-      setWindows((prev) => {
-        const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
-        const currentWin = prev.find((w) => w.id === id);
-        if (currentWin && currentWin.zIndex === highestZ) {
-          return prev;
-        }
-        return prev.map((w) =>
-          w.id === id ? { ...w, zIndex: highestZ + 1 } : w
-        );
-      });
-      setTopZ((prev) => prev + 2);
-      setActiveApp(id);
-    },
-    []
-  );
+  const focusWindow = useCallback((id: AppID) => {
+    setWindows((prev) => {
+      const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
+      const currentWin = prev.find((w) => w.id === id);
+      if (currentWin && currentWin.zIndex === highestZ) {
+        return prev;
+      }
+      return prev.map((w) =>
+        w.id === id ? { ...w, zIndex: highestZ + 1 } : w,
+      );
+    });
+    setTopZ((prev) => prev + 2);
+    setActiveApp(id);
+  }, []);
 
   const toggleMaximize = useCallback((id: AppID) => {
     setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isMaximized: !w.isMaximized } : w))
+      prev.map((w) =>
+        w.id === id ? { ...w, isMaximized: !w.isMaximized } : w,
+      ),
     );
   }, []);
 
@@ -229,6 +239,8 @@ export default function Home() {
     <div
       className={`w-full h-full relative flex flex-col overflow-hidden no-select bg-black`}
     >
+      {/* Boot ekranı — her session'da bir kez */}
+      {showBoot && <BootScreen onComplete={handleBootComplete} />}
       <Image
         src={wallpaper}
         alt="Wallpaper"
@@ -294,10 +306,10 @@ export default function Home() {
             lang={lang}
             getAppTitle={getAppTitle}
           />
-      {/* Glossy reflection behind windows */}
-      <div className="absolute inset-0 glossy-reflection z-[5] pointer-events-none"></div>
+          {/* Glossy reflection behind windows */}
+          <div className="absolute inset-0 glossy-reflection z-[5] pointer-events-none"></div>
 
-      <div className="absolute inset-0 pointer-events-none z-40">
+          <div className="absolute inset-0 pointer-events-none z-40">
             <AnimatePresence>
               {windows.map(
                 (win) =>
@@ -316,7 +328,7 @@ export default function Home() {
                     >
                       {renderAppContent(win)}
                     </Window>
-                  )
+                  ),
               )}
             </AnimatePresence>
           </div>
