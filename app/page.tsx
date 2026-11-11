@@ -34,7 +34,20 @@ import {
 } from "@/lib/analytics";
 
 export default function Home() {
-  const [lang, setLang] = useState<Language>("tr");
+  const [lang, setLang] = useState<Language>(() => {
+    // localStorage'dan oku (tarayıcı ortamı kontrolü)
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("portfolio-lang") as Language) || "tr";
+    }
+    return "tr";
+  });
+
+  // Lang değişince kaydet
+  const handleSetLang = (l: Language) => {
+    setLang(l);
+    if (typeof window !== "undefined")
+      localStorage.setItem("portfolio-lang", l);
+  };
   // Başlangıçta true — boot ekranı anında gösterilir, desktop arkada hazırlanır
   const [showBoot, setShowBoot] = useState(true);
 
@@ -217,7 +230,7 @@ export default function Home() {
         return (
           <SettingsApp
             lang={lang}
-            setLang={setLang}
+            setLang={handleSetLang}
             isDarkMode={isDarkMode}
             setDarkMode={setDarkMode}
             brightness={brightness}
@@ -359,7 +372,7 @@ export default function Home() {
         isOpen={isControlCenterOpen}
         onClose={() => setIsControlCenterOpen(false)}
         lang={lang}
-        setLang={setLang}
+        setLang={handleSetLang}
         isDarkMode={isDarkMode}
         setDarkMode={setDarkMode}
         isWifiEnabled={isWifiEnabled}
