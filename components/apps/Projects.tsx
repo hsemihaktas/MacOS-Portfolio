@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { Project, Language } from "@/lib/types";
+import { transformImg } from "@/lib/supabase";
 import { usePortfolioData } from "@/lib/context/DataContext";
 import {
   LayoutGrid,
@@ -16,8 +17,7 @@ import {
 } from "lucide-react";
 
 // Yükleme sırasında gösterilen shimmer blur placeholder
-const shimmerSvg = (
-  w: number, h: number) => `
+const shimmerSvg = (w: number, h: number) => `
 <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -275,7 +275,10 @@ const Projects: React.FC<ProjectsProps> = ({
                     className={`aspect-[16/10] ${bgCard} rounded-[32px] overflow-hidden border ${borderStyle} shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-2 relative`}
                   >
                     <Image
-                      src={project.image}
+                      src={transformImg(project.image, {
+                        width: 800,
+                        quality: 80,
+                      })}
                       alt={project.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
