@@ -1,4 +1,7 @@
-export const handleStoreRedirect = (app: any) => {
+export const handleStoreRedirect = (app: {
+  appStoreUrl?: string;
+  playStoreUrl?: string;
+}) => {
   if (!app) return;
 
   const isAndroid = /Android/i.test(navigator.userAgent);

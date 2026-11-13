@@ -2,14 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import {
-  Wifi,
-  WifiOff,
-  Search,
-  SlidersHorizontal,
-  Battery,
-  Signal,
-} from "lucide-react";
+import { Wifi, WifiOff, Search, SlidersHorizontal, Signal } from "lucide-react";
 import { Language } from "@/lib/types";
 import { usePortfolioData, useSiteConfig } from "@/lib/context/DataContext";
 
@@ -30,9 +23,9 @@ const MenuBar: React.FC<MenuBarProps> = ({
   onSearchClick,
   onControlClick,
   isMobile,
-  isTablet,
+  isTablet: _isTablet,
   isWifiEnabled = true,
-  isDarkMode = false,
+  isDarkMode: _isDarkMode = false,
 }) => {
   const [time, setTime] = useState(new Date());
   const [showHelpMenu, setShowHelpMenu] = useState(false);

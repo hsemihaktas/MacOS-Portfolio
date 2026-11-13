@@ -27,7 +27,7 @@ const SiteConfigContext = createContext<SiteConfigRow | null>(null);
 
 export function DataProvider({
   children,
-  lang,
+  lang: _lang,
   onReady,
 }: {
   children: ReactNode;

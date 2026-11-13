@@ -8,8 +8,10 @@ import {
   Search,
 } from "lucide-react";
 
+import { AppStoreDataShape } from "@/lib/types";
+
 interface SidebarProps {
-  data: any;
+  data: AppStoreDataShape;
   activeCategory: string;
   setActiveCategory: (category: string) => void;
   setSelectedAppId: (id: number | null) => void;
@@ -65,7 +67,7 @@ export default function Sidebar({
       </div>
 
       <div className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible px-2 pb-3 md:pb-0 gap-0.5">
-        {data.categories.map((cat: any) => (
+        {data.categories.map(( cat) => (
           <button
             key={cat.id}
             onClick={() => {

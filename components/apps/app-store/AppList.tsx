@@ -2,9 +2,11 @@ import React from "react";
 import Image from "next/image";
 import { handleStoreRedirect } from "./utils";
 
+import { AppStoreApp, AppStoreDataShape } from "@/lib/types";
+
 interface AppListProps {
-  apps: any[];
-  data: any;
+  apps: AppStoreApp[];
+  data: AppStoreDataShape;
   activeCategory: string;
   setSelectedAppId: (id: number) => void;
   isDarkMode: boolean;
@@ -23,7 +25,7 @@ export default function AppList({
         <h3 className="text-xl font-bold">
           {activeCategory === "discover"
             ? data.labels.suggestedApps
-            : data.categories.find((c: any) => c.id === activeCategory)?.name}
+            : data.categories.find((c: { id: string }) => c.id === activeCategory)?.name}
         </h3>
         <button className="text-blue-500 text-sm hover:underline">
           {data.labels.seeAll}
@@ -31,7 +33,7 @@ export default function AppList({
       </div>
 
       <div className="flex flex-col space-y-4">
-        {apps.map((app: any) => (
+        {apps.map((app) => (
           <div
             key={app.id}
             onClick={() => setSelectedAppId(app.id)}

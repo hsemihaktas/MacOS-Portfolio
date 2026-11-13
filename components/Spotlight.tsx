@@ -18,17 +18,16 @@ import { Language, AppID } from "@/lib/types";
 interface SpotlightProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectApp: (id: AppID, params?: any) => void;
+  onSelectApp: (id: AppID, params?: Record<string, unknown>) => void;
   lang: Language;
 }
 
-// Added interface for search result items to handle optional params
 interface SearchResult {
   id: AppID;
   title: string;
   subtitle: string;
   icon: React.ReactNode;
-  params?: any;
+  params?: Record<string, unknown>;
 }
 
 const Spotlight: React.FC<SpotlightProps> = ({

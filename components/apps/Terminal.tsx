@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
   KeyboardEvent,
 } from "react";
 import { Language, AppID } from "@/lib/types";
@@ -355,26 +356,29 @@ export default function Terminal({ lang, onOpenApp }: TerminalProps) {
 
   const prompt = `${cwd} % `;
 
-  // Fake filesystem built from Supabase data
-  const FS: Record<string, string[]> = {
-    "~": ["about.md", "contact.md", "skills.md", "projects/"],
-    "~/projects": ["mobile/", "web/", "discord/"],
-    "~/projects/mobile": DATA.tr.projects.items
-      .filter((p: { platform: string }) => p.platform === "mobile")
-      .map(
-        (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
-      ),
-    "~/projects/web": DATA.tr.projects.items
-      .filter((p: { platform: string }) => p.platform === "web")
-      .map(
-        (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
-      ),
-    "~/projects/discord": DATA.tr.projects.items
-      .filter((p: { platform: string }) => p.platform === "discord-bot")
-      .map(
-        (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
-      ),
-  };
+  // Fake filesystem built from Supabase data — memoized to stable reference for useCallback
+  const FS = useMemo<Record<string, string[]>>(
+    () => ({
+      "~": ["about.md", "contact.md", "skills.md", "projects/"],
+      "~/projects": ["mobile/", "web/", "discord/"],
+      "~/projects/mobile": DATA.tr.projects.items
+        .filter((p: { platform: string }) => p.platform === "mobile")
+        .map(
+          (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
+        ),
+      "~/projects/web": DATA.tr.projects.items
+        .filter((p: { platform: string }) => p.platform === "web")
+        .map(
+          (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
+        ),
+      "~/projects/discord": DATA.tr.projects.items
+        .filter((p: { platform: string }) => p.platform === "discord-bot")
+        .map(
+          (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
+        ),
+    }),
+    [DATA.tr.projects.items],
+  );
 
   // Yeni satır eklendikçe en alta scroll
   useEffect(() => {

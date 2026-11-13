@@ -1,19 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Download,
-  Star,
-  User,
-  X,
-} from "lucide-react";
+import { ChevronRight, Download, Star, User } from "lucide-react";
+import { AppStoreApp, AppStoreDataShape } from "@/lib/types";
 import { handleStoreRedirect } from "./utils";
 
 interface AppDetailProps {
-  app: any;
+  app: AppStoreApp;
   onBack: () => void;
-  data: any;
+  data: AppStoreDataShape;
   isDarkMode: boolean;
   onScreenshotClick: (url: string) => void;
 }
@@ -94,7 +88,7 @@ export default function AppDetail({
               {data.labels.chart}
             </div>
             <div className="text-xl font-bold text-gray-400">
-              #{app.chart.split(" ")[0].replace("#", "")}
+              #{(app.chart ?? "").split(" ")[0].replace("#", "")}
             </div>
             <div className="text-xs text-gray-400 truncate max-w-[80px]">
               {app.category}

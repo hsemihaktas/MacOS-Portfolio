@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
+import { AppStoreApp, AppStoreDataShape } from "@/lib/types";
 
 interface FeaturedSectionProps {
-  data: any;
+  data: AppStoreDataShape;
   onSelectApp: (appId: number) => void;
 }
 
@@ -15,7 +16,7 @@ export default function FeaturedSection({
       <div
         className="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
         onClick={() => {
-          const featuredApp = data.apps.find((a: any) =>
+          const featuredApp = data.apps.find((a: AppStoreApp) =>
             a.title.includes(data.featured.title),
           );
           if (featuredApp) onSelectApp(featuredApp.id);

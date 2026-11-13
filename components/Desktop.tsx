@@ -18,7 +18,7 @@ const Desktop: React.FC<DesktopProps> = ({
   onIconClick,
   isMobile,
   isTablet,
-  lang,
+  lang: _lang,
   getAppTitle,
 }) => {
   const siteConfig = useSiteConfig();

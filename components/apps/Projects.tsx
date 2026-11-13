@@ -62,31 +62,6 @@ function tk(dark?: boolean) {
   };
 }
 
-// ─── Nav item ─────────────────────────────────────────────────────────────────
-const NavItem = ({
-  icon,
-  label,
-  active,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) => {
-  // We need the token colors from outside — use className approach
-  return (
-    <li
-      className={`flex items-center gap-2.5 px-2.5 py-[6px] rounded-lg cursor-default transition-all select-none ${active ? "" : ""}`}
-      onClick={onClick}
-      data-active={active}
-    >
-      {icon}
-      <span className="text-[13px] font-medium truncate">{label}</span>
-    </li>
-  );
-};
-
 interface ProjectsProps {
   lang: Language;
   isDarkMode?: boolean;
@@ -184,13 +159,13 @@ const Projects: React.FC<ProjectsProps> = ({
               cond: !filter && !platformFilter && !selectedProject,
             },
             {
-              id: "mobile" as "mobile",
+              id: "mobile" as const,
               icon: <Smartphone size={14} className="shrink-0" />,
               label: isTr ? "Mobil Uygulamalar" : "Mobile Apps",
               cond: platformFilter === "mobile",
             },
             {
-              id: "web" as "web",
+              id: "web" as const,
               icon: <Monitor size={14} className="shrink-0" />,
               label: isTr ? "Web Siteleri" : "Websites",
               cond: platformFilter === "web",

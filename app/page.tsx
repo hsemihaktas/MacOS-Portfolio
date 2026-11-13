@@ -116,7 +116,7 @@ export default function Home() {
   );
 
   const [activeApp, setActiveApp] = useState<AppID | null>(null);
-  const [topZ, setTopZ] = useState(INITIAL_Z_INDEX + 1);
+  const [, setTopZ] = useState(INITIAL_Z_INDEX + 1);
   // null ile başla — WallpaperSync DB'den gelince günceller
   const [wallpaper, setWallpaper] = useState<string | null>(null);
   const [wallpaperPos, setWallpaperPos] = useState({
@@ -141,42 +141,48 @@ export default function Home() {
     [lang],
   );
 
-  const openWindow = useCallback((id: AppID, params?: any) => {
-    // Track app open events
-    const trackingMap: Record<AppID, () => void> = {
-      about: trackAboutOpen,
-      safari: trackSafariOpen,
-      projects: trackProjectsOpen,
-      contact: trackContactOpen,
-      settings: trackSettingsOpen,
-      "activity-monitor": () => {}, // No tracking for activity monitor
-      "app-store": () => {},
-      terminal: () => {},
-    };
-    trackingMap[id]?.();
+  const openWindow = useCallback(
+    (id: AppID, params?: Record<string, unknown>) => {
+      // Track app open events
+      const trackingMap: Record<AppID, () => void> = {
+        about: trackAboutOpen,
+        safari: trackSafariOpen,
+        projects: trackProjectsOpen,
+        contact: trackContactOpen,
+        settings: trackSettingsOpen,
+        "activity-monitor": () => {}, // No tracking for activity monitor
+        "app-store": () => {},
+        terminal: () => {},
+      };
+      trackingMap[id]?.();
 
-    setWindows((prev) => {
-      const highestZ = Math.max(INITIAL_Z_INDEX, ...prev.map((w) => w.zIndex));
-      const targetZ = highestZ + 2;
-      return prev.map((w) => {
-        if (w.id === id) {
-          return {
-            ...w,
-            isOpen: true,
-            isMinimized: false,
-            zIndex: targetZ,
-            params: params !== undefined ? params : w.params,
-          };
-        }
-        return w;
+      setWindows((prev) => {
+        const highestZ = Math.max(
+          INITIAL_Z_INDEX,
+          ...prev.map((w) => w.zIndex),
+        );
+        const targetZ = highestZ + 2;
+        return prev.map((w) => {
+          if (w.id === id) {
+            return {
+              ...w,
+              isOpen: true,
+              isMinimized: false,
+              zIndex: targetZ,
+              params: params !== undefined ? params : w.params,
+            };
+          }
+          return w;
+        });
       });
-    });
-    setTopZ((prev) => prev + 5);
-    setActiveApp(id);
+      setTopZ((prev) => prev + 5);
+      setActiveApp(id);
 
-    setIsSpotlightOpen(false);
-    setIsControlCenterOpen(false);
-  }, []);
+      setIsSpotlightOpen(false);
+      setIsControlCenterOpen(false);
+    },
+    [],
+  );
 
   const closeWindow = useCallback(
     (id: AppID) => {

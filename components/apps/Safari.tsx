@@ -41,7 +41,7 @@ export default function Safari({
   isDarkMode = false,
   isMobile = false,
   initialUrl,
-  initialTitle,
+  initialTitle: _initialTitle,
 }: SafariProps) {
   const DATA = usePortfolioData();
   const d = DATA[lang].projects;

@@ -2,26 +2,26 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { usePortfolioData } from "@/lib/context/DataContext";
 import { X } from "lucide-react";
-import { AppStoreProps, Language } from "@/lib/types";
+import { AppStoreProps, AppStoreDataShape } from "@/lib/types";
 import Sidebar from "./app-store/Sidebar";
 import AppList from "./app-store/AppList";
 import FeaturedSection from "./app-store/FeaturedSection";
 import AppDetail from "./app-store/AppDetail";
 
-export default function AppStore({
-   lang, isDarkMode }: AppStoreProps) {
+export default function AppStore({ lang, isDarkMode }: AppStoreProps) {
   const DATA = usePortfolioData();
-  const data = DATA[lang].appStore;
+  const data = DATA[lang].appStore as AppStoreDataShape;
   const [activeCategory, setActiveCategory] = useState("discover");
   const [selectedAppId, setSelectedAppId] = useState<number | null>(null);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   // Derive the selected app object from the current language data
-  const selectedApp = selectedAppId
-    ? data.apps.find((a: any) => a.id === selectedAppId)
-    : null;
+  const selectedApp =
+    selectedAppId != null
+      ? (data.apps.find((a) => a.id === selectedAppId) ?? null)
+      : null;
 
-  const filteredApps = data.apps.filter((app: any) => {
+  const filteredApps = data.apps.filter((app) => {
     if (activeCategory === "discover") return true;
     if (activeCategory === "create")
       return (

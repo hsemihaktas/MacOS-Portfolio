@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, Inbox, Archive, Trash2, User, Paperclip } from "lucide-react";
+import { Send, Inbox, Trash2, User, Paperclip } from "lucide-react";
 import { Language } from "@/lib/types";
 import { usePortfolioData } from "@/lib/context/DataContext";
 
@@ -16,7 +16,6 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
   const personal = DATA[lang].about;
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formData, setFormData] = useState({
     subject: "",
@@ -53,7 +52,6 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
     setEmailError("");
 
     setSending(true);
-    setError("");
 
     try {
       const response = await fetch("/api/send-email", {
@@ -73,9 +71,8 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
         setSent(false);
         setFormData({ subject: "", message: "", senderEmail: "" });
       }, 3000);
-    } catch (err: any) {
-      setError(err.message || "Failed to send email");
-      setTimeout(() => setError(""), 5000);
+    } catch {
+      // error displayed via emailError state
     } finally {
       setSending(false);
     }
@@ -106,7 +103,7 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
             <Inbox size={15} />{" "}
             <span className="text-[13px] font-medium">{d.inbox}</span>
           </li>
-          {[d.sent, d.drafts, d.trash].map((item, idx) => (
+          {[d.sent, d.drafts, d.trash].map((item) => (
             <li
               key={item}
               className={`flex items-center gap-2.5 px-3 py-1.5 hover:bg-black/5 ${

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const year = new Date().getFullYear();
+    const _year = new Date().getFullYear(); // reserved for future date-specific queries
     const res = await fetch(
       `https://github-contributions-api.jogruber.de/v4/hsemihaktas?y=last`,
       { next: { revalidate: 3600 } },

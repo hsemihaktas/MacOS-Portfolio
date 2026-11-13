@@ -68,6 +68,40 @@ export interface ProjectDefinition {
   en: { title: string; description: string; features?: string[] };
 }
 
+export interface AppStoreApp {
+  id: number;
+  icon: string;
+  screenshots?: string[];
+  rating?: number;
+  age?: string;
+  version?: string;
+  size?: string;
+  category: string;
+  appStoreUrl?: string;
+  playStoreUrl?: string;
+  developer?: string;
+  // Flat fields — already language-selected by DataContext
+  title: string;
+  subtitle?: string;
+  description?: string;
+  chart?: string;
+  features?: string[];
+}
+
+export interface AppStoreDataShape {
+  apps: AppStoreApp[];
+  categories: { id: string; name: string; icon: string }[];
+  labels: Record<string, string>;
+  featured: {
+    title: string;
+    subtitle?: string;
+    description?: string;
+    image?: string;
+    bgColor?: string;
+    textColor?: string;
+  };
+}
+
 export interface AppStoreProps {
   lang: Language;
   isDarkMode: boolean;
