@@ -118,3 +118,17 @@ export async function fetchAppStoreApps(lang: Language) {
     };
   });
 }
+
+// ── Site Config ───────────────────────────────────────────────────────────────
+import type { SiteConfigRow } from "@/lib/database.types";
+
+export async function fetchSiteConfig(): Promise<SiteConfigRow | null> {
+  const { data, error } = await supabase
+    .from("site_config")
+    .select("*")
+    .eq("id", 1)
+    .single();
+
+  if (error || !data) return null;
+  return data as SiteConfigRow;
+}

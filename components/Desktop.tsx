@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { APPS } from "@/lib/constants";
+import { useSiteConfig } from "@/lib/context/DataContext";
 import { AppID, Language } from "@/lib/types";
 
 interface DesktopProps {
@@ -20,24 +21,29 @@ const Desktop: React.FC<DesktopProps> = ({
   lang,
   getAppTitle,
 }) => {
+  const siteConfig = useSiteConfig();
+  const apps = APPS.map((app) => ({
+    ...app,
+    iconUrl: siteConfig?.icons?.[app.id] ?? app.iconUrl,
+  }));
   const containerClass = isMobile
     ? "absolute inset-0 pt-20 pb-24 px-6 grid grid-cols-4 gap-y-8 content-start"
     : isTablet
-    ? "absolute inset-0 pt-24 pb-32 px-12 grid grid-cols-5 gap-y-12 content-start"
-    : "absolute inset-0 pt-12 pb-24 px-8 flex flex-col flex-wrap content-start gap-x-12 gap-y-10 [direction:rtl]";
+      ? "absolute inset-0 pt-24 pb-32 px-12 grid grid-cols-5 gap-y-12 content-start"
+      : "absolute inset-0 pt-12 pb-24 px-8 flex flex-col flex-wrap content-start gap-x-12 gap-y-10 [direction:rtl]";
 
   const iconSize = isMobile
     ? "w-[62px] h-[62px]"
     : isTablet
-    ? "w-[72px] h-[72px]"
-    : "w-[54px] h-[54px]";
+      ? "w-[72px] h-[72px]"
+      : "w-[54px] h-[54px]";
   const iconRadius = isMobile || isTablet ? "rounded-[14px]" : "rounded-none";
 
   return (
     <div
       className={`${containerClass} select-none h-full w-full pointer-events-none`}
     >
-      {APPS.map((app) => (
+      {apps.map((app) => (
         <div
           key={app.id}
           className="group flex flex-col items-center gap-1.5 cursor-default transition-all duration-300 pointer-events-auto [direction:ltr]"

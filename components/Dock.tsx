@@ -5,6 +5,7 @@ import Image from "next/image";
 import { APPS } from "@/lib/constants";
 import { AppID, WindowState, Language } from "@/lib/types";
 import { Github, Linkedin } from "lucide-react";
+import { useSiteConfig } from "@/lib/context/DataContext";
 import {
   trackGithubOpen,
   trackLinkedinOpen,
@@ -136,6 +137,13 @@ const Dock: React.FC<DockProps> = ({
   isOnline = true,
   getAppTitle,
 }) => {
+  const siteConfig = useSiteConfig();
+
+  // Icon URL'lerini siteConfig'den override et
+  const apps = APPS.map((app) => ({
+    ...app,
+    iconUrl: siteConfig?.icons?.[app.id] ?? app.iconUrl,
+  }));
   const isAnyWindowOpen = React.useMemo(
     () => windows.some((w) => w.isOpen && !w.isMinimized),
     [windows],
@@ -169,7 +177,7 @@ const Dock: React.FC<DockProps> = ({
     return (
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[9998]">
         <div className="bg-white/15 backdrop-blur-3xl rounded-[28px] px-5 py-3 flex gap-4 items-center shadow-2xl border border-white/10 ring-1 ring-white/5">
-          {APPS.map((app) => (
+          {apps.map((app) => (
             <div
               key={app.id}
               className="w-[64px] h-[64px] active:scale-90 transition-transform relative"
@@ -204,7 +212,7 @@ const Dock: React.FC<DockProps> = ({
   return (
     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 p-2 z-[9999]">
       <div className="flex items-end gap-3 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-[22px] px-3 py-2 shadow-[0_30px_60px_rgba(0,0,0,0.4)] ring-1 ring-black/5">
-        {APPS.map((app) => {
+        {apps.map((app) => {
           const isOpen = windows.find((w) => w.id === app.id)?.isOpen;
           return (
             <div

@@ -10,7 +10,20 @@ import Spotlight from "@/components/Spotlight";
 import ControlCenter from "@/components/ControlCenter";
 import { AnimatePresence } from "framer-motion";
 import BootScreen from "@/components/BootScreen";
-import { DataProvider } from "@/lib/context/DataContext";
+import { DataProvider, useSiteConfig } from "@/lib/context/DataContext";
+
+// DataProvider içinde çalışan, wallpaper URL'sini güncelleyen küçük component
+function WallpaperSync({
+  setWallpaper,
+}: {
+  setWallpaper: (url: string) => void;
+}) {
+  const config = useSiteConfig();
+  React.useEffect(() => {
+    if (config?.wallpaper_url) setWallpaper(config.wallpaper_url);
+  }, [config?.wallpaper_url, setWallpaper]);
+  return null;
+}
 
 import AboutApp from "@/components/apps/About";
 import ProjectsApp from "@/components/apps/Projects";
@@ -265,6 +278,8 @@ export default function Home() {
 
   return (
     <DataProvider lang={lang} onReady={() => setDataReady(true)}>
+      {/* Wallpaper URL'si siteConfig gelince güncellenir — DataProvider içinde olmalı */}
+      <WallpaperSync setWallpaper={setWallpaper} />
       <div
         className={`w-full h-full relative flex flex-col overflow-hidden no-select bg-black`}
       >

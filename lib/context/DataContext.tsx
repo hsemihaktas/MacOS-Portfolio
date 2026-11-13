@@ -14,13 +14,16 @@ import {
   fetchAbout,
   fetchSkillCategories,
   fetchAppStoreApps,
+  fetchSiteConfig,
 } from "@/lib/queries";
 import type { Language } from "@/lib/types";
+import type { SiteConfigRow } from "@/lib/database.types";
 
 type DataShape = typeof DATA;
 
 const DataContext = createContext<DataShape>(DATA);
 const LoadingContext = createContext<boolean>(true);
+const SiteConfigContext = createContext<SiteConfigRow | null>(null);
 
 export function DataProvider({
   children,
@@ -33,7 +36,7 @@ export function DataProvider({
 }) {
   const [data, setData] = useState<DataShape>(DATA);
   const [loading, setLoading] = useState(true);
-  // Ref ile sakla — inline arrow değişse de effect yeniden çalışmaz
+  const [siteConfig, setSiteConfig] = useState<SiteConfigRow | null>(null);
   const onReadyRef = useRef(onReady);
   useEffect(() => {
     onReadyRef.current = onReady;
@@ -53,6 +56,7 @@ export function DataProvider({
           skillsEn,
           appsTr,
           appsEn,
+          config,
         ] = await Promise.all([
           fetchProjectItems("tr"),
           fetchProjectItems("en"),
@@ -62,9 +66,33 @@ export function DataProvider({
           fetchSkillCategories("en"),
           fetchAppStoreApps("tr"),
           fetchAppStoreApps("en"),
+          fetchSiteConfig(),
         ]);
 
         if (cancelled) return;
+
+        if (config) setSiteConfig(config);
+
+        // Kritik resimleri önceden yükle (boot kapanmadan önce)
+        if (config) {
+          const toPreload = [
+            config.wallpaper_url,
+            config.profile_picture_url,
+            ...Object.values(config.icons ?? {}),
+          ].filter(Boolean) as string[];
+
+          await Promise.allSettled(
+            toPreload.map(
+              (url) =>
+                new Promise<void>((resolve) => {
+                  const img = new window.Image();
+                  img.onload = () => resolve();
+                  img.onerror = () => resolve(); // hata olsa da bekletme
+                  img.src = url;
+                }),
+            ),
+          );
+        }
 
         setData((prev) => ({
           tr: {
@@ -96,14 +124,17 @@ export function DataProvider({
     return () => {
       cancelled = true;
     };
-  }, []); // sadece bir kez çalışır
+  }, []);
 
   return (
     <LoadingContext.Provider value={loading}>
-      <DataContext.Provider value={data}>{children}</DataContext.Provider>
+      <SiteConfigContext.Provider value={siteConfig}>
+        <DataContext.Provider value={data}>{children}</DataContext.Provider>
+      </SiteConfigContext.Provider>
     </LoadingContext.Provider>
   );
 }
 
 export const usePortfolioData = () => useContext(DataContext);
 export const usePortfolioLoading = () => useContext(LoadingContext);
+export const useSiteConfig = () => useContext(SiteConfigContext);

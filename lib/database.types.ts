@@ -1,7 +1,13 @@
 // Supabase tablo tipleri
 // Supabase dashboard → Settings → API → TypeScript Types ile otomatik güncellenebilir
 
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[];
 
 export interface Database {
   public: {
@@ -28,7 +34,10 @@ export interface Database {
           created_at: string;
           updated_at: string;
         };
-        Insert: Omit<Database["public"]["Tables"]["projects"]["Row"], "created_at" | "updated_at">;
+        Insert: Omit<
+          Database["public"]["Tables"]["projects"]["Row"],
+          "created_at" | "updated_at"
+        >;
         Update: Partial<Database["public"]["Tables"]["projects"]["Insert"]>;
       };
       about: {
@@ -71,8 +80,13 @@ export interface Database {
           name_tr: string;
           name_en: string;
         };
-        Insert: Omit<Database["public"]["Tables"]["skill_categories"]["Row"], "id">;
-        Update: Partial<Database["public"]["Tables"]["skill_categories"]["Insert"]>;
+        Insert: Omit<
+          Database["public"]["Tables"]["skill_categories"]["Row"],
+          "id"
+        >;
+        Update: Partial<
+          Database["public"]["Tables"]["skill_categories"]["Insert"]
+        >;
       };
       skills: {
         Row: {
@@ -89,8 +103,20 @@ export interface Database {
 }
 
 // Convenience types
-export type ProjectRow      = Database["public"]["Tables"]["projects"]["Row"];
-export type AboutRow        = Database["public"]["Tables"]["about"]["Row"];
-export type ExperienceRow   = Database["public"]["Tables"]["experience"]["Row"];
-export type SkillCategoryRow = Database["public"]["Tables"]["skill_categories"]["Row"];
-export type SkillRow        = Database["public"]["Tables"]["skills"]["Row"];
+export type ProjectRow = Database["public"]["Tables"]["projects"]["Row"];
+export type AboutRow = Database["public"]["Tables"]["about"]["Row"];
+export type ExperienceRow = Database["public"]["Tables"]["experience"]["Row"];
+export type SkillCategoryRow =
+  Database["public"]["Tables"]["skill_categories"]["Row"];
+export type SkillRow = Database["public"]["Tables"]["skills"]["Row"];
+
+// site_config
+export interface SiteConfigRow {
+  id: number;
+  wallpaper_url: string;
+  profile_picture_url: string;
+  og_image_url: string | null;
+  cv_url: string | null;
+  icons: Record<string, string>;
+  updated_at: string;
+}

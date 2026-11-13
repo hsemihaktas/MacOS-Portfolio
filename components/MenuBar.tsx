@@ -11,7 +11,7 @@ import {
   Signal,
 } from "lucide-react";
 import { Language } from "@/lib/types";
-import { usePortfolioData } from "@/lib/context/DataContext";
+import { usePortfolioData, useSiteConfig } from "@/lib/context/DataContext";
 
 interface MenuBarProps {
   activeAppTitle: string;
@@ -38,6 +38,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
   const [showHelpMenu, setShowHelpMenu] = useState(false);
   const [mounted, setMounted] = useState(false);
   const DATA = usePortfolioData();
+  const config = useSiteConfig();
   const helpMenuRef = useRef<HTMLDivElement>(null);
   const t = DATA[lang].menu;
   const d = DATA[lang].about;
@@ -82,15 +83,18 @@ const MenuBar: React.FC<MenuBarProps> = ({
     <WifiOff size={17} strokeWidth={2.5} className="text-white/40" />
   );
 
-  // Apple Logo
-  const AppleLogo = (
+  // Apple Logo — siteConfig gelene kadar boş göster
+  const appleSrc = config?.icons?.["apple-logo"] ?? null;
+  const AppleLogo = appleSrc ? (
     <Image
-      src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/apple-logo-white.png"
+      src={appleSrc}
       alt="Apple"
       width={16}
       height={16}
       className="object-contain"
     />
+  ) : (
+    <div className="w-4 h-4" /> // placeholder
   );
 
   // MOBILE VIEW (iPhone Style Status Bar)

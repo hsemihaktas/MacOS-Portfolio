@@ -10,7 +10,7 @@ import {
   Linkedin,
   Download,
 } from "lucide-react";
-import { usePortfolioData } from "@/lib/context/DataContext";
+import { usePortfolioData, useSiteConfig } from "@/lib/context/DataContext";
 import { Language } from "@/lib/types";
 import GitHubCalendar from "@/components/GitHubCalendar";
 
@@ -112,6 +112,7 @@ const InfoRow = ({
 
 export default function About({ lang, isDarkMode }: AboutProps) {
   const DATA = usePortfolioData();
+  const config = useSiteConfig();
   const d = DATA[lang].about;
   const t = tokens(isDarkMode);
   const isTr = lang === "tr";
@@ -126,7 +127,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           {/* Profil fotoğrafı */}
           <div className="relative w-20 h-20 shrink-0">
             <Image
-              src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"
+              src={config?.profile_picture_url ?? "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"}
               alt="Profile"
               fill
               className="object-cover rounded-full shadow-md"
@@ -176,7 +177,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                 <Linkedin size={12} /> LinkedIn
               </a>
               <a
-                href="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/cv.pdf"
+                href={config?.cv_url ?? "#"}
                 download="Hasan_Semih_Aktas_CV.pdf"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors
                   ${
