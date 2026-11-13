@@ -109,18 +109,27 @@ const SocialLinkItem = ({
   return (
     <div className="relative group cursor-default flex flex-col items-center">
       <DockTooltip label={label} />
+      {/* Outer wrapper: full size for hover effects + alignment */}
       <a
         href={href}
         target="_blank"
         onClick={onClick}
         style={{ width: size, height: size }}
-        className={`backdrop-blur-xl rounded-xl flex items-center justify-center
-          transition-all duration-300 transform origin-bottom
+        className="flex items-center justify-center transition-all duration-300 transform origin-bottom
           group-hover:scale-[1.28] group-hover:-translate-y-3.5
           group-active:scale-95 group-active:translate-y-0
-          ease-[cubic-bezier(0.25,1,0.5,1)] ${bgClass}`}
+          ease-[cubic-bezier(0.25,1,0.5,1)]"
       >
-        {children}
+        {/* Inner colored area: ~86% to match app icon visual weight */}
+        <div
+          style={{
+            width: Math.round(size * 0.86),
+            height: Math.round(size * 0.86),
+          }}
+          className={`rounded-xl flex items-center justify-center ${bgClass}`}
+        >
+          {children}
+        </div>
       </a>
     </div>
   );
@@ -150,7 +159,7 @@ const SocialLinks = ({
         label="GitHub"
         bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
       >
-        <Github size={size * 0.5} className="text-white" />
+        <Github size={Math.round(size * 0.4)} className="text-white" />
       </SocialLinkItem>
     )}
     {linkedinUrl && (
@@ -162,7 +171,10 @@ const SocialLinks = ({
         label="LinkedIn"
         bgClass="bg-[#0077b5] hover:bg-[#0088cc] border border-[#0099dd]/50"
       >
-        <Linkedin size={size * 0.5} className="text-white fill-white" />
+        <Linkedin
+          size={Math.round(size * 0.4)}
+          className="text-white fill-white"
+        />
       </SocialLinkItem>
     )}
     {twitterUrl && (
@@ -176,7 +188,7 @@ const SocialLinks = ({
       >
         <svg
           viewBox="0 0 24 24"
-          style={{ width: size * 0.42, height: size * 0.42 }}
+          style={{ width: size * 0.41, height: size * 0.41 }}
           className="fill-white"
         >
           <path d={X_PATH} />
