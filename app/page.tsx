@@ -15,13 +15,24 @@ import { DataProvider, useSiteConfig } from "@/lib/context/DataContext";
 // DataProvider içinde çalışan, wallpaper URL'sini güncelleyen küçük component
 function WallpaperSync({
   setWallpaper,
+  setWallpaperPos,
 }: {
   setWallpaper: (url: string) => void;
+  setWallpaperPos: (pos: { mobile: string; desktop: string }) => void;
 }) {
   const config = useSiteConfig();
   React.useEffect(() => {
     if (config?.wallpaper_url) setWallpaper(config.wallpaper_url);
-  }, [config?.wallpaper_url, setWallpaper]);
+    setWallpaperPos({
+      mobile: config?.wallpaper_position_mobile ?? "0% center",
+      desktop: config?.wallpaper_position_desktop ?? "center",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    config?.wallpaper_url,
+    config?.wallpaper_position_mobile,
+    config?.wallpaper_position_desktop,
+  ]);
   return null;
 }
 
@@ -110,6 +121,10 @@ export default function Home() {
   const [topZ, setTopZ] = useState(INITIAL_Z_INDEX + 1);
   // null ile başla — WallpaperSync DB'den gelince günceller
   const [wallpaper, setWallpaper] = useState<string | null>(null);
+  const [wallpaperPos, setWallpaperPos] = useState({
+    mobile: "0% center",
+    desktop: "center",
+  });
 
   const getAppTitle = useCallback(
     (id: AppID): string => {
@@ -278,7 +293,10 @@ export default function Home() {
   return (
     <DataProvider lang={lang} onReady={() => setDataReady(true)}>
       {/* Wallpaper URL'si siteConfig gelince güncellenir — DataProvider içinde olmalı */}
-      <WallpaperSync setWallpaper={setWallpaper} />
+      <WallpaperSync
+        setWallpaper={setWallpaper}
+        setWallpaperPos={setWallpaperPos}
+      />
       <div
         className={`w-full h-full relative flex flex-col overflow-hidden no-select bg-black`}
       >
@@ -293,7 +311,11 @@ export default function Home() {
             fill
             priority
             sizes="100vw"
-            style={{ objectPosition: isMobile ? "70% center" : "center" }}
+            style={{
+              objectPosition: isMobile
+                ? wallpaperPos.mobile
+                : wallpaperPos.desktop,
+            }}
             className="object-cover select-none pointer-events-none"
             quality={85}
           />

@@ -114,6 +114,8 @@ export type SkillRow = Database["public"]["Tables"]["skills"]["Row"];
 export interface SiteConfigRow {
   id: number;
   wallpaper_url: string;
+  wallpaper_position_mobile: string | null;
+  wallpaper_position_desktop: string | null;
   profile_picture_url: string;
   og_image_url: string | null;
   cv_url: string | null;
