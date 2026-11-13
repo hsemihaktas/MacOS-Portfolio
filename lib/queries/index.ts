@@ -77,10 +77,7 @@ export async function fetchAllPortfolioData() {
   ]);
 
   const rawRows = (projectsData ?? []) as ProjectRow[];
-  // Pin highest-id project (newest) to front; rest stay in ascending id order
-  const projectsRows = rawRows.length
-    ? [rawRows[rawRows.length - 1], ...rawRows.slice(0, -1)]
-    : rawRows;
+  const projectsRows = rawRows;
   const aboutRow = (aboutData ?? null) as AboutRow | null;
   const expRows = (expData ?? []) as ExperienceRow[];
   const catRows = (catsData ?? []) as (SkillCategoryRow & {
