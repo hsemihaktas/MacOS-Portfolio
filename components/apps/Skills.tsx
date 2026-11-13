@@ -138,25 +138,40 @@ const Skills: React.FC<SkillsProps> = ({ lang, isDarkMode }) => {
   // ─── Content ───────────────────────────────────────────────────────────────
   const Content = () => (
     <div
-      className="flex-1 overflow-auto custom-scrollbar p-6"
+      className="flex-1 flex flex-col overflow-hidden"
       style={{ background: t.contentBg }}
     >
-      <h2 className={`text-[20px] font-bold ${t.text1} mb-5`}>
-        {activeCat === "all"
-          ? isTr
-            ? "Tüm Yetenekler"
-            : "All Skills"
-          : activeCat}
-      </h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-3xl">
-        {displayed.map((group) => (
-          <SkillCard key={group.name} group={group} />
-        ))}
-        {displayed.length === 0 && (
-          <p className={`text-[14px] ${t.text2}`}>
-            {isTr ? "Yetenek bulunamadı." : "No skills found."}
-          </p>
-        )}
+      {/* Toolbar - Finder style */}
+      <div
+        className="h-[44px] shrink-0 flex items-center px-5 gap-3"
+        style={{ borderBottom: `1px solid ${t.sepColor}` }}
+      >
+        <h3 className={`text-[14px] font-semibold ${t.text1}`}>
+          {activeCat === "all"
+            ? isTr
+              ? "Tüm Yetenekler"
+              : "All Skills"
+            : activeCat}
+        </h3>
+        <span className={`text-[12px] ml-auto ${t.labelFg}`}>
+          {activeCat === "all"
+            ? d.categories.reduce((n, c) => n + c.items.length, 0)
+            : (d.categories.find((c) => c.name === activeCat)?.items.length ??
+              0)}{" "}
+          {isTr ? "yetenek" : "skills"}
+        </span>
+      </div>
+      <div className="flex-1 overflow-auto custom-scrollbar p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-3xl">
+          {displayed.map((group) => (
+            <SkillCard key={group.name} group={group} />
+          ))}
+          {displayed.length === 0 && (
+            <p className={`text-[14px] ${t.text2}`}>
+              {isTr ? "Yetenek bulunamadı." : "No skills found."}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -210,7 +225,7 @@ const Skills: React.FC<SkillsProps> = ({ lang, isDarkMode }) => {
       <div className="hidden md:flex h-full">
         <Sidebar />
         <Content />
-      </div>
+      </div>{" "}
       {/* Mobile: category pills + grid */}
       <div className="md:hidden h-full">
         <MobileLayout />
