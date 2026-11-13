@@ -83,48 +83,60 @@ const SocialLinkItem = ({
 const SocialLinks = ({
   size = 48,
   isMobile = false,
+  githubUrl,
+  linkedinUrl,
+  twitterUrl,
 }: {
   size?: number;
   isMobile?: boolean;
+  githubUrl?: string | null;
+  linkedinUrl?: string | null;
+  twitterUrl?: string | null;
 }) => {
   return (
     <>
-      <SocialLinkItem
-        href="https://github.com/hsemihaktas"
-        onClick={trackGithubOpen}
-        size={size}
-        isMobile={isMobile}
-        label="GitHub"
-        bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
-      >
-        <Github size={size * 0.5} className="text-white" />
-      </SocialLinkItem>
-      <SocialLinkItem
-        href="https://linkedin.com/in/hsemihaktas"
-        onClick={trackLinkedinOpen}
-        size={size}
-        isMobile={isMobile}
-        label="LinkedIn"
-        bgClass="bg-[#0077b5] hover:bg-[#0088cc] border border-[#0099dd]/50"
-      >
-        <Linkedin size={size * 0.5} className="text-white fill-white" />
-      </SocialLinkItem>
-      <SocialLinkItem
-        href="https://twitter.com/hsemihaktas"
-        onClick={trackTwitterOpen}
-        size={size}
-        isMobile={isMobile}
-        label="X (Twitter)"
-        bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          style={{ width: size * 0.42, height: size * 0.42 }}
-          className="fill-white"
+      {githubUrl && (
+        <SocialLinkItem
+          href={githubUrl}
+          onClick={trackGithubOpen}
+          size={size}
+          isMobile={isMobile}
+          label="GitHub"
+          bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
         >
-          <path d={X_PATH} />
-        </svg>
-      </SocialLinkItem>
+          <Github size={size * 0.5} className="text-white" />
+        </SocialLinkItem>
+      )}
+      {linkedinUrl && (
+        <SocialLinkItem
+          href={linkedinUrl}
+          onClick={trackLinkedinOpen}
+          size={size}
+          isMobile={isMobile}
+          label="LinkedIn"
+          bgClass="bg-[#0077b5] hover:bg-[#0088cc] border border-[#0099dd]/50"
+        >
+          <Linkedin size={size * 0.5} className="text-white fill-white" />
+        </SocialLinkItem>
+      )}
+      {twitterUrl && (
+        <SocialLinkItem
+          href={twitterUrl}
+          onClick={trackTwitterOpen}
+          size={size}
+          isMobile={isMobile}
+          label="X (Twitter)"
+          bgClass="bg-black/70 hover:bg-black/80 border border-white/30"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            style={{ width: size * 0.42, height: size * 0.42 }}
+            className="fill-white"
+          >
+            <path d={X_PATH} />
+          </svg>
+        </SocialLinkItem>
+      )}
     </>
   );
 };
@@ -156,7 +168,7 @@ const Dock: React.FC<DockProps> = ({
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[400px] z-[9998]">
         <div className="bg-white/20 backdrop-blur-3xl rounded-[24px] p-3 shadow-2xl border border-white/10 ring-1 ring-white/5">
           <div className="flex items-center gap-6 justify-center">
-            <SocialLinks size={52} isMobile />
+            <SocialLinks size={52} isMobile githubUrl={siteConfig?.github_url} linkedinUrl={siteConfig?.linkedin_url} twitterUrl={siteConfig?.twitter_url} />
           </div>
         </div>
       </div>
@@ -169,7 +181,7 @@ const Dock: React.FC<DockProps> = ({
       return (
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[9998]">
           <div className="bg-white/15 backdrop-blur-3xl rounded-[28px] px-5 py-3 flex gap-4 items-center shadow-2xl border border-white/10 ring-1 ring-white/5">
-            <SocialLinks size={64} isMobile />
+            <SocialLinks size={64} isMobile githubUrl={siteConfig?.github_url} linkedinUrl={siteConfig?.linkedin_url} twitterUrl={siteConfig?.twitter_url} />
           </div>
         </div>
       );
@@ -202,7 +214,7 @@ const Dock: React.FC<DockProps> = ({
     return (
       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 p-2 z-[9999]">
         <div className="flex items-end gap-2 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-[22px] px-3 py-2 shadow-[0_30px_60px_rgba(0,0,0,0.4)] ring-1 ring-black/5">
-          <SocialLinks size={48} />
+          <SocialLinks size={48} githubUrl={siteConfig?.github_url} linkedinUrl={siteConfig?.linkedin_url} twitterUrl={siteConfig?.twitter_url} />
         </div>
       </div>
     );
@@ -241,7 +253,7 @@ const Dock: React.FC<DockProps> = ({
         })}
         <div className="w-[1px] h-10 bg-white/20 mx-1.5 self-center" />
         <div className="flex items-end gap-2">
-          <SocialLinks size={48} />
+          <SocialLinks size={48} githubUrl={siteConfig?.github_url} linkedinUrl={siteConfig?.linkedin_url} twitterUrl={siteConfig?.twitter_url} />
         </div>
       </div>
     </div>

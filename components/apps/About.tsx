@@ -127,7 +127,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           {/* Profil fotoğrafı */}
           <div className="relative w-20 h-20 shrink-0">
             <Image
-              src={config?.profile_picture_url ?? "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"}
+              src={config?.profile_picture_url ?? ""}
               alt="Profile"
               fill
               className="object-cover rounded-full shadow-md"
@@ -160,7 +160,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                 <Mail size={12} /> {isTr ? "E-posta" : "Email"}
               </a>
               <a
-                href="https://github.com/hsemihaktas"
+                href={config?.github_url ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors
@@ -169,7 +169,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                 <Github size={12} /> GitHub
               </a>
               <a
-                href="https://linkedin.com/in/hsemihaktas"
+                href={config?.linkedin_url ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2]"

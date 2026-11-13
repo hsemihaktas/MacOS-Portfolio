@@ -118,5 +118,8 @@ export interface SiteConfigRow {
   og_image_url: string | null;
   cv_url: string | null;
   icons: Record<string, string>;
+  github_url: string | null;
+  linkedin_url: string | null;
+  twitter_url: string | null;
   updated_at: string;
 }

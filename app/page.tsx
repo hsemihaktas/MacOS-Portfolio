@@ -108,9 +108,8 @@ export default function Home() {
 
   const [activeApp, setActiveApp] = useState<AppID | null>(null);
   const [topZ, setTopZ] = useState(INITIAL_Z_INDEX + 1);
-  const [wallpaper, setWallpaper] = useState(
-    "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/wallpaper.jpg",
-  );
+  // null ile başla — WallpaperSync DB'den gelince günceller
+  const [wallpaper, setWallpaper] = useState<string | null>(null);
 
   const getAppTitle = useCallback(
     (id: AppID): string => {
@@ -287,16 +286,18 @@ export default function Home() {
         {showBoot && (
           <BootScreen onComplete={handleBootComplete} dataReady={dataReady} />
         )}
-        <Image
-          src={wallpaper}
-          alt="Wallpaper"
-          fill
-          priority
-          sizes="100vw"
-          style={{ objectPosition: isMobile ? "70% center" : "center" }}
-          className="object-cover select-none pointer-events-none"
-          quality={85}
-        />
+        {wallpaper && (
+          <Image
+            src={wallpaper}
+            alt="Wallpaper"
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectPosition: isMobile ? "70% center" : "center" }}
+            className="object-cover select-none pointer-events-none"
+            quality={85}
+          />
+        )}
 
         <div
           className="fixed inset-0 bg-black pointer-events-none z-[10020] transition-opacity duration-300"

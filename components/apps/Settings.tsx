@@ -553,7 +553,7 @@ export default function Settings({
       >
         <div className="relative w-14 h-14 shrink-0">
           <Image
-            src={config?.profile_picture_url ?? "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"}
+            src={config?.profile_picture_url ?? ""}
             alt="Profile"
             fill
             className="object-cover rounded-full"
@@ -615,7 +615,7 @@ export default function Settings({
         <div className="px-4 pt-5 pb-4 flex items-center gap-3">
           <div className="relative w-12 h-12 shrink-0">
             <Image
-              src={config?.profile_picture_url ?? "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"}
+              src={config?.profile_picture_url ?? ""}
               alt="Profile"
               fill
               className="object-cover rounded-full shadow-sm"
