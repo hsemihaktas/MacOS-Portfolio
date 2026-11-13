@@ -15,7 +15,6 @@ export interface Database {
       projects: {
         Row: {
           id: number;
-          sort_order: number;
           platform: "mobile" | "web" | "discord-bot";
           tags: string[];
           image: string;
@@ -36,7 +35,7 @@ export interface Database {
         };
         Insert: Omit<
           Database["public"]["Tables"]["projects"]["Row"],
-          "created_at" | "updated_at"
+          "id" | "created_at" | "updated_at"
         >;
         Update: Partial<Database["public"]["Tables"]["projects"]["Insert"]>;
       };

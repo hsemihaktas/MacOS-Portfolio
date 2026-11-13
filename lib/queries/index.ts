@@ -66,7 +66,7 @@ export async function fetchAllPortfolioData() {
     { data: catsData },
     { data: configData },
   ] = await Promise.all([
-    supabase.from("projects").select("*").order("id", { ascending: true }),
+    supabase.from("projects").select("*").order("id", { ascending: false }),
     supabase.from("about").select("*").eq("id", 1).single(),
     supabase.from("experience").select("*").order("sort_order"),
     supabase
@@ -76,8 +76,7 @@ export async function fetchAllPortfolioData() {
     supabase.from("site_config").select("*").eq("id", 1).single(),
   ]);
 
-  const rawRows = (projectsData ?? []) as ProjectRow[];
-  const projectsRows = rawRows;
+  const projectsRows = (projectsData ?? []) as ProjectRow[];
   const aboutRow = (aboutData ?? null) as AboutRow | null;
   const expRows = (expData ?? []) as ExperienceRow[];
   const catRows = (catsData ?? []) as (SkillCategoryRow & {
@@ -85,15 +84,12 @@ export async function fetchAllPortfolioData() {
   })[];
   const config = (configData ?? null) as SiteConfigRow | null;
 
-  // Projeler
   const projectsTr = projectsRows.map((r) => mapProject(r, "tr"));
   const projectsEn = projectsRows.map((r) => mapProject(r, "en"));
 
-  // Geliştirici adı
   const devTr = aboutRow?.name_tr ?? "Hasan Semih Aktaş";
   const devEn = aboutRow?.name_en ?? "Hasan Semih Aktas";
 
-  // About
   const aboutTr = aboutRow
     ? {
         name: aboutRow.name_tr,
@@ -128,7 +124,6 @@ export async function fetchAllPortfolioData() {
       }
     : null;
 
-  // Skills
   const mapSkills = (lang: Language) =>
     catRows.map((cat) => ({
       name: lang === "tr" ? cat.name_tr : cat.name_en,
@@ -140,7 +135,6 @@ export async function fetchAllPortfolioData() {
   const skillsTr = mapSkills("tr");
   const skillsEn = mapSkills("en");
 
-  // App Store Apps (projelerden süzülür, ek sorgu gerekmez)
   const mobileProjects = projectsRows.filter(
     (r) => r.platform === "mobile" && r.app_store_meta,
   );
@@ -160,20 +154,15 @@ export async function fetchAllPortfolioData() {
   };
 }
 
-// ── Bireysel Fonksiyonlar (Geriye Uyumluluk İçin) ──────────────────────────────
+// ── Bireysel Fonksiyonlar ─────────────────────────────────────────────────────
 export async function fetchProjectItems(lang: Language): Promise<Project[]> {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
-    .order("id", { ascending: true });
+    .order("id", { ascending: false });
 
   if (error || !data) return [];
-  const rows = data as ProjectRow[];
-  // Pin highest-id project to front
-  const pinned = rows.length
-    ? [rows[rows.length - 1], ...rows.slice(0, -1)]
-    : rows;
-  return pinned.map((row) => mapProject(row, lang));
+  return (data as ProjectRow[]).map((row) => mapProject(row, lang));
 }
 
 export async function fetchAbout(lang: Language) {
@@ -228,14 +217,15 @@ export async function fetchAppStoreApps(
     .select("*")
     .eq("platform", "mobile")
     .not("app_store_meta", "is", null)
-    .order("sort_order");
+    .order("id", { ascending: false });
 
   if (error || !data) return [];
-  const appData = data as ProjectRow[];
   const devName =
     developerName ??
     (lang === "tr" ? "Hasan Semih Aktaş" : "Hasan Semih Aktas");
-  return appData.map((row) => mapAppStoreApp(row, lang, devName));
+  return (data as ProjectRow[]).map((row) =>
+    mapAppStoreApp(row, lang, devName),
+  );
 }
 
 export async function fetchSiteConfig(): Promise<SiteConfigRow | null> {
