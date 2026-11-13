@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Mail,
@@ -25,7 +25,6 @@ interface AboutProps {
 
 type Section = "summary" | "experience" | "github" | "info";
 
-// ─── Design tokens ────────────────────────────────────────────────────────────
 function tk(dark?: boolean) {
   return {
     sidebarBg: dark ? "#252527" : "#F0F0F2",
@@ -39,29 +38,14 @@ function tk(dark?: boolean) {
     navActive: dark
       ? "bg-[#0A84FF]/20 text-[#0A84FF]"
       : "bg-[#007AFF]/10 text-[#007AFF]",
-    navHover: dark
-      ? "hover:bg-white/5 text-white/60"
-      : "hover:bg-black/[0.04] text-[#3C3C43]",
+    navNormal: dark
+      ? "text-white/60 hover:bg-white/5"
+      : "text-[#3C3C43] hover:bg-black/[0.04]",
     btnBase: dark
       ? "bg-white/8 hover:bg-white/12 text-white"
       : "bg-black/[0.05] hover:bg-black/[0.09] text-[#1C1C1E]",
   };
 }
-
-// ─── Reusable sub-components ──────────────────────────────────────────────────
-const SectionLabel = ({
-  children,
-  t,
-}: {
-  children: React.ReactNode;
-  t: ReturnType<typeof tk>;
-}) => (
-  <p
-    className={`text-[10px] font-semibold uppercase tracking-[0.14em] px-2 pt-4 pb-1.5 ${t.labelFg}`}
-  >
-    {children}
-  </p>
-);
 
 const Card = ({
   children,
@@ -120,14 +104,55 @@ const InfoRow = ({
   );
 };
 
-// ─── Main component ───────────────────────────────────────────────────────────
 export default function About({ lang, isDarkMode }: AboutProps) {
   const DATA = usePortfolioData();
   const config = useSiteConfig();
   const d = DATA[lang].about;
   const t = tk(isDarkMode);
   const isTr = lang === "tr";
-  const [active, setActive] = useState<Section>("summary");
+
+  // Sidebar active highlight based on scroll position
+  const [activeSection, setActiveSection] = useState<Section>("summary");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRefs: Record<Section, React.RefObject<HTMLDivElement | null>> = {
+    summary: useRef(null),
+    experience: useRef(null),
+    github: useRef(null),
+    info: useRef(null),
+  };
+
+  // Scroll-to-section on nav click
+  const scrollTo = (id: Section) => {
+    sectionRefs[id].current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  // Track which section is in view
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const containerTop = container.getBoundingClientRect().top;
+      let current: Section = "summary";
+      (["summary", "experience", "github", "info"] as Section[]).forEach(
+        (id) => {
+          const el = sectionRefs[id].current;
+          if (el) {
+            const top = el.getBoundingClientRect().top - containerTop;
+            if (top <= 60) current = id;
+          }
+        },
+      );
+      setActiveSection(current);
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navItems: { id: Section; icon: React.ElementType; label: string }[] = [
     { id: "summary", icon: FileText, label: isTr ? "Özet" : "Summary" },
@@ -140,131 +165,225 @@ export default function About({ lang, isDarkMode }: AboutProps) {
     { id: "info", icon: Info, label: isTr ? "Bilgiler" : "Information" },
   ];
 
-  // ─── Section content ──────────────────────────────────────────────────────
-  const renderContent = () => {
-    switch (active) {
-      case "summary":
-        return (
-          <div className="p-6 max-w-2xl">
-            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
-              {isTr ? "Özet" : "Summary"}
-            </h2>
-            <Card t={t}>
-              <p className={`px-4 py-4 text-[14px] leading-relaxed ${t.text2}`}>
-                {d.summary}
-              </p>
-            </Card>
-          </div>
-        );
+  // ─── Sidebar ────────────────────────────────────────────────────────────────
+  const Sidebar = () => (
+    <div
+      className="w-[220px] shrink-0 flex flex-col border-r"
+      style={{ background: t.sidebarBg, borderColor: t.sepColor }}
+    >
+      {/* Profile */}
+      <div
+        className="px-4 pt-5 pb-4 flex flex-col items-center text-center gap-3"
+        style={{ borderBottom: `1px solid ${t.sepColor}` }}
+      >
+        <div className="relative w-[68px] h-[68px]">
+          <Image
+            src={config?.profile_picture_url ?? ""}
+            alt="Profile"
+            fill
+            className="object-cover rounded-full shadow-md"
+            sizes="68px"
+            priority
+          />
+          <span
+            className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2"
+            style={{ borderColor: t.sidebarBg }}
+          />
+        </div>
+        <div>
+          <p className={`text-[13px] font-semibold ${t.text1} leading-tight`}>
+            {d.name}
+          </p>
+          <p className={`text-[11px] mt-0.5 ${t.text3}`}>{d.role}</p>
+        </div>
+      </div>
 
-      case "experience":
-        return (
-          <div className="p-6 max-w-2xl">
-            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
-              {isTr ? "Deneyim" : "Experience"}
-            </h2>
-            <Card t={t}>
-              {d.experience.map((exp, i) => (
-                <div
-                  key={i}
-                  className="px-4 py-4"
-                  style={
-                    i < d.experience.length - 1
-                      ? { borderBottom: `1px solid ${t.sepColor}` }
-                      : undefined
-                  }
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="flex flex-col items-center pt-1.5 shrink-0">
-                      <div className="w-2 h-2 rounded-full bg-[#007AFF]" />
-                      {i < d.experience.length - 1 && (
-                        <div
-                          className="w-px flex-1 mt-1"
-                          style={{ minHeight: 24, background: t.sepColor }}
-                        />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 flex-wrap">
-                        <div>
-                          <h3
-                            className={`text-[14px] font-semibold ${t.text1}`}
-                          >
-                            {exp.role}
-                          </h3>
-                          <p className="text-[12px] font-medium text-[#007AFF] mt-0.5">
-                            {exp.company}
-                          </p>
-                        </div>
-                        <span
-                          className={`text-[11px] ${t.text3} whitespace-nowrap`}
-                        >
-                          {exp.period}
-                        </span>
+      {/* Navigation */}
+      <div className="flex-1 px-2 py-2 overflow-auto">
+        <p
+          className={`text-[10px] font-semibold uppercase tracking-[0.14em] px-2 pt-3 pb-1.5 ${t.labelFg}`}
+        >
+          {isTr ? "BÖLÜMLER" : "SECTIONS"}
+        </p>
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollTo(item.id)}
+            className={`w-full flex items-center gap-2.5 px-2.5 py-[6px] rounded-lg text-left mb-0.5 transition-all cursor-default ${
+              activeSection === item.id ? t.navActive : t.navNormal
+            }`}
+          >
+            <item.icon size={14} className="shrink-0" />
+            <span className="text-[13px] font-medium">{item.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Action buttons */}
+      <div className="p-3" style={{ borderTop: `1px solid ${t.sepColor}` }}>
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            {
+              href: `mailto:${d.email}`,
+              icon: <Mail size={11} />,
+              label: isTr ? "E-posta" : "Email",
+            },
+            {
+              href: config?.github_url ?? "#",
+              icon: <Github size={11} />,
+              label: "GitHub",
+              target: "_blank",
+            },
+            {
+              href: config?.linkedin_url ?? "#",
+              icon: <Linkedin size={11} />,
+              label: "LinkedIn",
+              target: "_blank",
+            },
+            {
+              href: config?.cv_url ?? "#",
+              icon: <Download size={11} />,
+              label: "CV",
+              download: true,
+            },
+          ].map((btn) => (
+            <a
+              key={btn.label}
+              href={btn.href}
+              target={btn.target}
+              download={btn.download ? "Hasan_Semih_Aktas_CV.pdf" : undefined}
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${t.btnBase}`}
+            >
+              {btn.icon} {btn.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // ─── Single scrollable content column ──────────────────────────────────────
+  const ScrollContent = () => (
+    <div
+      ref={scrollRef}
+      className="flex-1 overflow-auto custom-scrollbar"
+      style={{ background: t.contentBg }}
+    >
+      <div className="max-w-2xl px-6 pb-12">
+        {/* SUMMARY */}
+        <div ref={sectionRefs.summary} className="pt-6">
+          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "Özet" : "Summary"}
+          </h2>
+          <Card t={t}>
+            <p className={`px-4 py-4 text-[13.5px] leading-relaxed ${t.text2}`}>
+              {d.summary}
+            </p>
+          </Card>
+        </div>
+
+        {/* EXPERIENCE */}
+        <div ref={sectionRefs.experience} className="pt-8">
+          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "Deneyim" : "Experience"}
+          </h2>
+          <Card t={t}>
+            {d.experience.map((exp, i) => (
+              <div
+                key={i}
+                className="px-4 py-4"
+                style={
+                  i < d.experience.length - 1
+                    ? { borderBottom: `1px solid ${t.sepColor}` }
+                    : undefined
+                }
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex flex-col items-center pt-1.5 shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-[#007AFF]" />
+                    {i < d.experience.length - 1 && (
+                      <div
+                        className="w-px flex-1 mt-1"
+                        style={{ minHeight: 24, background: t.sepColor }}
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2 flex-wrap">
+                      <div>
+                        <h3 className={`text-[14px] font-semibold ${t.text1}`}>
+                          {exp.role}
+                        </h3>
+                        <p className="text-[12px] font-medium text-[#007AFF] mt-0.5">
+                          {exp.company}
+                        </p>
                       </div>
-                      <p
-                        className={`text-[13px] ${t.text2} mt-2 leading-relaxed`}
+                      <span
+                        className={`text-[11px] ${t.text3} whitespace-nowrap`}
                       >
-                        {exp.desc}
-                      </p>
+                        {exp.period}
+                      </span>
                     </div>
+                    <p
+                      className={`text-[13px] ${t.text2} mt-2 leading-relaxed`}
+                    >
+                      {exp.desc}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </Card>
-          </div>
-        );
-
-      case "github":
-        return (
-          <div className="p-6 max-w-3xl">
-            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
-              {isTr ? "GitHub Aktivitesi" : "GitHub Activity"}
-            </h2>
-            <Card t={t}>
-              <div className={`px-4 py-4 ${t.text1}`}>
-                <GitHubCalendar isDarkMode={isDarkMode} lang={lang} />
               </div>
-            </Card>
-          </div>
-        );
+            ))}
+          </Card>
+        </div>
 
-      case "info":
-        return (
-          <div className="p-6 max-w-2xl">
-            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
-              {isTr ? "Bilgiler" : "Information"}
-            </h2>
-            <Card t={t}>
-              <InfoRow
-                t={t}
-                icon={<MapPin size={15} />}
-                label={isTr ? "Konum" : "Location"}
-                value={d.location}
-              />
-              <InfoRow
-                t={t}
-                icon={<GraduationCap size={15} />}
-                label={isTr ? "Eğitim" : "Education"}
-                value={d.education}
-              />
-              <InfoRow
-                t={t}
-                icon={<Mail size={15} />}
-                label={isTr ? "E-posta" : "Email"}
-                value={d.email}
-                href={`mailto:${d.email}`}
-                last
-              />
-            </Card>
-          </div>
-        );
-    }
-  };
+        {/* GITHUB */}
+        <div ref={sectionRefs.github} className="pt-8">
+          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "GitHub Aktivitesi" : "GitHub Activity"}
+          </h2>
+          <Card t={t}>
+            <div className={`px-4 py-4 ${t.text1}`}>
+              <GitHubCalendar isDarkMode={isDarkMode} lang={lang} />
+            </div>
+          </Card>
+        </div>
 
-  // ─── Mobile: single-column fallback ──────────────────────────────────────
+        {/* INFO */}
+        <div ref={sectionRefs.info} className="pt-8">
+          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "Bilgiler" : "Information"}
+          </h2>
+          <Card t={t}>
+            <InfoRow
+              t={t}
+              icon={<MapPin size={15} />}
+              label={isTr ? "Konum" : "Location"}
+              value={d.location}
+            />
+            <InfoRow
+              t={t}
+              icon={<GraduationCap size={15} />}
+              label={isTr ? "Eğitim" : "Education"}
+              value={d.education}
+            />
+            <InfoRow
+              t={t}
+              icon={<Mail size={15} />}
+              label={isTr ? "E-posta" : "Email"}
+              value={d.email}
+              href={`mailto:${d.email}`}
+              last
+            />
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ─── Mobile: full-width stacked ─────────────────────────────────────────────
   const MobileLayout = () => (
     <div
+      ref={scrollRef}
       className="h-full overflow-auto custom-scrollbar"
       style={{ background: t.contentBg }}
     >
@@ -290,7 +409,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           <h1 className={`text-[20px] font-bold ${t.text1}`}>{d.name}</h1>
           <p className={`text-[13px] ${t.text2} mt-0.5`}>{d.role}</p>
         </div>
-        <div className="flex flex-wrap gap-2 justify-center mt-1">
+        <div className="flex flex-wrap gap-2 justify-center">
           {[
             {
               href: `mailto:${d.email}`,
@@ -320,17 +439,18 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           <a
             href={config?.cv_url ?? "#"}
             download
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium bg-[#34C759]/10 text-[#34C759] hover:bg-[#34C759]/20"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium bg-[#34C759]/10 text-[#34C759]"
           >
             <Download size={12} /> CV
           </a>
         </div>
       </div>
 
-      {/* All sections stacked */}
-      <div className="pb-8">
-        <SectionLabel t={t}>{isTr ? "ÖZET" : "SUMMARY"}</SectionLabel>
-        <div className="px-4">
+      <div className="max-w-2xl px-4 pb-10 mx-auto">
+        <div ref={sectionRefs.summary} className="pt-6">
+          <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "Özet" : "Summary"}
+          </h2>
           <Card t={t}>
             <p className={`px-4 py-4 text-[13.5px] leading-relaxed ${t.text2}`}>
               {d.summary}
@@ -338,8 +458,10 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        <SectionLabel t={t}>{isTr ? "DENEYİM" : "EXPERIENCE"}</SectionLabel>
-        <div className="px-4">
+        <div ref={sectionRefs.experience} className="pt-7">
+          <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "Deneyim" : "Experience"}
+          </h2>
           <Card t={t}>
             {d.experience.map((exp, i) => (
               <div
@@ -370,8 +492,8 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        <SectionLabel t={t}>{isTr ? "GITHUB" : "GITHUB"}</SectionLabel>
-        <div className="px-4">
+        <div ref={sectionRefs.github} className="pt-7">
+          <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>GitHub</h2>
           <Card t={t}>
             <div className={`px-4 py-4 ${t.text1}`}>
               <GitHubCalendar isDarkMode={isDarkMode} lang={lang} />
@@ -379,8 +501,10 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        <SectionLabel t={t}>{isTr ? "BİLGİLER" : "INFORMATION"}</SectionLabel>
-        <div className="px-4">
+        <div ref={sectionRefs.info} className="pt-7">
+          <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>
+            {isTr ? "Bilgiler" : "Information"}
+          </h2>
           <Card t={t}>
             <InfoRow
               t={t}
@@ -408,119 +532,14 @@ export default function About({ lang, isDarkMode }: AboutProps) {
     </div>
   );
 
-  // ─── Desktop: Finder sidebar + content ────────────────────────────────────
-  const DesktopLayout = () => (
-    <div className="h-full flex overflow-hidden">
-      {/* ── Sidebar ── */}
-      <div
-        className="w-[220px] shrink-0 flex flex-col border-r"
-        style={{ background: t.sidebarBg, borderColor: t.sepColor }}
-      >
-        {/* Profile */}
-        <div
-          className="px-4 pt-5 pb-4 flex flex-col items-center text-center gap-3"
-          style={{ borderBottom: `1px solid ${t.sepColor}` }}
-        >
-          <div className="relative w-[68px] h-[68px]">
-            <Image
-              src={config?.profile_picture_url ?? ""}
-              alt="Profile"
-              fill
-              className="object-cover rounded-full shadow-md"
-              sizes="68px"
-              priority
-            />
-            <span
-              className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2"
-              style={{ borderColor: t.sidebarBg }}
-            />
-          </div>
-          <div>
-            <p className={`text-[13px] font-semibold ${t.text1} leading-tight`}>
-              {d.name}
-            </p>
-            <p className={`text-[11px] mt-0.5 ${t.text3}`}>{d.role}</p>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex-1 px-2 py-2 overflow-auto">
-          <p
-            className={`text-[10px] font-semibold uppercase tracking-[0.14em] px-2 pt-3 pb-1.5 ${t.labelFg}`}
-          >
-            {isTr ? "BÖLÜMLER" : "SECTIONS"}
-          </p>
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActive(item.id)}
-              className={`w-full flex items-center gap-2.5 px-2.5 py-[6px] rounded-lg text-left mb-0.5 transition-all cursor-default ${
-                active === item.id ? t.navActive : t.navHover
-              }`}
-            >
-              <item.icon size={14} className="shrink-0" />
-              <span className="text-[13px] font-medium">{item.label}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Action buttons */}
-        <div className="p-3" style={{ borderTop: `1px solid ${t.sepColor}` }}>
-          <div className="grid grid-cols-2 gap-1.5">
-            {[
-              {
-                href: `mailto:${d.email}`,
-                icon: <Mail size={11} />,
-                label: isTr ? "E-posta" : "Email",
-              },
-              {
-                href: config?.github_url ?? "#",
-                icon: <Github size={11} />,
-                label: "GitHub",
-                target: "_blank",
-              },
-              {
-                href: config?.linkedin_url ?? "#",
-                icon: <Linkedin size={11} />,
-                label: "LinkedIn",
-                target: "_blank",
-              },
-              {
-                href: config?.cv_url ?? "#",
-                icon: <Download size={11} />,
-                label: "CV",
-                download: true,
-              },
-            ].map((btn) => (
-              <a
-                key={btn.label}
-                href={btn.href}
-                target={btn.target}
-                download={btn.download ? "Hasan_Semih_Aktas_CV.pdf" : undefined}
-                className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${t.btnBase}`}
-              >
-                {btn.icon} {btn.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Content ── */}
-      <div
-        className="flex-1 overflow-auto custom-scrollbar"
-        style={{ background: t.contentBg }}
-      >
-        {renderContent()}
-      </div>
-    </div>
-  );
-
   return (
     <div className="h-full overflow-hidden font-sans select-text transition-colors duration-300">
-      <div className="hidden md:block h-full">
-        <DesktopLayout />
+      {/* Desktop: sidebar + scrollable content */}
+      <div className="hidden md:flex h-full">
+        <Sidebar />
+        <ScrollContent />
       </div>
+      {/* Mobile: full-width */}
       <div className="md:hidden h-full">
         <MobileLayout />
       </div>
