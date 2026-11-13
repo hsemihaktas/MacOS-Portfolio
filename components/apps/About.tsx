@@ -10,7 +10,7 @@ import {
   Linkedin,
   Download,
 } from "lucide-react";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 import { Language } from "@/lib/types";
 import GitHubCalendar from "@/components/GitHubCalendar";
 
@@ -20,7 +20,8 @@ interface AboutProps {
 }
 
 // macOS design tokens
-const tokens = (dark?: boolean) => ({
+const tokens = (
+  dark?: boolean) => ({
   pageBg: dark ? "bg-[#1C1C1E]" : "bg-[#F2F2F7]",
   cardBg: dark ? "bg-[#2C2C2E]" : "bg-white",
   headerBg: dark ? "bg-[#1C1C1E]" : "bg-white",
@@ -110,6 +111,7 @@ const InfoRow = ({
 };
 
 export default function About({ lang, isDarkMode }: AboutProps) {
+  const DATA = usePortfolioData();
   const d = DATA[lang].about;
   const t = tokens(isDarkMode);
   const isTr = lang === "tr";
@@ -124,7 +126,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           {/* Profil fotoğrafı */}
           <div className="relative w-20 h-20 shrink-0">
             <Image
-              src="/images/profilePicture.jpeg"
+              src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"
               alt="Profile"
               fill
               className="object-cover rounded-full shadow-md"
@@ -174,7 +176,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                 <Linkedin size={12} /> LinkedIn
               </a>
               <a
-                href="/files/cv.pdf"
+                href="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/cv.pdf"
                 download="Hasan_Semih_Aktas_CV.pdf"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors
                   ${

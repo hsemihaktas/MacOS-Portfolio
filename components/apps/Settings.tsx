@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Language } from "@/lib/types";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 import {
   Globe,
   Sun,
@@ -15,7 +15,6 @@ import {
   Search,
   Info,
 } from "lucide-react";
-import { projectDefinitions } from "@/lib/data/projects";
 
 interface SettingsProps {
   lang: Language;
@@ -163,6 +162,7 @@ export default function Settings({
   isWifiEnabled,
   setIsWifiEnabled,
 }: SettingsProps) {
+  const DATA = usePortfolioData();
   const isTr = lang === "tr";
   const [active, setActive] = useState<Section>("appearance");
   const [search, setSearch] = useState("");
@@ -423,70 +423,122 @@ export default function Settings({
         )}
 
         {/* ── Bu Portfolyo Hakkında ────────────────────────────────── */}
-        {active === "about" && (() => {
-          const totalProjects = projectDefinitions.length;
-          const mobileCount = projectDefinitions.filter((p) => p.platform === "mobile").length;
-          const webCount    = projectDefinitions.filter((p) => p.platform === "web").length;
-          const otherCount  = totalProjects - mobileCount - webCount;
-          const buildDate   = new Date().toLocaleDateString(isTr ? "tr-TR" : "en-US", { year: "numeric", month: "long" });
+        {active === "about" &&
+          (() => {
+            const totalProjects = DATA.tr.projects.items.length;
+            const mobileCount = DATA.tr.projects.items.filter(
+              (p: { platform: string }) => p.platform === "mobile",
+            ).length;
+            const webCount = DATA.tr.projects.items.filter(
+              (p: { platform: string }) => p.platform === "web",
+            ).length;
+            const otherCount = totalProjects - mobileCount - webCount;
+            const buildDate = new Date().toLocaleDateString(
+              isTr ? "tr-TR" : "en-US",
+              { year: "numeric", month: "long" },
+            );
 
-          const S_POLYS = [
-            "160,104 352,104 352,156 212,156",
-            "160,114 212,166 212,222 160,274",
-            "220,230 344,230 292,282 168,282",
-            "352,238 352,400 300,348 300,290",
-            "160,356 292,356 344,408 160,408",
-          ];
+            const S_POLYS = [
+              "160,104 352,104 352,156 212,156",
+              "160,114 212,166 212,222 160,274",
+              "220,230 344,230 292,282 168,282",
+              "352,238 352,400 300,348 300,290",
+              "160,356 292,356 344,408 160,408",
+            ];
 
-          const specs = [
-            { label: isTr ? "Çerçeve"      : "Framework",  value: "Next.js 16.1.1" },
-            { label: isTr ? "Arayüz"       : "UI Library", value: "React 19 + TypeScript 5" },
-            { label: isTr ? "Stil"          : "Styling",    value: "Tailwind CSS 4" },
-            { label: isTr ? "Dağıtım"       : "Deployment", value: "Vercel Edge Network" },
-            { label: isTr ? "Proje Sayısı" : "Projects",   value: `${totalProjects} (${mobileCount} ${isTr ? "mobil" : "mobile"}, ${webCount} web${otherCount > 0 ? `, ${otherCount} ${isTr ? "diğer" : "other"}` : ""})` },
-            { label: isTr ? "Geliştirici"  : "Developer",  value: "Hasan Semih Aktaş" },
-            { label: isTr ? "Derleme"      : "Build Date", value: buildDate },
-          ];
+            const specs = [
+              {
+                label: isTr ? "Çerçeve" : "Framework",
+                value: "Next.js 16.1.1",
+              },
+              {
+                label: isTr ? "Arayüz" : "UI Library",
+                value: "React 19 + TypeScript 5",
+              },
+              { label: isTr ? "Stil" : "Styling", value: "Tailwind CSS 4" },
+              {
+                label: isTr ? "Dağıtım" : "Deployment",
+                value: "Vercel Edge Network",
+              },
+              {
+                label: isTr ? "Proje Sayısı" : "Projects",
+                value: `${totalProjects} (${mobileCount} ${isTr ? "mobil" : "mobile"}, ${webCount} web${otherCount > 0 ? `, ${otherCount} ${isTr ? "diğer" : "other"}` : ""})`,
+              },
+              {
+                label: isTr ? "Geliştirici" : "Developer",
+                value: "Hasan Semih Aktaş",
+              },
+              { label: isTr ? "Derleme" : "Build Date", value: buildDate },
+            ];
 
-          return (
-            <div className="space-y-6">
-              {/* Logo + versiyon */}
-              <div className="flex flex-col items-center py-6 gap-3">
-                <div className={`w-20 h-20 rounded-[22px] flex items-center justify-center shadow-xl ${dark ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]"}`}>
-                  <svg viewBox="0 0 512 512" width="52" height="52" aria-hidden="true">
-                    {S_POLYS.map((pts, i) => <polygon key={i} points={pts} fill="white" />)}
-                  </svg>
+            return (
+              <div className="space-y-6">
+                {/* Logo + versiyon */}
+                <div className="flex flex-col items-center py-6 gap-3">
+                  <div
+                    className={`w-20 h-20 rounded-[22px] flex items-center justify-center shadow-xl ${dark ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]"}`}
+                  >
+                    <svg
+                      viewBox="0 0 512 512"
+                      width="52"
+                      height="52"
+                      aria-hidden="true"
+                    >
+                      {S_POLYS.map((pts, i) => (
+                        <polygon key={i} points={pts} fill="white" />
+                      ))}
+                    </svg>
+                  </div>
+                  <div className="text-center">
+                    <h2
+                      className={`text-[22px] font-bold ${text1} tracking-tight`}
+                    >
+                      Portfolio OS
+                    </h2>
+                    <p className={`text-[13px] mt-0.5 ${text2}`}>
+                      {isTr
+                        ? "Sürüm 1.0 (Yapı 2026.10)"
+                        : "Version 1.0 (Build 2026.10)"}
+                    </p>
+                  </div>
+                  <div
+                    className={`h-px w-20 mt-1 ${dark ? "bg-white/10" : "bg-black/10"}`}
+                  />
                 </div>
-                <div className="text-center">
-                  <h2 className={`text-[22px] font-bold ${text1} tracking-tight`}>Portfolio OS</h2>
-                  <p className={`text-[13px] mt-0.5 ${text2}`}>
-                    {isTr ? "Sürüm 1.0 (Yapı 2026.10)" : "Version 1.0 (Build 2026.10)"}
-                  </p>
+
+                {/* Specs */}
+                <div>
+                  <SectionTitle dark={dark}>
+                    {isTr ? "Teknik Bilgiler" : "Technical Specifications"}
+                  </SectionTitle>
+                  <Card dark={dark}>
+                    {specs.map((s, i) => (
+                      <div
+                        key={s.label}
+                        className={`flex items-center justify-between px-4 py-3 gap-4 ${i < specs.length - 1 ? `border-b ${sep}` : ""}`}
+                      >
+                        <span
+                          className={`text-[13px] font-medium shrink-0 ${text2}`}
+                        >
+                          {s.label}
+                        </span>
+                        <span
+                          className={`text-[13px] font-medium text-right ${text1}`}
+                        >
+                          {s.value}
+                        </span>
+                      </div>
+                    ))}
+                  </Card>
                 </div>
-                <div className={`h-px w-20 mt-1 ${dark ? "bg-white/10" : "bg-black/10"}`} />
-              </div>
 
-              {/* Specs */}
-              <div>
-                <SectionTitle dark={dark}>{isTr ? "Teknik Bilgiler" : "Technical Specifications"}</SectionTitle>
-                <Card dark={dark}>
-                  {specs.map((s, i) => (
-                    <div key={s.label}
-                      className={`flex items-center justify-between px-4 py-3 gap-4 ${i < specs.length - 1 ? `border-b ${sep}` : ""}`}>
-                      <span className={`text-[13px] font-medium shrink-0 ${text2}`}>{s.label}</span>
-                      <span className={`text-[13px] font-medium text-right ${text1}`}>{s.value}</span>
-                    </div>
-                  ))}
-                </Card>
+                <p className={`text-center text-[11px] ${text2} pb-2`}>
+                  © {new Date().getFullYear()} Hasan Semih Aktaş.{" "}
+                  {isTr ? "Tüm hakları saklıdır." : "All rights reserved."}
+                </p>
               </div>
-
-              <p className={`text-center text-[11px] ${text2} pb-2`}>
-                © {new Date().getFullYear()} Hasan Semih Aktaş.{" "}
-                {isTr ? "Tüm hakları saklıdır." : "All rights reserved."}
-              </p>
-            </div>
-          );
-        })()}
+            );
+          })()}
       </div>
     );
   };
@@ -500,7 +552,7 @@ export default function Settings({
       >
         <div className="relative w-14 h-14 shrink-0">
           <Image
-            src="/images/profilePicture.jpeg"
+            src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"
             alt="Profile"
             fill
             className="object-cover rounded-full"
@@ -518,13 +570,16 @@ export default function Settings({
       {/* Section list */}
       <div className="px-4 py-4 space-y-3">
         {filtered.map((s) => (
-          <button
+          <div
             key={s.id}
-            onClick={() => setActive(s.id === active ? s.id : s.id)}
             className={`w-full ${dark ? "bg-[#2C2C2E]" : "bg-white"} rounded-2xl overflow-hidden border ${sep}`}
           >
             <div
-              className={`flex items-center gap-3 px-4 py-3.5 ${dark ? "hover:bg-white/5" : "hover:bg-black/[0.03]"}`}
+              role="button"
+              tabIndex={0}
+              onClick={() => setActive(s.id === active ? s.id : s.id)}
+              onKeyDown={(e) => e.key === "Enter" && setActive(s.id)}
+              className={`flex items-center gap-3 px-4 py-3.5 cursor-default ${dark ? "hover:bg-white/5" : "hover:bg-black/[0.03]"}`}
             >
               <div
                 className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-sm`}
@@ -542,7 +597,7 @@ export default function Settings({
                 {renderContent()}
               </div>
             )}
-          </button>
+          </div>
         ))}
       </div>
     </div>
@@ -559,7 +614,7 @@ export default function Settings({
         <div className="px-4 pt-5 pb-4 flex items-center gap-3">
           <div className="relative w-12 h-12 shrink-0">
             <Image
-              src="/images/profilePicture.jpeg"
+              src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/profilePicture.jpeg"
               alt="Profile"
               fill
               className="object-cover rounded-full shadow-sm"

@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { Language } from "@/lib/types";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 import { X, Info, MoreHorizontal, Search, ChevronDown } from "lucide-react";
 
 interface ActivityMonitorProps {
@@ -25,6 +25,7 @@ export default function ActivityMonitor({
   lang,
   isDarkMode,
 }: ActivityMonitorProps) {
+  const DATA = usePortfolioData();
   const [activeTab, setActiveTab] = useState<Tab>("cpu");
   const [search, setSearch] = useState("");
   const isTr = lang === "tr";

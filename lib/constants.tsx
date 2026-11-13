@@ -6,41 +6,41 @@ export const APPS: { id: AppID; title: string; iconUrl: string }[] = [
   {
     id: "about",
     title: "About Me",
-    iconUrl: "/images/icons/about.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/about.png",
   },
   {
     id: "safari",
     title: "Safari",
-    iconUrl: "/images/icons/safari.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/safari.png",
   },
   {
     id: "app-store",
     title: "App Store",
-    iconUrl: "/images/icons/AppStore.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/AppStore.png",
   },
   {
     id: "projects",
     title: "Projeler",
-    iconUrl: "/images/icons/devFolder.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/devFolder.png",
   },
   {
     id: "activity-monitor",
     title: "Sistem",
-    iconUrl: "/images/icons/taskManager.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/taskManager.png",
   },
   {
     id: "contact",
     title: "Mail",
-    iconUrl: "/images/icons/mail.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/mail.png",
   },
   {
     id: "settings",
     title: "Ayarlar",
-    iconUrl: "/images/icons/settings.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/settings.png",
   },
   {
     id: "terminal",
     title: "Terminal",
-    iconUrl: "/images/icons/terminal.png",
+    iconUrl: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/terminal.png",
   },
 ];

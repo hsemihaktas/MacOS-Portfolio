@@ -16,17 +16,21 @@ export default function FeaturedSection({
         className="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
         onClick={() => {
           const featuredApp = data.apps.find((a: any) =>
-            a.title.includes(data.featured.title)
+            a.title.includes(data.featured.title),
           );
           if (featuredApp) onSelectApp(featuredApp.id);
         }}
       >
-        <Image
-          src={data.featured.image}
-          alt={data.featured.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        {data.featured.image ? (
+          <Image
+            src={data.featured.image}
+            alt={data.featured.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-blue-900 to-blue-600" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 md:p-8 flex flex-col justify-end text-white">
           <span className="text-blue-400 text-xs font-bold uppercase tracking-wider mb-2">
             {data.featured.subtitle}

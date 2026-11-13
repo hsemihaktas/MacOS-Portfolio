@@ -2,13 +2,15 @@
 
 
 import React from 'react';
-import { DATA } from '@/lib/data';
+import { usePortfolioData } from "@/lib/context/DataContext";
 import { Language } from '@/lib/types';
 import { Layout, Database, Globe, CheckCircle2 } from 'lucide-react';
 
 interface SkillsProps { lang: Language; isDarkMode?: boolean; }
 
-const Skills: React.FC<SkillsProps> = ({ lang, isDarkMode }) => {
+const Skills: React.FC<SkillsProps> =
+   ({ lang, isDarkMode }) => {
+  const DATA = usePortfolioData();
   const d = DATA[lang].skills;
 
   const getIcon = (category: string) => {

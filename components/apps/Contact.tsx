@@ -3,14 +3,16 @@
 import React, { useState } from "react";
 import { Send, Inbox, Archive, Trash2, User, Paperclip } from "lucide-react";
 import { Language } from "@/lib/types";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 
 interface ContactProps {
   lang: Language;
   isDarkMode?: boolean;
 }
 
-const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
+const Contact: React.FC<ContactProps> =
+   ({ lang, isDarkMode }) => {
+  const DATA = usePortfolioData();
   const d = DATA[lang].contact;
   const personal = DATA[lang].about;
   const [sent, setSent] = useState(false);

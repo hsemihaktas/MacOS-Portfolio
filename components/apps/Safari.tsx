@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 import { Language } from "@/lib/types";
 import {
   ChevronLeft,
@@ -43,6 +43,7 @@ export default function Safari({
   initialUrl,
   initialTitle,
 }: SafariProps) {
+  const DATA = usePortfolioData();
   const d = DATA[lang].projects;
 
   // Extract all projects that have a websiteLink
@@ -62,10 +63,11 @@ export default function Safari({
   });
 
   const [currentUrl, setCurrentUrl] = useState<string>(
-    initialUrl || (webProjects[0]?.websiteLink ?? "https://rewound.vercel.app/")
+    initialUrl ||
+      (webProjects[0]?.websiteLink ?? "https://rewound.vercel.app/"),
   );
   const [inputUrl, setInputUrl] = useState<string>(
-    initialUrl || START_PAGE_URL
+    initialUrl || START_PAGE_URL,
   );
   const [isStartPage, setIsStartPage] = useState<boolean>(!initialUrl);
 
@@ -228,14 +230,18 @@ export default function Safari({
     return webProjects.find(
       (p) =>
         p.websiteLink &&
-        currentUrl.toLowerCase().includes(p.websiteLink.replace(/\/$/, "").toLowerCase())
+        currentUrl
+          .toLowerCase()
+          .includes(p.websiteLink.replace(/\/$/, "").toLowerCase()),
     );
   }, [webProjects, currentUrl]);
 
   // Explicit theme variables (avoids Tailwind dark: override bugs in light mode)
   const bgPrimary = isDarkMode ? "bg-[#1e1e1e]" : "bg-[#f5f5f7]";
   const bgToolbar = isDarkMode ? "bg-[#252526]/95" : "bg-[#f0f0f2]/95";
-  const bgAddress = isDarkMode ? "bg-[#181818]" : "bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]";
+  const bgAddress = isDarkMode
+    ? "bg-[#181818]"
+    : "bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]";
   const textColor = isDarkMode ? "text-white" : "text-[#1d1d1f]";
   const headingColor = isDarkMode ? "text-white/80" : "text-[#1d1d1f]/80";
   const textMuted = isDarkMode ? "text-white/50" : "text-black/55";
@@ -245,9 +251,13 @@ export default function Safari({
     : "bg-white hover:bg-black/[0.03] shadow-[0_1px_4px_rgba(0,0,0,0.05)]";
 
   return (
-    <div className={`h-full w-full flex flex-col ${bgPrimary} ${textColor} font-sans overflow-hidden relative`}>
+    <div
+      className={`h-full w-full flex flex-col ${bgPrimary} ${textColor} font-sans overflow-hidden relative`}
+    >
       {/* Safari Unified Toolbar - Fully Responsive */}
-      <div className={`h-11 sm:h-12 ${bgToolbar} select-none backdrop-blur-xl border-b ${borderStyle} flex items-center justify-between px-2 sm:px-3 md:px-4 gap-1.5 sm:gap-2 md:gap-3 shrink-0 z-20`}>
+      <div
+        className={`h-11 sm:h-12 ${bgToolbar} select-none backdrop-blur-xl border-b ${borderStyle} flex items-center justify-between px-2 sm:px-3 md:px-4 gap-1.5 sm:gap-2 md:gap-3 shrink-0 z-20`}
+      >
         {/* Navigation Buttons */}
         <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
           <button
@@ -288,8 +298,8 @@ export default function Safari({
               isStartPage
                 ? "text-[#007AFF]"
                 : isDarkMode
-                ? "hover:bg-white/10 text-white active:scale-95"
-                : "hover:bg-black/5 text-[#1d1d1f] active:scale-95"
+                  ? "hover:bg-white/10 text-white active:scale-95"
+                  : "hover:bg-black/5 text-[#1d1d1f] active:scale-95"
             }`}
           >
             <Compass size={15} />
@@ -330,7 +340,9 @@ export default function Safari({
               </form>
             ) : (
               <div className="flex-1 min-w-0 flex items-center justify-center gap-1.5 overflow-hidden">
-                <span className={`text-[11px] sm:text-[13px] font-medium tracking-tight truncate ${textColor}`}>
+                <span
+                  className={`text-[11px] sm:text-[13px] font-medium tracking-tight truncate ${textColor}`}
+                >
                   {displayDomain}
                 </span>
                 {matchedProject && (
@@ -348,7 +360,10 @@ export default function Safari({
               }}
               className={`${textMuted} hover:${textColor} transition-colors shrink-0`}
             >
-              <RotateCw size={11} className={isLoading ? "animate-spin text-[#007AFF]" : ""} />
+              <RotateCw
+                size={11}
+                className={isLoading ? "animate-spin text-[#007AFF]" : ""}
+              />
             </button>
           </div>
 
@@ -364,13 +379,17 @@ export default function Safari({
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* Responsive Viewport Switcher - Desktop only */}
           {!isStartPage && !isMobile && (
-            <div className={`hidden md:flex items-center ${isDarkMode ? "bg-white/5" : "bg-black/5"} p-0.5 rounded-lg border ${borderStyle}`}>
+            <div
+              className={`hidden md:flex items-center ${isDarkMode ? "bg-white/5" : "bg-black/5"} p-0.5 rounded-lg border ${borderStyle}`}
+            >
               <button
                 onClick={() => setViewMode("desktop")}
                 title={lang === "tr" ? "Masaüstü Görünümü" : "Desktop View"}
                 className={`p-1.5 rounded-md transition-all ${
                   viewMode === "desktop"
-                    ? isDarkMode ? "bg-black/40 text-[#007AFF]" : "bg-white text-[#007AFF] shadow-xs"
+                    ? isDarkMode
+                      ? "bg-black/40 text-[#007AFF]"
+                      : "bg-white text-[#007AFF] shadow-xs"
                     : `${textMuted} hover:${textColor}`
                 }`}
               >
@@ -378,10 +397,16 @@ export default function Safari({
               </button>
               <button
                 onClick={() => setViewMode("tablet")}
-                title={lang === "tr" ? "Tablet Görünümü (768px)" : "Tablet View (768px)"}
+                title={
+                  lang === "tr"
+                    ? "Tablet Görünümü (768px)"
+                    : "Tablet View (768px)"
+                }
                 className={`p-1.5 rounded-md transition-all ${
                   viewMode === "tablet"
-                    ? isDarkMode ? "bg-black/40 text-[#007AFF]" : "bg-white text-[#007AFF] shadow-xs"
+                    ? isDarkMode
+                      ? "bg-black/40 text-[#007AFF]"
+                      : "bg-white text-[#007AFF] shadow-xs"
                     : `${textMuted} hover:${textColor}`
                 }`}
               >
@@ -389,10 +414,16 @@ export default function Safari({
               </button>
               <button
                 onClick={() => setViewMode("mobile")}
-                title={lang === "tr" ? "Mobil Görünümü (390px)" : "Mobile View (390px)"}
+                title={
+                  lang === "tr"
+                    ? "Mobil Görünümü (390px)"
+                    : "Mobile View (390px)"
+                }
                 className={`p-1.5 rounded-md transition-all ${
                   viewMode === "mobile"
-                    ? isDarkMode ? "bg-black/40 text-[#007AFF]" : "bg-white text-[#007AFF] shadow-xs"
+                    ? isDarkMode
+                      ? "bg-black/40 text-[#007AFF]"
+                      : "bg-white text-[#007AFF] shadow-xs"
                     : `${textMuted} hover:${textColor}`
                 }`}
               >
@@ -453,17 +484,21 @@ export default function Safari({
               <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3 pt-2">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 relative drop-shadow-xl mb-1">
                   <Image
-                    src="/images/icons/safari.png"
+                    src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/safari.png"
                     alt="Safari"
                     fill
                     sizes="64px"
                     className="object-contain"
                   />
                 </div>
-                <h1 className={`text-2xl sm:text-3xl md:text-4xl font-black tracking-tight ${textColor}`}>
+                <h1
+                  className={`text-2xl sm:text-3xl md:text-4xl font-black tracking-tight ${textColor}`}
+                >
                   {lang === "tr" ? "Safari Favorileri" : "Safari Favorites"}
                 </h1>
-                <p className={`${textMuted} text-xs sm:text-sm max-w-md font-medium px-4`}>
+                <p
+                  className={`${textMuted} text-xs sm:text-sm max-w-md font-medium px-4`}
+                >
                   {lang === "tr"
                     ? "Görüntülemek istediğiniz canlı projeyi seçin veya üst adres çubuğuna bir bağlantı girin."
                     : "Select a live project to preview or enter a URL in the address bar above."}
@@ -472,10 +507,14 @@ export default function Safari({
 
               {/* Projects Favorites Grid */}
               <div className="space-y-3 sm:space-y-4">
-                <div className={`flex items-center justify-between border-b ${borderStyle} pb-2 px-1`}>
+                <div
+                  className={`flex items-center justify-between border-b ${borderStyle} pb-2 px-1`}
+                >
                   <div className="flex items-center gap-1.5">
                     <Sparkles size={15} className="text-[#007AFF]" />
-                    <h2 className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-wider ${headingColor}`}>
+                    <h2
+                      className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-wider ${headingColor}`}
+                    >
                       {lang === "tr" ? "Canlı Web Siteleri" : "Live Websites"}
                     </h2>
                   </div>
@@ -500,11 +539,17 @@ export default function Safari({
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
-                      <span className={`text-[12px] sm:text-[13px] font-bold line-clamp-1 group-hover:text-[#007AFF] transition-colors ${textColor}`}>
+                      <span
+                        className={`text-[12px] sm:text-[13px] font-bold line-clamp-1 group-hover:text-[#007AFF] transition-colors ${textColor}`}
+                      >
                         {project.title}
                       </span>
-                      <span className={`text-[10px] sm:text-[11px] ${textMuted} truncate w-full mt-0.5`}>
-                        {project.websiteLink?.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                      <span
+                        className={`text-[10px] sm:text-[11px] ${textMuted} truncate w-full mt-0.5`}
+                      >
+                        {project.websiteLink
+                          ?.replace(/^https?:\/\//, "")
+                          .replace(/\/$/, "")}
                       </span>
                     </div>
                   ))}
@@ -513,10 +558,16 @@ export default function Safari({
 
               {/* Quick Developer Links */}
               <div className="space-y-3 sm:space-y-4 pt-2">
-                <div className={`flex items-center gap-1.5 border-b ${borderStyle} pb-2 px-1`}>
+                <div
+                  className={`flex items-center gap-1.5 border-b ${borderStyle} pb-2 px-1`}
+                >
                   <Globe size={15} className="text-emerald-500" />
-                  <h2 className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-wider ${headingColor}`}>
-                    {lang === "tr" ? "Geliştirici Bağlantıları" : "Developer Links"}
+                  <h2
+                    className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-wider ${headingColor}`}
+                  >
+                    {lang === "tr"
+                      ? "Geliştirici Bağlantıları"
+                      : "Developer Links"}
                   </h2>
                 </div>
 
@@ -533,8 +584,16 @@ export default function Safari({
                         <Github size={20} className="text-white" />
                       </div>
                       <div>
-                        <div className={`text-[12px] sm:text-[13px] font-bold ${textColor}`}>GitHub</div>
-                        <div className={`text-[10px] sm:text-[11px] ${textMuted}`}>github.com/hsemihaktas</div>
+                        <div
+                          className={`text-[12px] sm:text-[13px] font-bold ${textColor}`}
+                        >
+                          GitHub
+                        </div>
+                        <div
+                          className={`text-[10px] sm:text-[11px] ${textMuted}`}
+                        >
+                          github.com/hsemihaktas
+                        </div>
                       </div>
                     </div>
                     <ArrowUpRight size={15} className={textMuted} />
@@ -552,8 +611,16 @@ export default function Safari({
                         <Linkedin size={20} className="text-white fill-white" />
                       </div>
                       <div>
-                        <div className={`text-[12px] sm:text-[13px] font-bold ${textColor}`}>LinkedIn</div>
-                        <div className={`text-[10px] sm:text-[11px] ${textMuted}`}>linkedin.com/in/hsemihaktas</div>
+                        <div
+                          className={`text-[12px] sm:text-[13px] font-bold ${textColor}`}
+                        >
+                          LinkedIn
+                        </div>
+                        <div
+                          className={`text-[10px] sm:text-[11px] ${textMuted}`}
+                        >
+                          linkedin.com/in/hsemihaktas
+                        </div>
                       </div>
                     </div>
                     <ArrowUpRight size={15} className={textMuted} />
@@ -573,8 +640,16 @@ export default function Safari({
                         </svg>
                       </div>
                       <div>
-                        <div className={`text-[12px] sm:text-[13px] font-bold ${textColor}`}>X (Twitter)</div>
-                        <div className={`text-[10px] sm:text-[11px] ${textMuted}`}>x.com/hsemihaktas</div>
+                        <div
+                          className={`text-[12px] sm:text-[13px] font-bold ${textColor}`}
+                        >
+                          X (Twitter)
+                        </div>
+                        <div
+                          className={`text-[10px] sm:text-[11px] ${textMuted}`}
+                        >
+                          x.com/hsemihaktas
+                        </div>
                       </div>
                     </div>
                     <ArrowUpRight size={15} className={textMuted} />
@@ -585,11 +660,17 @@ export default function Safari({
           </div>
         ) : (
           /* Live Website Iframe Viewer */
-          <div className={`flex-1 w-full h-full flex flex-col items-center justify-center relative ${isDarkMode ? "bg-[#121212]" : "bg-white"} overflow-hidden`}>
+          <div
+            className={`flex-1 w-full h-full flex flex-col items-center justify-center relative ${isDarkMode ? "bg-[#121212]" : "bg-white"} overflow-hidden`}
+          >
             {/* Loading Indicator */}
             {isLoading && (
-              <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isDarkMode ? "bg-[#181818]/80" : "bg-white/80"} backdrop-blur-md animate-in fade-in duration-200`}>
-                <div className={`w-11 h-11 rounded-2xl ${isDarkMode ? "bg-[#252526] border-white/10" : "bg-white border-black/5"} shadow-xl border flex items-center justify-center mb-3`}>
+              <div
+                className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isDarkMode ? "bg-[#181818]/80" : "bg-white/80"} backdrop-blur-md animate-in fade-in duration-200`}
+              >
+                <div
+                  className={`w-11 h-11 rounded-2xl ${isDarkMode ? "bg-[#252526] border-white/10" : "bg-white border-black/5"} shadow-xl border flex items-center justify-center mb-3`}
+                >
                   <RotateCw size={20} className="animate-spin text-[#007AFF]" />
                 </div>
                 <p className={`text-[13px] font-bold ${textColor}`}>
@@ -604,7 +685,11 @@ export default function Safari({
             {/* Viewport Container: On mobile device, always edge-to-edge 100% full screen */}
             <div
               className={`w-full h-full flex items-center justify-center transition-all duration-300 p-0 ${
-                !isMobile && viewMode === "tablet" ? "py-4" : !isMobile && viewMode === "mobile" ? "py-4" : ""
+                !isMobile && viewMode === "tablet"
+                  ? "py-4"
+                  : !isMobile && viewMode === "mobile"
+                    ? "py-4"
+                    : ""
               }`}
             >
               <div
@@ -612,8 +697,8 @@ export default function Safari({
                   isMobile || viewMode === "desktop"
                     ? "w-full rounded-none border-none overflow-y-auto"
                     : viewMode === "tablet"
-                    ? "w-[768px] max-w-[95%] rounded-3xl shadow-2xl border-[8px] border-black/80 ring-1 ring-white/10 bg-black overflow-hidden"
-                    : "w-[390px] max-w-[90%] rounded-[48px] shadow-2xl border-[10px] border-black/90 ring-1 ring-white/20 bg-black overflow-hidden"
+                      ? "w-[768px] max-w-[95%] rounded-3xl shadow-2xl border-[8px] border-black/80 ring-1 ring-white/10 bg-black overflow-hidden"
+                      : "w-[390px] max-w-[90%] rounded-[48px] shadow-2xl border-[10px] border-black/90 ring-1 ring-white/20 bg-black overflow-hidden"
                 }`}
                 style={{
                   WebkitOverflowScrolling: "touch",

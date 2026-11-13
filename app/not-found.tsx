@@ -25,7 +25,7 @@ export default function NotFound() {
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
       {/* Wallpaper */}
       <Image
-        src="/images/wallpaper.jpg"
+        src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/wallpaper.jpg"
         alt="Wallpaper"
         fill
         className="object-cover"

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { Project, Language } from "@/lib/types";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 import {
   LayoutGrid,
   ChevronLeft,
@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 
 // Yükleme sırasında gösterilen shimmer blur placeholder
-const shimmerSvg = (w: number, h: number) => `
+const shimmerSvg = (
+  w: number, h: number) => `
 <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -51,6 +52,7 @@ const Projects: React.FC<ProjectsProps> = ({
   initialProjectId,
   onOpenSafari,
 }) => {
+  const DATA = usePortfolioData();
   const d = DATA[lang].projects;
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string | null>(null);
@@ -350,7 +352,7 @@ const Projects: React.FC<ProjectsProps> = ({
                       >
                         <div className="w-5 h-5 relative shrink-0">
                           <Image
-                            src="/images/icons/safari.png"
+                            src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/safari.png"
                             alt="Safari"
                             fill
                             sizes="20px"

@@ -40,3 +40,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# temp / backup files
+*.orig.*
+*.bak
+*.temp
+*.tmp
+
+# Public assets (stored in Supabase Storage)
+/public/images/
+/public/files/

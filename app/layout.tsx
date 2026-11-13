@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     siteName: "Hasan Semih Aktaş Portfolio",
     images: [
       {
-        url: "/images/og-image.png",
+        url: "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/og-image.png",
         width: 1200,
         height: 630,
         alt: "Hasan Semih Aktaş - Full Stack Developer Portfolio",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "Hasan Semih Aktaş | Full-Stack Developer Portfolio",
     description:
       "Full Stack Developer · React.js · Node.js · React Native - Modern portfolio with macOS design",
-    images: ["/images/og-image.png"],
+    images: ["https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/og-image.png"],
   },
   other: {
     "google-site-verification": "RIHQYNOqayD5Y5TpWlG4qkDvQzg9eKkZxcPx2z-DD6g",

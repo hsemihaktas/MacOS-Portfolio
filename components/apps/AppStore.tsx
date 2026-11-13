@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 import { X } from "lucide-react";
 import { AppStoreProps, Language } from "@/lib/types";
 import Sidebar from "./app-store/Sidebar";
@@ -8,7 +8,9 @@ import AppList from "./app-store/AppList";
 import FeaturedSection from "./app-store/FeaturedSection";
 import AppDetail from "./app-store/AppDetail";
 
-export default function AppStore({ lang, isDarkMode }: AppStoreProps) {
+export default function AppStore({
+   lang, isDarkMode }: AppStoreProps) {
+  const DATA = usePortfolioData();
   const data = DATA[lang].appStore;
   const [activeCategory, setActiveCategory] = useState("discover");
   const [selectedAppId, setSelectedAppId] = useState<number | null>(null);

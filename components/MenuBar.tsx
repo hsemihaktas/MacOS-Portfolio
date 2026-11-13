@@ -11,7 +11,7 @@ import {
   Signal,
 } from "lucide-react";
 import { Language } from "@/lib/types";
-import { DATA } from "@/lib/data";
+import { usePortfolioData } from "@/lib/context/DataContext";
 
 interface MenuBarProps {
   activeAppTitle: string;
@@ -37,6 +37,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
   const [time, setTime] = useState(new Date());
   const [showHelpMenu, setShowHelpMenu] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const DATA = usePortfolioData();
   const helpMenuRef = useRef<HTMLDivElement>(null);
   const t = DATA[lang].menu;
   const d = DATA[lang].about;
@@ -84,7 +85,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
   // Apple Logo
   const AppleLogo = (
     <Image
-      src="/images/icons/apple-logo-white.png"
+      src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/apple-logo-white.png"
       alt="Apple"
       width={16}
       height={16}
@@ -148,7 +149,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center shrink-0 border border-white/10 relative">
                   <Image
-                    src="/images/icons/mail.png"
+                    src="https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/mail.png"
                     alt="Mail"
                     width={24}
                     height={24}

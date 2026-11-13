@@ -10,6 +10,7 @@ import Spotlight from "@/components/Spotlight";
 import ControlCenter from "@/components/ControlCenter";
 import { AnimatePresence } from "framer-motion";
 import BootScreen from "@/components/BootScreen";
+import { DataProvider } from "@/lib/context/DataContext";
 
 import AboutApp from "@/components/apps/About";
 import ProjectsApp from "@/components/apps/Projects";
@@ -48,15 +49,14 @@ export default function Home() {
     if (typeof window !== "undefined")
       localStorage.setItem("portfolio-lang", l);
   };
-  // Başlangıçta true — boot ekranı anında gösterilir, desktop arkada hazırlanır
   const [showBoot, setShowBoot] = useState(true);
+  const [dataReady, setDataReady] = useState(false);
 
   useEffect(() => {
-    // Zaten boot olduysa anında kaldır (animasyon yok)
+    // Aynı session içinde daha önce boot oldu → gösterme
     if (sessionStorage.getItem("booted")) {
       setShowBoot(false);
     }
-    // İlk ziyaretse BootScreen kendi animasyonunu oynatır
   }, []);
 
   const handleBootComplete = () => {
@@ -95,7 +95,9 @@ export default function Home() {
 
   const [activeApp, setActiveApp] = useState<AppID | null>(null);
   const [topZ, setTopZ] = useState(INITIAL_Z_INDEX + 1);
-  const [wallpaper, setWallpaper] = useState("/images/wallpaper.jpg");
+  const [wallpaper, setWallpaper] = useState(
+    "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/wallpaper.jpg",
+  );
 
   const getAppTitle = useCallback(
     (id: AppID): string => {
@@ -262,136 +264,140 @@ export default function Home() {
   }, [activeApp, lang, getAppTitle]);
 
   return (
-    <div
-      className={`w-full h-full relative flex flex-col overflow-hidden no-select bg-black`}
-    >
-      {/* Boot ekranı — her session'da bir kez */}
-      {showBoot && <BootScreen onComplete={handleBootComplete} />}
-      <Image
-        src={wallpaper}
-        alt="Wallpaper"
-        fill
-        priority
-        sizes="100vw"
-        style={{ objectPosition: isMobile ? "70% center" : "center" }}
-        className="object-cover select-none pointer-events-none"
-        quality={85}
-      />
-
+    <DataProvider lang={lang} onReady={() => setDataReady(true)}>
       <div
-        className="fixed inset-0 bg-black pointer-events-none z-[10020] transition-opacity duration-300"
-        style={{ opacity: (1 - brightness / 100) * 0.65 }}
-      ></div>
-
-      {isControlCenterOpen && !isMobile && (
-        <div
-          className="fixed inset-0 z-[10005]"
-          onClick={() => setIsControlCenterOpen(false)}
+        className={`w-full h-full relative flex flex-col overflow-hidden no-select bg-black`}
+      >
+        {/* Boot ekranı — her session'da bir kez */}
+        {showBoot && (
+          <BootScreen onComplete={handleBootComplete} dataReady={dataReady} />
+        )}
+        <Image
+          src={wallpaper}
+          alt="Wallpaper"
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectPosition: isMobile ? "70% center" : "center" }}
+          className="object-cover select-none pointer-events-none"
+          quality={85}
         />
-      )}
 
-      <MenuBar
-        lang={lang}
-        isMobile={isMobile}
-        isTablet={isTablet}
-        isWifiEnabled={isWifiEnabled}
-        isDarkMode={isDarkMode}
-        activeAppTitle={currentActiveTitle}
-        onSearchClick={() => setIsSpotlightOpen(true)}
-        onControlClick={() => setIsControlCenterOpen(!isControlCenterOpen)}
-      />
+        <div
+          className="fixed inset-0 bg-black pointer-events-none z-[10020] transition-opacity duration-300"
+          style={{ opacity: (1 - brightness / 100) * 0.65 }}
+        ></div>
 
-      {!isWifiEnabled ? (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60 backdrop-blur-xl animate-in fade-in duration-500 p-8">
-          <div className="flex flex-col items-center text-center max-w-sm">
-            <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-8 border border-white/20">
-              <WifiOff size={40} className="text-white/40" />
-            </div>
-            <h2 className="text-white text-2xl font-black mb-4 tracking-tight">
-              {lang === "tr" ? "Bağlantı Kesildi" : "Connection Lost"}
-            </h2>
-            <p className="text-white/50 text-[15px] font-medium leading-relaxed mb-10">
-              {lang === "tr"
-                ? "Sistem özelliklerine erişmek için lütfen denetim masasından Wi-Fi özelliğini etkinleştirin."
-                : "Please enable Wi-Fi in the control center to access system features."}
-            </p>
-            <button
-              onClick={() => setIsWifiEnabled(true)}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-12 py-3.5 rounded-full font-black text-[15px] shadow-2xl transition-all active:scale-95"
-            >
-              {lang === "tr" ? "Hızlı Bağlan" : "Quick Connect"}
-            </button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <Desktop
-            onIconClick={openWindow}
-            isMobile={isMobile}
-            isTablet={isTablet}
-            lang={lang}
-            getAppTitle={getAppTitle}
+        {isControlCenterOpen && !isMobile && (
+          <div
+            className="fixed inset-0 z-[10005]"
+            onClick={() => setIsControlCenterOpen(false)}
           />
-          {/* Glossy reflection behind windows */}
-          <div className="absolute inset-0 glossy-reflection z-[5] pointer-events-none"></div>
+        )}
 
-          <div className="absolute inset-0 pointer-events-none z-40">
-            <AnimatePresence>
-              {windows.map(
-                (win) =>
-                  win.isOpen &&
-                  !win.isMinimized && (
-                    <Window
-                      key={win.id}
-                      window={{ ...win, title: getAppTitle(win.id) }}
-                      lang={lang}
-                      isMobile={isMobile || isTablet}
-                      isDarkMode={isDarkMode}
-                      onClose={() => closeWindow(win.id)}
-                      onMinimize={() => minimizeWindow(win.id)}
-                      onFocus={() => focusWindow(win.id)}
-                      onMaximize={() => toggleMaximize(win.id)}
-                    >
-                      {renderAppContent(win)}
-                    </Window>
-                  ),
-              )}
-            </AnimatePresence>
+        <MenuBar
+          lang={lang}
+          isMobile={isMobile}
+          isTablet={isTablet}
+          isWifiEnabled={isWifiEnabled}
+          isDarkMode={isDarkMode}
+          activeAppTitle={currentActiveTitle}
+          onSearchClick={() => setIsSpotlightOpen(true)}
+          onControlClick={() => setIsControlCenterOpen(!isControlCenterOpen)}
+        />
+
+        {!isWifiEnabled ? (
+          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60 backdrop-blur-xl animate-in fade-in duration-500 p-8">
+            <div className="flex flex-col items-center text-center max-w-sm">
+              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-8 border border-white/20">
+                <WifiOff size={40} className="text-white/40" />
+              </div>
+              <h2 className="text-white text-2xl font-black mb-4 tracking-tight">
+                {lang === "tr" ? "Bağlantı Kesildi" : "Connection Lost"}
+              </h2>
+              <p className="text-white/50 text-[15px] font-medium leading-relaxed mb-10">
+                {lang === "tr"
+                  ? "Sistem özelliklerine erişmek için lütfen denetim masasından Wi-Fi özelliğini etkinleştirin."
+                  : "Please enable Wi-Fi in the control center to access system features."}
+              </p>
+              <button
+                onClick={() => setIsWifiEnabled(true)}
+                className="bg-blue-600 hover:bg-blue-500 text-white px-12 py-3.5 rounded-full font-black text-[15px] shadow-2xl transition-all active:scale-95"
+              >
+                {lang === "tr" ? "Hızlı Bağlan" : "Quick Connect"}
+              </button>
+            </div>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <Desktop
+              onIconClick={openWindow}
+              isMobile={isMobile}
+              isTablet={isTablet}
+              lang={lang}
+              getAppTitle={getAppTitle}
+            />
+            {/* Glossy reflection behind windows */}
+            <div className="absolute inset-0 glossy-reflection z-[5] pointer-events-none"></div>
 
-      <Spotlight
-        isOpen={isSpotlightOpen}
-        onClose={() => setIsSpotlightOpen(false)}
-        onSelectApp={openWindow}
-        lang={lang}
-      />
+            <div className="absolute inset-0 pointer-events-none z-40">
+              <AnimatePresence>
+                {windows.map(
+                  (win) =>
+                    win.isOpen &&
+                    !win.isMinimized && (
+                      <Window
+                        key={win.id}
+                        window={{ ...win, title: getAppTitle(win.id) }}
+                        lang={lang}
+                        isMobile={isMobile || isTablet}
+                        isDarkMode={isDarkMode}
+                        onClose={() => closeWindow(win.id)}
+                        onMinimize={() => minimizeWindow(win.id)}
+                        onFocus={() => focusWindow(win.id)}
+                        onMaximize={() => toggleMaximize(win.id)}
+                      >
+                        {renderAppContent(win)}
+                      </Window>
+                    ),
+                )}
+              </AnimatePresence>
+            </div>
+          </>
+        )}
 
-      <ControlCenter
-        isOpen={isControlCenterOpen}
-        onClose={() => setIsControlCenterOpen(false)}
-        lang={lang}
-        setLang={handleSetLang}
-        isDarkMode={isDarkMode}
-        setDarkMode={setDarkMode}
-        isWifiEnabled={isWifiEnabled}
-        setIsWifiEnabled={setIsWifiEnabled}
-        brightness={brightness}
-        setBrightness={setBrightness}
-        isMobile={isMobile}
-      />
+        <Spotlight
+          isOpen={isSpotlightOpen}
+          onClose={() => setIsSpotlightOpen(false)}
+          onSelectApp={openWindow}
+          lang={lang}
+        />
 
-      <Dock
-        onAppClick={openWindow}
-        activeApp={activeApp}
-        windows={windows}
-        isMobile={isMobile}
-        isTablet={isTablet}
-        isOnline={isWifiEnabled}
-        lang={lang}
-        getAppTitle={getAppTitle}
-      />
-    </div>
+        <ControlCenter
+          isOpen={isControlCenterOpen}
+          onClose={() => setIsControlCenterOpen(false)}
+          lang={lang}
+          setLang={handleSetLang}
+          isDarkMode={isDarkMode}
+          setDarkMode={setDarkMode}
+          isWifiEnabled={isWifiEnabled}
+          setIsWifiEnabled={setIsWifiEnabled}
+          brightness={brightness}
+          setBrightness={setBrightness}
+          isMobile={isMobile}
+        />
+
+        <Dock
+          onAppClick={openWindow}
+          activeApp={activeApp}
+          windows={windows}
+          isMobile={isMobile}
+          isTablet={isTablet}
+          isOnline={isWifiEnabled}
+          lang={lang}
+          getAppTitle={getAppTitle}
+        />
+      </div>
+    </DataProvider>
   );
 }

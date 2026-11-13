@@ -8,8 +8,7 @@ import React, {
   KeyboardEvent,
 } from "react";
 import { Language, AppID } from "@/lib/types";
-import { projectDefinitions } from "@/lib/data/projects";
-import { aboutData } from "@/lib/data/about";
+import { usePortfolioData } from "@/lib/context/DataContext";
 
 interface TerminalProps {
   lang: Language;
@@ -43,28 +42,17 @@ const line = (kind: Line["kind"], text: string): Line => ({
   text,
 });
 
-// ─── Sahte dosya sistemi ────────────────────────────────────────────────────────
-const FS: Record<string, string[]> = {
-  "~": ["about.md", "contact.md", "skills.md", "projects/"],
-  "~/projects": ["mobile/", "web/", "discord/"],
-  "~/projects/mobile": projectDefinitions
-    .filter((p) => p.platform === "mobile")
-    .map((p) => p.tr.title.split(" ")[0].toLowerCase() + ".md"),
-  "~/projects/web": projectDefinitions
-    .filter((p) => p.platform === "web")
-    .map((p) => p.tr.title.split(" ")[0].toLowerCase() + ".md"),
-  "~/projects/discord": projectDefinitions
-    .filter((p) => p.platform === "discord-bot")
-    .map((p) => p.tr.title.split(" ")[0].toLowerCase() + ".md"),
-};
+
 
 // ─── Komutlar ──────────────────────────────────────────────────────────────────
 function buildCommands(
   lang: Language,
+  DATA: ReturnType<typeof import("@/lib/context/DataContext").usePortfolioData>,
+  FS: Record<string, string[]>,
   onOpenApp?: (id: AppID, params?: Record<string, string>) => void,
 ) {
-  const about = aboutData[lang];
-  const projects = projectDefinitions;
+  const about = DATA[lang].about;
+  const projects = DATA[lang].projects.items;
 
   const isTr = lang === "tr";
 
@@ -206,18 +194,16 @@ function buildCommands(
       // Proje dosyası mı?
       const slug = filename.replace(".md", "");
       const found = projects.find(
-        (p) =>
-          p.tr.title.split(" ")[0].toLowerCase() === slug ||
-          p.en.title.split(" ")[0].toLowerCase() === slug,
+        (p) => p.title.split(" ")[0].toLowerCase() === slug,
       );
       if (found) {
-        const t = found[lang];
+        const t = found;
         return [
           line("output", ""),
           line("output", `  # ${t.title}`),
           line("output", `  ${t.description}`),
           line("output", ""),
-          ...(t.features ?? []).map((f) => line("output", `  ▸ ${f}`)),
+          ...(t.features ?? []).map((f: string) => line("output", `  ▸ ${f}`)),
           ...(found.websiteLink
             ? [line("output", ""), line("output", `  🔗 ${found.websiteLink}`)]
             : []),
@@ -357,6 +343,7 @@ const WELCOME_LINES = [
 ];
 
 export default function Terminal({ lang, onOpenApp }: TerminalProps) {
+  const DATA = usePortfolioData();
   const [lines, setLines] = useState<Line[]>(() =>
     WELCOME_LINES.map((t) => line("welcome", t)),
   );
@@ -369,6 +356,27 @@ export default function Terminal({ lang, onOpenApp }: TerminalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const prompt = `${cwd} % `;
+
+  // Fake filesystem built from Supabase data
+  const FS: Record<string, string[]> = {
+    "~": ["about.md", "contact.md", "skills.md", "projects/"],
+    "~/projects": ["mobile/", "web/", "discord/"],
+    "~/projects/mobile": DATA.tr.projects.items
+      .filter((p: { platform: string }) => p.platform === "mobile")
+      .map(
+        (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
+      ),
+    "~/projects/web": DATA.tr.projects.items
+      .filter((p: { platform: string }) => p.platform === "web")
+      .map(
+        (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
+      ),
+    "~/projects/discord": DATA.tr.projects.items
+      .filter((p: { platform: string }) => p.platform === "discord-bot")
+      .map(
+        (p: { title: string }) => p.title.split(" ")[0].toLowerCase() + ".md",
+      ),
+  };
 
   // Yeni satır eklendikçe en alta scroll
   useEffect(() => {
@@ -393,7 +401,7 @@ export default function Terminal({ lang, onOpenApp }: TerminalProps) {
       setHistIdx(-1);
 
       const [cmd, ...args] = trimmed.toLowerCase().split(/\s+/);
-      const cmds = buildCommands(lang, onOpenApp);
+      const cmds = buildCommands(lang, DATA, FS, onOpenApp);
 
       let out: Line[] = [];
 
