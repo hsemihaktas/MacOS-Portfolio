@@ -66,7 +66,7 @@ export async function fetchAllPortfolioData() {
     { data: catsData },
     { data: configData },
   ] = await Promise.all([
-    supabase.from("projects").select("*").order("id", { ascending: false }),
+    supabase.from("projects").select("*").order("id", { ascending: true }),
     supabase.from("about").select("*").eq("id", 1).single(),
     supabase.from("experience").select("*").order("sort_order"),
     supabase
@@ -76,7 +76,11 @@ export async function fetchAllPortfolioData() {
     supabase.from("site_config").select("*").eq("id", 1).single(),
   ]);
 
-  const projectsRows = (projectsData ?? []) as ProjectRow[];
+  const rawRows = (projectsData ?? []) as ProjectRow[];
+  // Pin highest-id project (newest) to front; rest stay in ascending id order
+  const projectsRows = rawRows.length
+    ? [rawRows[rawRows.length - 1], ...rawRows.slice(0, -1)]
+    : rawRows;
   const aboutRow = (aboutData ?? null) as AboutRow | null;
   const expRows = (expData ?? []) as ExperienceRow[];
   const catRows = (catsData ?? []) as (SkillCategoryRow & {
@@ -164,10 +168,15 @@ export async function fetchProjectItems(lang: Language): Promise<Project[]> {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
-    .order("id", { ascending: false });
+    .order("id", { ascending: true });
 
   if (error || !data) return [];
-  return (data as ProjectRow[]).map((row) => mapProject(row, lang));
+  const rows = data as ProjectRow[];
+  // Pin highest-id project to front
+  const pinned = rows.length
+    ? [rows[rows.length - 1], ...rows.slice(0, -1)]
+    : rows;
+  return pinned.map((row) => mapProject(row, lang));
 }
 
 export async function fetchAbout(lang: Language) {
