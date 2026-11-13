@@ -111,8 +111,8 @@ CREATE TABLE IF NOT EXISTS public.skills (
   sort_order  integer NOT NULL DEFAULT 0,
   name        text    NOT NULL,
 
-  CONSTRAINT skills_pkey    PRIMARY KEY (id),
-  CONSTRAINT skills_cat_fk  FOREIGN KEY (category_id)
+  CONSTRAINT skills_pkey              PRIMARY KEY (id),
+  CONSTRAINT skills_category_id_fkey  FOREIGN KEY (category_id)
     REFERENCES public.skill_categories (id) ON DELETE CASCADE
 );
 
@@ -151,13 +151,13 @@ ALTER TABLE public.skill_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.skills          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_config     ENABLE ROW LEVEL SECURITY;
 
--- Public read policies
-CREATE POLICY "Public read projects"        ON public.projects        FOR SELECT USING (true);
-CREATE POLICY "Public read about"           ON public.about           FOR SELECT USING (true);
-CREATE POLICY "Public read experience"      ON public.experience      FOR SELECT USING (true);
-CREATE POLICY "Public read skill_categories" ON public.skill_categories FOR SELECT USING (true);
-CREATE POLICY "Public read skills"          ON public.skills          FOR SELECT USING (true);
-CREATE POLICY "Public read site_config"     ON public.site_config     FOR SELECT USING (true);
+-- Public read policies (snake_case names match the actual DB policy names)
+CREATE POLICY "public_read_projects"        ON public.projects        FOR SELECT USING (true);
+CREATE POLICY "public_read_about"           ON public.about           FOR SELECT USING (true);
+CREATE POLICY "public_read_experience"      ON public.experience      FOR SELECT USING (true);
+CREATE POLICY "public_read_categories"      ON public.skill_categories FOR SELECT USING (true);
+CREATE POLICY "public_read_skills"          ON public.skills          FOR SELECT USING (true);
+CREATE POLICY "public_read_site_config"     ON public.site_config     FOR SELECT USING (true);
 
 
 -- ── Storage buckets (create manually in Dashboard) ────────────────────────────
