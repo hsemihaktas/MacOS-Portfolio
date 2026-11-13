@@ -108,7 +108,7 @@ const Window: React.FC<WindowProps> = ({
         if (resizeDirection.includes("s")) {
           newHeight = Math.max(
             minHeight,
-            resizeStartPos.current.height + deltaY
+            resizeStartPos.current.height + deltaY,
           );
         }
         if (resizeDirection.includes("n")) {
@@ -150,46 +150,54 @@ const Window: React.FC<WindowProps> = ({
         borderRadius: 0,
       }
     : win.isMaximized
-    ? {
-        top: "32px",
-        left: 0,
-        right: 0,
-        bottom: "85px",
-        zIndex: win.zIndex,
-        borderRadius: "0",
-      }
-    : {
-        top: pos.y,
-        left: pos.x,
-        width: `${size.width}px`,
-        height: `${size.height}px`,
-        zIndex: win.zIndex,
-      };
+      ? {
+          top: "32px",
+          left: 0,
+          right: 0,
+          bottom: "85px",
+          zIndex: win.zIndex,
+          borderRadius: "0",
+        }
+      : {
+          top: pos.y,
+          left: pos.x,
+          width: `${size.width}px`,
+          height: `${size.height}px`,
+          zIndex: win.zIndex,
+        };
 
-  // Content background reflects full dark mode
-  const bgColor = isDarkMode ? "bg-[#121212]" : "bg-[#FFFFFF]";
-  const titleBarColor = isDarkMode
-    ? "bg-[#2D2D2D] border-white/10"
-    : "bg-[#EBEBEB] border-black/[0.08]";
-  const textColor = isDarkMode ? "text-white" : "text-black";
-  const titleOpacity = isDarkMode ? "text-white/60" : "text-black/60";
+  // macOS Tahoe accurate color tokens
+  const contentBg = isDarkMode ? "#1C1C1E" : "#FFFFFF";
+  const titleBarBg = isDarkMode
+    ? "rgba(38,38,40,0.96)"
+    : "rgba(236,236,238,0.97)";
+  const titleBarBorder = isDarkMode
+    ? "1px solid rgba(255,255,255,0.07)"
+    : "1px solid rgba(0,0,0,0.09)";
+  const titleTextClass = isDarkMode ? "text-white/55" : "text-black/55";
+  const mobileTitleClass = isDarkMode ? "text-white" : "text-black";
 
   return (
     <motion.div
-      className={`absolute flex flex-col overflow-hidden pointer-events-auto ${bgColor}
-        ${
-          isMobile
-            ? ""
-            : "rounded-2xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] border border-white/5"
-        } 
+      className={`absolute flex flex-col overflow-hidden pointer-events-auto
         ${
           isDragging || isResizing
             ? "select-none transition-none"
             : win.isMaximized
-            ? "transition-[width,height,top,left,border-radius] duration-200 ease-out"
-            : "transition-none"
+              ? "transition-[width,height,top,left,border-radius] duration-200 ease-out"
+              : "transition-none"
         }`}
-      style={windowStyle}
+      style={{
+        ...windowStyle,
+        backgroundColor: contentBg,
+        ...(isMobile
+          ? {}
+          : {
+              borderRadius: "12px",
+              border: "1px solid rgba(255,255,255,0.10)",
+              boxShadow: "0 50px 100px -20px rgba(0,0,0,0.65), 0 0 0 0.5px rgba(255,255,255,0.08)" /* fallback */,
+            }),
+      }}
       onClick={onFocus}
       initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -198,8 +206,12 @@ const Window: React.FC<WindowProps> = ({
     >
       {/* Title Bar */}
       <div
-        className={`flex items-center px-4 cursor-default select-none border-b shrink-0 ${titleBarColor}
-          ${isMobile ? "h-[94px] pt-12" : "h-[48px]"}`}
+        className={`flex items-center px-4 cursor-default select-none shrink-0
+          ${isMobile ? "h-[94px] pt-12" : "h-[40px]"}`}
+        style={{
+          background: titleBarBg,
+          borderBottom: titleBarBorder,
+        }}
         onMouseDown={handleMouseDown}
       >
         {isMobile ? (
@@ -214,7 +226,7 @@ const Window: React.FC<WindowProps> = ({
               <ChevronLeft size={22} /> {lang === "tr" ? "Geri" : "Back"}
             </button>
             <span
-              className={`text-[17px] font-black tracking-tight absolute left-1/2 -translate-x-1/2 ${textColor}`}
+              className={`text-[17px] font-black tracking-tight absolute left-1/2 -translate-x-1/2 ${mobileTitleClass}`}
             >
               {win.title}
             </span>
@@ -222,18 +234,19 @@ const Window: React.FC<WindowProps> = ({
           </div>
         ) : (
           <>
-            <div className="flex gap-2.5 w-24">
+            {/* Traffic lights */}
+            <div className="flex gap-2 w-20">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onClose();
                 }}
-                className="w-3.5 h-3.5 bg-[#FF5F57] rounded-full border border-black/[0.1] group relative flex items-center justify-center"
+                className="w-3 h-3 bg-[#FF5F57] rounded-full border border-black/[0.12] group relative flex items-center justify-center hover:brightness-90 transition-all"
               >
                 <X
-                  size={10}
+                  size={7}
                   className="text-[#4C0000] opacity-0 group-hover:opacity-100"
-                  strokeWidth={4}
+                  strokeWidth={3.5}
                 />
               </button>
               <button
@@ -241,12 +254,12 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onMinimize();
                 }}
-                className="w-3.5 h-3.5 bg-[#FEBC2E] rounded-full border border-black/[0.1] group relative flex items-center justify-center"
+                className="w-3 h-3 bg-[#FEBC2E] rounded-full border border-black/[0.12] group relative flex items-center justify-center hover:brightness-90 transition-all"
               >
                 <Minus
-                  size={10}
+                  size={7}
                   className="text-[#5C3C00] opacity-0 group-hover:opacity-100"
-                  strokeWidth={4}
+                  strokeWidth={3.5}
                 />
               </button>
               <button
@@ -254,17 +267,16 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onMaximize();
                 }}
-                className="w-3.5 h-3.5 bg-[#28C840] rounded-full border border-black/[0.1] group relative flex items-center justify-center"
+                className="w-3 h-3 bg-[#28C840] rounded-full border border-black/[0.12] group relative flex items-center justify-center hover:brightness-90 transition-all"
               >
-                <div
-                  className={`w-2 h-2 border-[2px] opacity-0 group-hover:opacity-100 rounded-[1px] ${
-                    isDarkMode ? "border-[#003B00]" : "border-[#003B00]"
-                  }`}
-                ></div>
+                <div className="w-[7px] h-[7px] border-[1.5px] border-[#003B00] opacity-0 group-hover:opacity-100 rounded-[1px]" />
               </button>
             </div>
-            <div className="flex-1 flex justify-center mr-24">
-              <span className={`text-[14px] font-bold ${titleOpacity}`}>
+            {/* Centered title */}
+            <div className="flex-1 flex justify-center mr-20">
+              <span
+                className={`text-[13px] font-semibold tracking-tight ${titleTextClass}`}
+              >
                 {win.title}
               </span>
             </div>
@@ -284,7 +296,6 @@ const Window: React.FC<WindowProps> = ({
       {/* Resize Handles */}
       {!isMobile && !win.isMaximized && (
         <>
-          {/* Edges */}
           <div
             className="absolute top-0 left-0 right-0 h-1 cursor-n-resize"
             onMouseDown={(e) => handleResizeStart(e, "n")}
@@ -301,8 +312,6 @@ const Window: React.FC<WindowProps> = ({
             className="absolute top-0 bottom-0 right-0 w-1 cursor-e-resize"
             onMouseDown={(e) => handleResizeStart(e, "e")}
           />
-
-          {/* Corners */}
           <div
             className="absolute top-0 left-0 w-3 h-3 cursor-nw-resize"
             onMouseDown={(e) => handleResizeStart(e, "nw")}
@@ -322,12 +331,11 @@ const Window: React.FC<WindowProps> = ({
         </>
       )}
 
-      {/* Mobile Global Home Indicator (Tap to Close Window) - pointer-events-none on container so touches pass through to page */}
+      {/* Mobile Home Indicator */}
       {isMobile && (
         <div className="absolute bottom-0 left-0 right-0 h-7 flex items-end justify-center pb-1.5 z-[40] pointer-events-none">
-          {/* visual bar */}
           <div
-            className="w-32 h-1.5 bg-gray-400/60 dark:bg-gray-500/60 rounded-full active:bg-gray-500/80 dark:active:bg-gray-400/80 transition-colors pointer-events-auto cursor-pointer"
+            className="w-32 h-1.5 bg-gray-400/60 rounded-full pointer-events-auto cursor-pointer active:bg-gray-500/80 transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               onClose();

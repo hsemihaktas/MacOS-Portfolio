@@ -132,11 +132,14 @@ const MenuBar: React.FC<MenuBarProps> = ({
   // DESKTOP/TABLET VIEW
   return (
     <div
-      className="absolute top-0 left-0 right-0 h-[28px] flex items-center justify-between px-3 text-[13px] text-white z-[9999] select-none border-b border-white/[0.08]"
+      className="absolute top-0 left-0 right-0 h-[28px] flex items-center justify-between px-3 text-[13px] text-white z-[9999] select-none"
       style={{
-        background: "rgba(0,0,0,0.01)",
-        backdropFilter: "blur(40px) saturate(180%)",
-        WebkitBackdropFilter: "blur(40px) saturate(180%)",
+        background: "rgba(0,0,0,0.18)",
+        backdropFilter: "blur(40px) saturate(180%) brightness(0.95)",
+        WebkitBackdropFilter: "blur(40px) saturate(180%) brightness(0.95)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 0 rgba(0,0,0,0.25)",
       }}
     >
       {/* Sol: Apple logo + uygulama adı + menü */}
@@ -145,7 +148,9 @@ const MenuBar: React.FC<MenuBarProps> = ({
           {AppleLogo}
         </div>
 
-        <span className="font-semibold tracking-tight px-2 cursor-default">{activeAppTitle}</span>
+        <span className="font-semibold tracking-tight px-2 cursor-default">
+          {activeAppTitle}
+        </span>
 
         <div className="relative" ref={helpMenuRef}>
           <button
@@ -197,14 +202,20 @@ const MenuBar: React.FC<MenuBarProps> = ({
         <div className="px-1.5 opacity-90">{WifiIcon}</div>
 
         <button
-          onClick={(e) => { e.stopPropagation(); onSearchClick(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSearchClick();
+          }}
           className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90"
         >
           <Search size={14} strokeWidth={2} />
         </button>
 
         <button
-          onClick={(e) => { e.stopPropagation(); onControlClick(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onControlClick();
+          }}
           className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90"
         >
           <SlidersHorizontal size={14} strokeWidth={2} />

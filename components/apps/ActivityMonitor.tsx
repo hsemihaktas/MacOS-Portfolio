@@ -31,14 +31,14 @@ export default function ActivityMonitor({
   const isTr = lang === "tr";
 
   // ─── Tema ──────────────────────────────────────────────────────────────────
-  const BG = isDarkMode ? "#1c1c1c" : "#f2f2f7";
-  const ROW_EVEN = isDarkMode ? "#2c2c2e" : "#ffffff";
-  const ROW_ODD = isDarkMode ? "#232325" : "#f8f8fa";
-  const BORDER = isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)";
-  const TEXT = isDarkMode ? "#ffffff" : "#1c1c1e";
+  const BG = isDarkMode ? "#1C1C1E" : "#F2F2F7";
+  const ROW_EVEN = isDarkMode ? "#2C2C2E" : "#FFFFFF";
+  const ROW_ODD = isDarkMode ? "#28282A" : "#F8F8FA";
+  const BORDER = isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
+  const TEXT = isDarkMode ? "#FFFFFF" : "#1C1C1E";
   const MUTED = isDarkMode ? "rgba(255,255,255,0.42)" : "rgba(0,0,0,0.42)";
   const TOOLBAR_BG = isDarkMode
-    ? "rgba(30,30,30,0.95)"
+    ? "rgba(40,40,42,0.97)"
     : "rgba(242,242,247,0.98)";
   const SEG_BG = isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
   const ACTIVE_TAB_BG = "#ffffff";

@@ -10,8 +10,7 @@ interface ContactProps {
   isDarkMode?: boolean;
 }
 
-const Contact: React.FC<ContactProps> =
-   ({ lang, isDarkMode }) => {
+const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
   const DATA = usePortfolioData();
   const d = DATA[lang].contact;
   const personal = DATA[lang].about;
@@ -31,10 +30,12 @@ const Contact: React.FC<ContactProps> =
     return emailRegex.test(email);
   };
 
-  const bgPrimary = isDarkMode ? "bg-[#121212]" : "bg-white";
-  const bgSidebar = isDarkMode ? "bg-[#1E1E1E]" : "bg-[#F9F9F9]";
+  const bgPrimary = isDarkMode ? "bg-[#1C1C1E]" : "bg-white";
+  const bgSidebar = isDarkMode ? "bg-[#252527]" : "bg-[#F9F9F9]";
   const textColor = isDarkMode ? "text-white" : "text-black";
-  const borderStyle = isDarkMode ? "border-white/5" : "border-black/[0.04]";
+  const borderStyle = isDarkMode
+    ? "border-white/[0.07]"
+    : "border-black/[0.05]";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +46,7 @@ const Contact: React.FC<ContactProps> =
       setEmailError(
         lang === "tr"
           ? "Geçerli bir e-posta adresi giriniz"
-          : "Please enter a valid email address"
+          : "Please enter a valid email address",
       );
       return;
     }
@@ -98,7 +99,7 @@ const Contact: React.FC<ContactProps> =
           <li
             className={`flex items-center gap-2.5 px-3 py-1.5 ${
               isDarkMode
-                ? "bg-blue-600 text-white"
+                ? "bg-[#0A84FF]/25 text-[#0A84FF]"
                 : "bg-[#E7F1FB] text-[#007AFF]"
             } rounded-md cursor-default`}
           >
@@ -208,8 +209,8 @@ const Contact: React.FC<ContactProps> =
                       emailError
                         ? "text-red-500"
                         : isDarkMode
-                        ? "text-white/40"
-                        : "text-[#8E8E93]"
+                          ? "text-white/40"
+                          : "text-[#8E8E93]"
                     } w-16 text-right font-medium group-focus-within:text-blue-500 transition-colors`}
                   >
                     {d.from}:

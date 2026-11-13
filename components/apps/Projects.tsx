@@ -108,12 +108,14 @@ const Projects: React.FC<ProjectsProps> = ({
     setSelectedProject(null);
   };
 
-  const bgPrimary = isDarkMode ? "bg-[#121212]" : "bg-white";
-  const bgSidebar = isDarkMode ? "bg-[#1A1A1A]/70" : "bg-[#F5F5F7]/50";
-  const bgCard = isDarkMode ? "bg-[#1E1E1E]" : "bg-[#F5F5F7]";
+  const bgPrimary = isDarkMode ? "bg-[#1C1C1E]" : "bg-white";
+  const bgSidebar = isDarkMode ? "bg-[#252527]" : "bg-[#F5F5F7]";
+  const bgCard = isDarkMode ? "bg-[#2C2C2E]" : "bg-[#F5F5F7]";
   const textColor = isDarkMode ? "text-white" : "text-[#1D1D1F]";
-  const textMuted = isDarkMode ? "text-white/30" : "text-black/20";
-  const borderStyle = isDarkMode ? "border-white/5" : "border-black/[0.05]";
+  const textMuted = isDarkMode ? "text-white/35" : "text-black/25";
+  const borderStyle = isDarkMode
+    ? "border-white/[0.07]"
+    : "border-black/[0.05]";
 
   return (
     <div
@@ -233,7 +235,7 @@ const Projects: React.FC<ProjectsProps> = ({
 
       <div className={`flex-1 flex flex-col overflow-hidden ${bgPrimary}`}>
         <div
-          className={`h-16 border-b ${borderStyle} flex items-center justify-between px-4 md:px-8 bg-transparent backdrop-blur-xl sticky top-0 z-10 shrink-0`}
+          className={`h-11 border-b ${borderStyle} flex items-center justify-between px-4 md:px-8 bg-transparent backdrop-blur-xl sticky top-0 z-10 shrink-0`}
         >
           <div className="flex items-center gap-3">
             {(selectedProject || filter) && (
