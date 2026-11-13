@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import {
   Mail,
@@ -9,10 +9,6 @@ import {
   Github,
   Linkedin,
   Download,
-  FileText,
-  Briefcase,
-  Activity,
-  Info,
 } from "lucide-react";
 import { usePortfolioData, useSiteConfig } from "@/lib/context/DataContext";
 import { Language } from "@/lib/types";
@@ -22,8 +18,6 @@ interface AboutProps {
   lang: Language;
   isDarkMode?: boolean;
 }
-
-type Section = "summary" | "experience" | "github" | "info";
 
 function tk(dark?: boolean) {
   return {
@@ -35,12 +29,6 @@ function tk(dark?: boolean) {
     text2: dark ? "text-white/55" : "text-[#3C3C43]/75",
     text3: dark ? "text-white/35" : "text-[#3C3C43]/45",
     labelFg: dark ? "text-white/35" : "text-[#6C6C70]",
-    navActive: dark
-      ? "bg-[#0A84FF]/20 text-[#0A84FF]"
-      : "bg-[#007AFF]/10 text-[#007AFF]",
-    navNormal: dark
-      ? "text-white/60 hover:bg-white/5"
-      : "text-[#3C3C43] hover:bg-black/[0.04]",
     btnBase: dark
       ? "bg-white/8 hover:bg-white/12 text-white"
       : "bg-black/[0.05] hover:bg-black/[0.09] text-[#1C1C1E]",
@@ -61,6 +49,14 @@ const Card = ({
     {children}
   </div>
 );
+
+const SectionTitle = ({
+  children,
+  t,
+}: {
+  children: React.ReactNode;
+  t: ReturnType<typeof tk>;
+}) => <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>{children}</h2>;
 
 const InfoRow = ({
   icon,
@@ -111,61 +107,33 @@ export default function About({ lang, isDarkMode }: AboutProps) {
   const t = tk(isDarkMode);
   const isTr = lang === "tr";
 
-  // Sidebar active highlight based on scroll position
-  const [activeSection, setActiveSection] = useState<Section>("summary");
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const sectionRefs: Record<Section, React.RefObject<HTMLDivElement | null>> = {
-    summary: useRef(null),
-    experience: useRef(null),
-    github: useRef(null),
-    info: useRef(null),
-  };
-
-  // Scroll-to-section on nav click
-  const scrollTo = (id: Section) => {
-    sectionRefs[id].current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
-  // Track which section is in view
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const containerTop = container.getBoundingClientRect().top;
-      let current: Section = "summary";
-      (["summary", "experience", "github", "info"] as Section[]).forEach(
-        (id) => {
-          const el = sectionRefs[id].current;
-          if (el) {
-            const top = el.getBoundingClientRect().top - containerTop;
-            if (top <= 60) current = id;
-          }
-        },
-      );
-      setActiveSection(current);
-    };
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const navItems: { id: Section; icon: React.ElementType; label: string }[] = [
-    { id: "summary", icon: FileText, label: isTr ? "Özet" : "Summary" },
+  const actionBtns = [
     {
-      id: "experience",
-      icon: Briefcase,
-      label: isTr ? "Deneyim" : "Experience",
+      href: `mailto:${d.email}`,
+      icon: <Mail size={11} />,
+      label: isTr ? "E-posta" : "Email",
     },
-    { id: "github", icon: Activity, label: "GitHub" },
-    { id: "info", icon: Info, label: isTr ? "Bilgiler" : "Information" },
+    {
+      href: config?.github_url ?? "#",
+      icon: <Github size={11} />,
+      label: "GitHub",
+      target: "_blank" as const,
+    },
+    {
+      href: config?.linkedin_url ?? "#",
+      icon: <Linkedin size={11} />,
+      label: "LinkedIn",
+      target: "_blank" as const,
+    },
+    {
+      href: config?.cv_url ?? "#",
+      icon: <Download size={11} />,
+      label: "CV",
+      download: "Hasan_Semih_Aktas_CV.pdf",
+    },
   ];
 
-  // ─── Sidebar ────────────────────────────────────────────────────────────────
+  // ─── Sidebar: only profile + action buttons ──────────────────────────────
   const Sidebar = () => (
     <div
       className="w-[220px] shrink-0 flex flex-col border-r"
@@ -173,16 +141,16 @@ export default function About({ lang, isDarkMode }: AboutProps) {
     >
       {/* Profile */}
       <div
-        className="px-4 pt-5 pb-4 flex flex-col items-center text-center gap-3"
+        className="px-4 pt-5 pb-5 flex flex-col items-center text-center gap-3"
         style={{ borderBottom: `1px solid ${t.sepColor}` }}
       >
-        <div className="relative w-[68px] h-[68px]">
+        <div className="relative w-[72px] h-[72px]">
           <Image
             src={config?.profile_picture_url ?? ""}
             alt="Profile"
             fill
             className="object-cover rounded-full shadow-md"
-            sizes="68px"
+            sizes="72px"
             priority
           />
           <span
@@ -194,64 +162,20 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           <p className={`text-[13px] font-semibold ${t.text1} leading-tight`}>
             {d.name}
           </p>
-          <p className={`text-[11px] mt-0.5 ${t.text3}`}>{d.role}</p>
+          <p className={`text-[11px] mt-1 ${t.text3}`}>{d.role}</p>
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex-1 px-2 py-2 overflow-auto">
-        <p
-          className={`text-[10px] font-semibold uppercase tracking-[0.14em] px-2 pt-3 pb-1.5 ${t.labelFg}`}
-        >
-          {isTr ? "BÖLÜMLER" : "SECTIONS"}
-        </p>
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => scrollTo(item.id)}
-            className={`w-full flex items-center gap-2.5 px-2.5 py-[6px] rounded-lg text-left mb-0.5 transition-all cursor-default ${
-              activeSection === item.id ? t.navActive : t.navNormal
-            }`}
-          >
-            <item.icon size={14} className="shrink-0" />
-            <span className="text-[13px] font-medium">{item.label}</span>
-          </button>
-        ))}
-      </div>
-
       {/* Action buttons */}
+      <div className="flex-1" />
       <div className="p-3" style={{ borderTop: `1px solid ${t.sepColor}` }}>
         <div className="grid grid-cols-2 gap-1.5">
-          {[
-            {
-              href: `mailto:${d.email}`,
-              icon: <Mail size={11} />,
-              label: isTr ? "E-posta" : "Email",
-            },
-            {
-              href: config?.github_url ?? "#",
-              icon: <Github size={11} />,
-              label: "GitHub",
-              target: "_blank",
-            },
-            {
-              href: config?.linkedin_url ?? "#",
-              icon: <Linkedin size={11} />,
-              label: "LinkedIn",
-              target: "_blank",
-            },
-            {
-              href: config?.cv_url ?? "#",
-              icon: <Download size={11} />,
-              label: "CV",
-              download: true,
-            },
-          ].map((btn) => (
+          {actionBtns.map((btn) => (
             <a
               key={btn.label}
               href={btn.href}
-              target={btn.target}
-              download={btn.download ? "Hasan_Semih_Aktas_CV.pdf" : undefined}
+              target={"target" in btn ? btn.target : undefined}
+              download={"download" in btn ? btn.download : undefined}
               className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${t.btnBase}`}
             >
               {btn.icon} {btn.label}
@@ -262,19 +186,16 @@ export default function About({ lang, isDarkMode }: AboutProps) {
     </div>
   );
 
-  // ─── Single scrollable content column ──────────────────────────────────────
+  // ─── Scrollable content with h2 headings ────────────────────────────────
   const ScrollContent = () => (
     <div
-      ref={scrollRef}
       className="flex-1 overflow-auto custom-scrollbar"
       style={{ background: t.contentBg }}
     >
       <div className="max-w-2xl px-6 pb-12">
         {/* SUMMARY */}
-        <div ref={sectionRefs.summary} className="pt-6">
-          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
-            {isTr ? "Özet" : "Summary"}
-          </h2>
+        <div className="pt-6">
+          <SectionTitle t={t}>{isTr ? "Özet" : "Summary"}</SectionTitle>
           <Card t={t}>
             <p className={`px-4 py-4 text-[13.5px] leading-relaxed ${t.text2}`}>
               {d.summary}
@@ -283,10 +204,8 @@ export default function About({ lang, isDarkMode }: AboutProps) {
         </div>
 
         {/* EXPERIENCE */}
-        <div ref={sectionRefs.experience} className="pt-8">
-          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
-            {isTr ? "Deneyim" : "Experience"}
-          </h2>
+        <div className="pt-7">
+          <SectionTitle t={t}>{isTr ? "Deneyim" : "Experience"}</SectionTitle>
           <Card t={t}>
             {d.experience.map((exp, i) => (
               <div
@@ -337,10 +256,10 @@ export default function About({ lang, isDarkMode }: AboutProps) {
         </div>
 
         {/* GITHUB */}
-        <div ref={sectionRefs.github} className="pt-8">
-          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
+        <div className="pt-7">
+          <SectionTitle t={t}>
             {isTr ? "GitHub Aktivitesi" : "GitHub Activity"}
-          </h2>
+          </SectionTitle>
           <Card t={t}>
             <div className={`px-4 py-4 ${t.text1}`}>
               <GitHubCalendar isDarkMode={isDarkMode} lang={lang} />
@@ -349,10 +268,8 @@ export default function About({ lang, isDarkMode }: AboutProps) {
         </div>
 
         {/* INFO */}
-        <div ref={sectionRefs.info} className="pt-8">
-          <h2 className={`text-[17px] font-bold ${t.text1} mb-3`}>
-            {isTr ? "Bilgiler" : "Information"}
-          </h2>
+        <div className="pt-7">
+          <SectionTitle t={t}>{isTr ? "Bilgiler" : "Information"}</SectionTitle>
           <Card t={t}>
             <InfoRow
               t={t}
@@ -380,10 +297,9 @@ export default function About({ lang, isDarkMode }: AboutProps) {
     </div>
   );
 
-  // ─── Mobile: full-width stacked ─────────────────────────────────────────────
+  // ─── Mobile ──────────────────────────────────────────────────────────────
   const MobileLayout = () => (
     <div
-      ref={scrollRef}
       className="h-full overflow-auto custom-scrollbar"
       style={{ background: t.contentBg }}
     >
@@ -410,44 +326,22 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           <p className={`text-[13px] ${t.text2} mt-0.5`}>{d.role}</p>
         </div>
         <div className="flex flex-wrap gap-2 justify-center">
-          {[
-            {
-              href: `mailto:${d.email}`,
-              icon: <Mail size={12} />,
-              label: isTr ? "E-posta" : "Email",
-            },
-            {
-              href: config?.github_url ?? "#",
-              icon: <Github size={12} />,
-              label: "GitHub",
-            },
-            {
-              href: config?.linkedin_url ?? "#",
-              icon: <Linkedin size={12} />,
-              label: "LinkedIn",
-            },
-          ].map((btn) => (
+          {actionBtns.map((btn) => (
             <a
               key={btn.label}
               href={btn.href}
-              target="_blank"
+              target={"target" in btn ? btn.target : undefined}
+              download={"download" in btn ? btn.download : undefined}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium ${t.btnBase}`}
             >
               {btn.icon} {btn.label}
             </a>
           ))}
-          <a
-            href={config?.cv_url ?? "#"}
-            download
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium bg-[#34C759]/10 text-[#34C759]"
-          >
-            <Download size={12} /> CV
-          </a>
         </div>
       </div>
 
       <div className="max-w-2xl px-4 pb-10 mx-auto">
-        <div ref={sectionRefs.summary} className="pt-6">
+        <div className="pt-5">
           <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>
             {isTr ? "Özet" : "Summary"}
           </h2>
@@ -458,7 +352,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        <div ref={sectionRefs.experience} className="pt-7">
+        <div className="pt-6">
           <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>
             {isTr ? "Deneyim" : "Experience"}
           </h2>
@@ -492,7 +386,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        <div ref={sectionRefs.github} className="pt-7">
+        <div className="pt-6">
           <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>GitHub</h2>
           <Card t={t}>
             <div className={`px-4 py-4 ${t.text1}`}>
@@ -501,7 +395,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        <div ref={sectionRefs.info} className="pt-7">
+        <div className="pt-6">
           <h2 className={`text-[16px] font-bold ${t.text1} mb-3`}>
             {isTr ? "Bilgiler" : "Information"}
           </h2>
@@ -534,12 +428,10 @@ export default function About({ lang, isDarkMode }: AboutProps) {
 
   return (
     <div className="h-full overflow-hidden font-sans select-text transition-colors duration-300">
-      {/* Desktop: sidebar + scrollable content */}
       <div className="hidden md:flex h-full">
         <Sidebar />
         <ScrollContent />
       </div>
-      {/* Mobile: full-width */}
       <div className="md:hidden h-full">
         <MobileLayout />
       </div>
