@@ -68,13 +68,13 @@ export default function BootScreen({
         } else {
           animDoneRef.current = true;
           if (dataReadyRef.current) {
-            finish(); // veri zaten geldiyse hemen bitir
+            finish(); // veri ve tüm resimler hazırsa hemen bitir
           } else {
-            setWaiting(true); // veriyi bekle
-            // Ağ takılırsa en fazla 3.5s bekle ve masaüstünü aç
+            setWaiting(true); // tüm resimlerin ve verilerin yüklenmesini bekle
+            // Yalnızca olağanüstü ağ kopması durumunda kilitlenmemesi için 25s emniyet tavanı
             maxWaitTimerRef.current = setTimeout(() => {
               finish();
-            }, 3500);
+            }, 25000);
           }
         }
       };

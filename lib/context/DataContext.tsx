@@ -57,22 +57,33 @@ export function DataProvider({
 
         if (config) setSiteConfig(config);
 
-        // Kritik resimleri önceden yükle (boot kapanmadan önce, maks 3s timeout ile)
+        // Kritik tüm resimleri (wallpaper, profil resmi, tüm uygulama ikonları)
+        // tarayıcıya indirip decode et — boot ekranı bunlar tamamen bitmeden kapanmaz.
         if (config) {
-          const toPreload = [
-            config.wallpaper_url,
-            config.profile_picture_url,
-            ...Object.values(config.icons ?? {}),
-          ].filter(Boolean) as string[];
+          const toPreload = Array.from(
+            new Set([
+              config.wallpaper_url,
+              config.profile_picture_url,
+              ...Object.values(config.icons ?? {}),
+              ...projectsTr.slice(0, 4).map((p) => p.image),
+            ]),
+          ).filter(Boolean) as string[];
 
           await Promise.allSettled(
             toPreload.map(
               (url) =>
                 new Promise<void>((resolve) => {
                   const img = new window.Image();
-                  const timer = setTimeout(() => resolve(), 3000);
-                  img.onload = () => {
+                  const timer = setTimeout(() => resolve(), 15000); // 15s emniyet tavanı
+                  img.onload = async () => {
                     clearTimeout(timer);
+                    try {
+                      if ("decode" in img) {
+                        await img.decode();
+                      }
+                    } catch {
+                      // ignore decode failure
+                    }
                     resolve();
                   };
                   img.onerror = () => {

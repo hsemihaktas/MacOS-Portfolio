@@ -324,6 +324,7 @@ export default function Home() {
             alt="Wallpaper"
             fill
             priority
+            unoptimized
             sizes="100vw"
             style={{
               objectPosition: isMobile
@@ -331,7 +332,6 @@ export default function Home() {
                 : wallpaperPos.desktop,
             }}
             className="object-cover select-none pointer-events-none"
-            quality={85}
           />
         )}
 

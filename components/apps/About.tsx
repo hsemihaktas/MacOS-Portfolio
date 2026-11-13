@@ -207,6 +207,7 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                   className="object-cover rounded-full shadow-md"
                   sizes="72px"
                   priority
+                  unoptimized
                 />
               ) : (
                 <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
@@ -336,6 +337,8 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                 fill
                 className="object-cover rounded-full shadow-md"
                 sizes="80px"
+                priority
+                unoptimized
               />
             ) : (
               <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-2xl shadow-md">

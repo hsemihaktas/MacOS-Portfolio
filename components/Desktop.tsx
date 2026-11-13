@@ -66,6 +66,8 @@ const Desktop: React.FC<DesktopProps> = ({
               src={app.iconUrl}
               alt={getAppTitle(app.id)}
               fill
+              priority
+              unoptimized
               sizes="(max-width: 768px) 62px, (max-width: 1024px) 72px, 54px"
               className={`object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] ${iconRadius}`}
               draggable={false}

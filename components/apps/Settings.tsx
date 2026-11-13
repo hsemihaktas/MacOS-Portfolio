@@ -560,6 +560,8 @@ export default function Settings({
               fill
               className="object-cover rounded-full"
               sizes="56px"
+              priority
+              unoptimized
             />
           ) : (
             <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-lg">
@@ -636,6 +638,8 @@ export default function Settings({
                 fill
                 className="object-cover rounded-full shadow-sm"
                 sizes="48px"
+                priority
+                unoptimized
               />
             ) : (
               <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">

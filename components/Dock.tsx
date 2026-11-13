@@ -270,6 +270,8 @@ const Dock: React.FC<DockProps> = ({
                   src={app.iconUrl}
                   alt={getAppTitle(app.id)}
                   fill
+                  priority
+                  unoptimized
                   sizes="64px"
                   className="object-contain rounded-[15px] shadow-lg"
                 />
@@ -342,6 +344,8 @@ const Dock: React.FC<DockProps> = ({
                   src={app.iconUrl}
                   alt={getAppTitle(app.id)}
                   fill
+                  priority
+                  unoptimized
                   sizes="52px"
                   className="object-contain drop-shadow-md"
                   draggable={false}

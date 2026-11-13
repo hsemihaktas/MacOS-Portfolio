@@ -84,6 +84,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
       alt="Apple"
       width={16}
       height={16}
+      unoptimized
       className="object-contain"
     />
   ) : (
