@@ -131,18 +131,27 @@ const MenuBar: React.FC<MenuBarProps> = ({
 
   // DESKTOP/TABLET VIEW
   return (
-    <div className="absolute top-0 left-0 right-0 h-[32px] bg-transparent backdrop-blur-none flex items-center justify-between px-4 text-[13px] font-bold text-white shadow-sm z-[9999] border-b border-white/5 select-none">
-      <div className="flex items-center gap-4 relative">
-        <div className="px-2 py-1 hover:bg-white/10 rounded-md transition-colors cursor-default flex items-center justify-center">
+    <div
+      className="absolute top-0 left-0 right-0 h-[28px] flex items-center justify-between px-3 text-[13px] text-white z-[9999] select-none border-b border-white/[0.08]"
+      style={{
+        background: "rgba(0,0,0,0.01)",
+        backdropFilter: "blur(40px) saturate(180%)",
+        WebkitBackdropFilter: "blur(40px) saturate(180%)",
+      }}
+    >
+      {/* Sol: Apple logo + uygulama adı + menü */}
+      <div className="flex items-center gap-0.5 relative">
+        <div className="w-8 h-full flex items-center justify-center hover:bg-white/10 rounded transition-colors cursor-default">
           {AppleLogo}
         </div>
-        <span className="font-black tracking-tight">{activeAppTitle}</span>
+
+        <span className="font-semibold tracking-tight px-2 cursor-default">{activeAppTitle}</span>
 
         <div className="relative" ref={helpMenuRef}>
           <button
             onClick={() => setShowHelpMenu(!showHelpMenu)}
-            className={`cursor-default px-2 py-0.5 rounded-md transition-colors font-semibold opacity-90 ${
-              showHelpMenu ? "bg-white/20" : "hover:bg-white/10"
+            className={`cursor-default px-2 py-0.5 rounded transition-colors font-normal opacity-90 ${
+              showHelpMenu ? "bg-white/15" : "hover:bg-white/10"
             }`}
           >
             {t.help}
@@ -161,19 +170,19 @@ const MenuBar: React.FC<MenuBarProps> = ({
                   />
                 </div>
                 <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1.5">
+                  <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest mb-1.5">
                     {lang === "tr" ? "İLETİŞİM" : "CONTACT"}
                   </span>
                   <a
                     href={`mailto:${d.email}`}
-                    className="text-[12px] font-bold text-white/90 hover:text-blue-400 transition-colors break-all leading-tight"
+                    className="text-[12px] font-medium text-white/90 hover:text-blue-400 transition-colors break-all leading-tight"
                   >
                     {d.email}
                   </a>
                 </div>
               </div>
-              <div className="h-[1px] bg-white/10 w-full my-3"></div>
-              <p className="text-[11px] text-white/50 leading-relaxed font-medium">
+              <div className="h-px bg-white/10 w-full my-3" />
+              <p className="text-[11px] text-white/50 leading-relaxed font-normal">
                 {lang === "tr"
                   ? "Herhangi bir soru veya proje fikriniz için yukarıdaki adrese e-posta gönderebilirsiniz."
                   : "Feel free to send an email for any questions or project ideas."}
@@ -183,30 +192,26 @@ const MenuBar: React.FC<MenuBarProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-4 opacity-90">
-          {WifiIcon}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onSearchClick();
-            }}
-            className="p-1 hover:bg-white/10 rounded-md"
-          >
-            <Search size={15} strokeWidth={3} />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onControlClick();
-            }}
-            className="p-1 hover:bg-white/10 rounded-md"
-          >
-            <SlidersHorizontal size={15} strokeWidth={3} />
-          </button>
-        </div>
-        <div className="flex gap-3 font-bold tracking-tight opacity-95">
-          <span className="hidden lg:block">{formattedDate}</span>
+      {/* Sağ: sistem ikonları + tarih saat */}
+      <div className="flex items-center gap-1">
+        <div className="px-1.5 opacity-90">{WifiIcon}</div>
+
+        <button
+          onClick={(e) => { e.stopPropagation(); onSearchClick(); }}
+          className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90"
+        >
+          <Search size={14} strokeWidth={2} />
+        </button>
+
+        <button
+          onClick={(e) => { e.stopPropagation(); onControlClick(); }}
+          className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90"
+        >
+          <SlidersHorizontal size={14} strokeWidth={2} />
+        </button>
+
+        <div className="flex items-center gap-1.5 pl-1.5 font-normal opacity-90 tabular-nums">
+          <span className="hidden lg:inline">{formattedDate}</span>
           <span>{formattedTime}</span>
         </div>
       </div>
