@@ -52,7 +52,7 @@ export default function AppStore({
   return (
     <div
       className={`w-full h-full flex flex-col md:flex-row relative ${
-        isDarkMode ? "bg-[#1e1e1e] text-white" : "bg-[#f5f5f7] text-black"
+        isDarkMode ? "bg-[#1C1C1E] text-white" : "bg-[#F2F2F7] text-black"
       }`}
     >
       {/* Sidebar */}

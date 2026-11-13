@@ -237,8 +237,8 @@ export default function Safari({
   }, [webProjects, currentUrl]);
 
   // Explicit theme variables (avoids Tailwind dark: override bugs in light mode)
-  const bgPrimary = isDarkMode ? "bg-[#1e1e1e]" : "bg-[#f5f5f7]";
-  const bgToolbar = isDarkMode ? "bg-[#252526]/95" : "bg-[#f0f0f2]/95";
+  const bgPrimary = isDarkMode ? "bg-[#1C1C1E]" : "bg-[#F2F2F7]";
+  const bgToolbar = isDarkMode ? "bg-[#252527]/95" : "bg-[#f0f0f2]/95";
   const bgAddress = isDarkMode
     ? "bg-[#181818]"
     : "bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]";
@@ -669,7 +669,7 @@ export default function Safari({
                 className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isDarkMode ? "bg-[#181818]/80" : "bg-white/80"} backdrop-blur-md animate-in fade-in duration-200`}
               >
                 <div
-                  className={`w-11 h-11 rounded-2xl ${isDarkMode ? "bg-[#252526] border-white/10" : "bg-white border-black/5"} shadow-xl border flex items-center justify-center mb-3`}
+                  className={`w-11 h-11 rounded-2xl ${isDarkMode ? "bg-[#252527] border-white/10" : "bg-white border-black/5"} shadow-xl border flex items-center justify-center mb-3`}
                 >
                   <RotateCw size={20} className="animate-spin text-[#007AFF]" />
                 </div>

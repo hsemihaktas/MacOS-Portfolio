@@ -42,8 +42,6 @@ const line = (kind: Line["kind"], text: string): Line => ({
   text,
 });
 
-
-
 // ─── Komutlar ──────────────────────────────────────────────────────────────────
 function buildCommands(
   lang: Language,
@@ -78,7 +76,7 @@ function buildCommands(
       ),
       line(
         "output",
-        `  ${"open <uygulama>".padEnd(18)} ${isTr ? "Uygulama aç (projects, skills, contact, appstore)" : "Open app (projects, skills, contact, appstore)"}`,
+        `  ${"open <uygulama>".padEnd(18)} ${isTr ? "Uygulama aç (projects, contact, appstore)" : "Open app (projects, contact, appstore)"}`,
       ),
       line(
         "output",
@@ -219,8 +217,8 @@ function buildCommands(
       const appMap: Record<string, AppID> = {
         projects: "projects",
         projeler: "projects",
-        skills: "skills",
-        yetenekler: "skills",
+        skills: "activity-monitor",
+        yetenekler: "activity-monitor",
         contact: "contact",
         mail: "contact",
         appstore: "app-store",
@@ -235,7 +233,7 @@ function buildCommands(
         return [
           line(
             "error",
-            `  open: "${target}": application not found. Try: projects, skills, contact, about`,
+            `  open: "${target}": application not found. Try: projects, contact, about`,
           ),
         ];
       }
@@ -459,7 +457,7 @@ export default function Terminal({ lang, onOpenApp }: TerminalProps) {
 
       setLines((prev) => [...prev, ...out]);
     },
-    [prompt, cwd, lang, onOpenApp, cmdHistory],
+    [prompt, cwd, lang, onOpenApp, cmdHistory, DATA, FS],
   );
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

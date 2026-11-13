@@ -38,7 +38,6 @@ function WallpaperSync({
 
 import AboutApp from "@/components/apps/About";
 import ProjectsApp from "@/components/apps/Projects";
-import SkillsApp from "@/components/apps/Skills";
 import ContactApp from "@/components/apps/Contact";
 import SettingsApp from "@/components/apps/Settings";
 import ActivityMonitorApp from "@/components/apps/ActivityMonitor";
@@ -52,7 +51,6 @@ import { WifiOff } from "lucide-react";
 import {
   trackAboutOpen,
   trackProjectsOpen,
-  trackSkillsOpen,
   trackContactOpen,
   trackSettingsOpen,
   trackSafariOpen,
@@ -132,7 +130,6 @@ export default function Home() {
         about: DATA[lang].apps.about,
         safari: DATA[lang].apps.safari,
         projects: DATA[lang].apps.projects,
-        skills: DATA[lang].apps.skills,
         settings: DATA[lang].apps.settings,
         contact: DATA[lang].apps.contact,
         "activity-monitor": DATA[lang].apps.system,
@@ -150,7 +147,6 @@ export default function Home() {
       about: trackAboutOpen,
       safari: trackSafariOpen,
       projects: trackProjectsOpen,
-      skills: trackSkillsOpen,
       contact: trackContactOpen,
       settings: trackSettingsOpen,
       "activity-monitor": () => {}, // No tracking for activity monitor
@@ -251,8 +247,6 @@ export default function Home() {
             onOpenSafari={(url, title) => openWindow("safari", { url, title })}
           />
         );
-      case "skills":
-        return <SkillsApp lang={lang} isDarkMode={isDarkMode} />;
       case "contact":
         return <ContactApp lang={lang} isDarkMode={isDarkMode} />;
       case "settings":

@@ -174,7 +174,7 @@ export default function Settings({
 
   const dark = isDarkMode;
   const pageBg = dark ? "bg-[#1C1C1E]" : "bg-[#F2F2F7]";
-  const sidebarBg = dark ? "bg-[#2C2C2E]" : "bg-[#FFFFFF]";
+  const sidebarBg = dark ? "bg-[#252527]" : "bg-[#F0F0F2]";
   const text1 = dark ? "text-white" : "text-[#1C1C1E]";
   const text2 = dark ? "text-white/45" : "text-[#3C3C43]/60";
   const sep = dark ? "border-white/[0.07]" : "border-black/[0.06]";
@@ -534,7 +534,8 @@ export default function Settings({
                 </div>
 
                 <p className={`text-center text-[11px] ${text2} pb-2`}>
-                  © {new Date().getFullYear()} {DATA.tr.about.name || "Hasan Semih Aktaş"}.{" "}
+                  © {new Date().getFullYear()}{" "}
+                  {DATA.tr.about.name || "Hasan Semih Aktaş"}.{" "}
                   {isTr ? "Tüm hakları saklıdır." : "All rights reserved."}
                 </p>
               </div>
@@ -544,8 +545,8 @@ export default function Settings({
     );
   };
 
-  // ─── Mobile layout ───────────────────────────────────────────────────────
-  const MobileLayout = () => (
+  // ─── Mobile layout (JSX variable — not inner component) ─────────────────────────────────────────────────────────
+  const mobileLayout = (
     <div className={`${pageBg} h-full overflow-auto custom-scrollbar`}>
       {/* Profile header */}
       <div
@@ -561,7 +562,9 @@ export default function Settings({
           />
         </div>
         <div>
-          <p className={`text-[16px] font-semibold ${text1}`}>{DATA[lang].about.name || "Hasan Semih Aktaş"}</p>
+          <p className={`text-[16px] font-semibold ${text1}`}>
+            {DATA[lang].about.name || "Hasan Semih Aktaş"}
+          </p>
           <p className={`text-[12px] ${text2}`}>Apple ID · iCloud</p>
         </div>
       </div>
@@ -602,8 +605,8 @@ export default function Settings({
     </div>
   );
 
-  // ─── Desktop layout ──────────────────────────────────────────────────────
-  const DesktopLayout = () => (
+  // ─── Desktop layout (JSX variable — not inner component) ────────────────────────────────────────────────────────
+  const desktopLayout = (
     <div className="h-full flex">
       {/* Sidebar */}
       <div
@@ -621,7 +624,9 @@ export default function Settings({
             />
           </div>
           <div className="min-w-0">
-            <p className={`text-[13px] font-semibold ${text1} truncate`}>{DATA[lang].about.name || "Hasan Semih Aktaş"}</p>
+            <p className={`text-[13px] font-semibold ${text1} truncate`}>
+              {DATA[lang].about.name || "Hasan Semih Aktaş"}
+            </p>
             <p className={`text-[11px] ${text2}`}>Apple ID</p>
           </div>
         </div>
@@ -688,12 +693,8 @@ export default function Settings({
 
   return (
     <div className={`h-full overflow-hidden transition-colors duration-300`}>
-      <div className="hidden sm:block h-full">
-        <DesktopLayout />
-      </div>
-      <div className="sm:hidden h-full">
-        <MobileLayout />
-      </div>
+      <div className="hidden sm:block h-full">{desktopLayout}</div>
+      <div className="sm:hidden h-full">{mobileLayout}</div>
     </div>
   );
 }

@@ -162,8 +162,8 @@ const Projects: React.FC<ProjectsProps> = ({
             : "Websites"
           : d.title));
 
-  // ─── Sidebar ────────────────────────────────────────────────────────────────
-  const Sidebar = () => (
+  // ─── Sidebar (JSX variable — not inner component) ───────────────────────
+  const sidebar = (
     <div
       className="w-[220px] shrink-0 hidden lg:flex flex-col border-r overflow-hidden"
       style={{ background: t.sidebarBg, borderColor: t.sepColor }}
@@ -249,14 +249,8 @@ const Projects: React.FC<ProjectsProps> = ({
     </div>
   );
 
-  // ─── Project card (grid view) ─────────────────────────────────────────────
-  const ProjectCard = ({
-    project,
-    index,
-  }: {
-    project: Project;
-    index: number;
-  }) => (
+  // ─── Project card renderer (regular function, not component) ────────────
+  const renderCard = (project: Project, index: number) => (
     <div
       className="group cursor-default flex flex-col"
       onClick={() => setSelectedProject(project)}
@@ -289,8 +283,8 @@ const Projects: React.FC<ProjectsProps> = ({
     </div>
   );
 
-  // ─── Detail view ─────────────────────────────────────────────────────────
-  const DetailView = ({ project }: { project: Project }) => (
+  // ─── Detail renderer (regular function, not component) ──────────────────
+  const renderDetail = (project: Project) => (
     <div className="animate-in fade-in duration-200 max-w-3xl pb-16">
       {/* Hero */}
       <div
@@ -471,7 +465,7 @@ const Projects: React.FC<ProjectsProps> = ({
       className="flex h-full font-sans overflow-hidden"
       style={{ color: isDarkMode ? "white" : "#1C1C1E" }}
     >
-      <Sidebar />
+      {sidebar}
 
       <div
         className="flex-1 flex flex-col overflow-hidden"
@@ -514,11 +508,11 @@ const Projects: React.FC<ProjectsProps> = ({
           {!selectedProject ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 pb-8">
               {filteredItems.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
+                <div key={project.id}>{renderCard(project, i)}</div>
               ))}
             </div>
           ) : (
-            <DetailView project={selectedProject} />
+            renderDetail(selectedProject)
           )}
         </div>
       </div>

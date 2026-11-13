@@ -28,10 +28,10 @@ const Window: React.FC<WindowProps> = ({
   lang,
   isDarkMode,
 }) => {
-  const [pos, setPos] = useState({
+  const [pos, setPos] = useState(() => ({
     x: 150 + Math.random() * 50,
     y: 80 + Math.random() * 30,
-  });
+  }));
   const [size, setSize] = useState(() => {
     if (win.id === "safari") return { width: 1040, height: 680 };
     return { width: 900, height: 600 };

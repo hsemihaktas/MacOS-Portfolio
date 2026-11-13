@@ -181,9 +181,9 @@ export default function ActivityMonitor({
 
         <div className="flex items-center gap-1 shrink-0">
           {[
-            <X size={11} />,
-            <Info size={11} />,
-            <MoreHorizontal size={11} />,
+            <X key="x" size={11} />,
+            <Info key="info" size={11} />,
+            <MoreHorizontal key="more" size={11} />,
           ].map((icon, i) => (
             <button
               key={i}

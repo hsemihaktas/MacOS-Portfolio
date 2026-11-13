@@ -1,7 +1,6 @@
 export type AppID =
   | "about"
   | "projects"
-  | "skills"
   | "settings"
   | "contact"
   | "activity-monitor"

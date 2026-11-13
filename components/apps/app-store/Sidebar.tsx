@@ -42,28 +42,29 @@ export default function Sidebar({
 
   return (
     <div
-      className={`w-full md:w-64 flex-shrink-0 flex flex-col p-4 border-b md:border-b-0 md:border-r ${
-        isDarkMode ? "border-white/10" : "border-black/5"
-      }`}
+      className={`w-full md:w-[220px] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r`}
+      style={{
+        background: isDarkMode ? "#252527" : "#F0F0F2",
+        borderColor: isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
+      }}
     >
-      <div className="flex items-center space-x-2 pl-2 mb-6">
-        <Search
-          className={`w-4 h-4 ${
-            isDarkMode ? "text-white/50" : "text-black/50"
-          }`}
-        />
-        <input
-          type="text"
-          placeholder={data.labels.search}
-          className={`bg-transparent w-full text-sm outline-none ${
-            isDarkMode
-              ? "placeholder:text-white/30"
-              : "placeholder:text-black/30"
-          }`}
-        />
+      {/* Search */}
+      <div className="px-3 pt-4 pb-3">
+        <div
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg ${isDarkMode ? "bg-white/8" : "bg-black/[0.06]"}`}
+        >
+          <Search
+            className={`w-3.5 h-3.5 ${isDarkMode ? "text-white/45" : "text-black/45"}`}
+          />
+          <input
+            type="text"
+            placeholder={data.labels.search}
+            className={`bg-transparent w-full text-[12px] outline-none ${isDarkMode ? "text-white placeholder:text-white/30" : "text-[#1C1C1E] placeholder:text-black/30"}`}
+          />
+        </div>
       </div>
 
-      <div className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible space-x-2 md:space-x-0 md:space-y-1 pb-2 md:pb-0 hide-scrollbar">
+      <div className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible px-2 pb-3 md:pb-0 gap-0.5">
         {data.categories.map((cat: any) => (
           <button
             key={cat.id}
@@ -71,14 +72,15 @@ export default function Sidebar({
               setActiveCategory(cat.id);
               setSelectedAppId(null);
             }}
-            className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap
-              ${
-                activeCategory === cat.id
-                  ? "bg-blue-500 text-white"
-                  : `hover:${isDarkMode ? "bg-white/10" : "bg-black/5"} ${
-                      isDarkMode ? "text-white/70" : "text-black/70"
-                    }`
-              }`}
+            className={`flex items-center gap-2.5 px-2.5 py-[6px] rounded-lg text-left text-[13px] font-medium transition-all whitespace-nowrap w-full cursor-default ${
+              activeCategory === cat.id
+                ? isDarkMode
+                  ? "bg-[#0A84FF]/20 text-[#0A84FF]"
+                  : "bg-[#007AFF]/10 text-[#007AFF]"
+                : isDarkMode
+                  ? "text-white/60 hover:bg-white/5"
+                  : "text-[#3C3C43] hover:bg-black/[0.04]"
+            }`}
           >
             {getIcon(cat.icon)}
             <span>{cat.name}</span>

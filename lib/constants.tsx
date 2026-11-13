@@ -28,12 +28,6 @@ export const APPS: { id: AppID; title: string; iconUrl: string }[] = [
       "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/devFolder.png",
   },
   {
-    id: "skills",
-    title: "Yetenekler",
-    iconUrl:
-      "https://yawdxcqkbkhlrxmalfdw.supabase.co/storage/v1/object/public/assets/icons/taskManager.png",
-  },
-  {
     id: "activity-monitor",
     title: "Sistem",
     iconUrl:
