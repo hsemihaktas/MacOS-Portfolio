@@ -33,9 +33,7 @@ const Window: React.FC<WindowProps> = ({
     y: 80 + Math.random() * 30,
   });
   const [size, setSize] = useState(() => {
-    if (win.id === "safari") {
-      return { width: 1040, height: 680 };
-    }
+    if (win.id === "safari") return { width: 1040, height: 680 };
     return { width: 900, height: 600 };
   });
   const [isDragging, setIsDragging] = useState(false);
@@ -55,10 +53,7 @@ const Window: React.FC<WindowProps> = ({
     if (win.isMaximized || isMobile) return;
     setIsDragging(true);
     onFocus();
-    dragStartPos.current = {
-      x: e.clientX - pos.x,
-      y: e.clientY - pos.y,
-    };
+    dragStartPos.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
   };
 
   const handleResizeStart = (e: React.MouseEvent, direction: string) => {
@@ -85,51 +80,39 @@ const Window: React.FC<WindowProps> = ({
           y: e.clientY - dragStartPos.current.y,
         });
       } else if (isResizing) {
-        const deltaX = e.clientX - resizeStartPos.current.x;
-        const deltaY = e.clientY - resizeStartPos.current.y;
-        const minWidth = 400;
-        const minHeight = 300;
-
-        let newWidth = resizeStartPos.current.width;
-        let newHeight = resizeStartPos.current.height;
-        let newX = resizeStartPos.current.posX;
-        let newY = resizeStartPos.current.posY;
-
-        if (resizeDirection.includes("e")) {
-          newWidth = Math.max(minWidth, resizeStartPos.current.width + deltaX);
-        }
+        const dx = e.clientX - resizeStartPos.current.x;
+        const dy = e.clientY - resizeStartPos.current.y;
+        const minW = 400,
+          minH = 300;
+        let w = resizeStartPos.current.width;
+        let h = resizeStartPos.current.height;
+        let x = resizeStartPos.current.posX;
+        let y = resizeStartPos.current.posY;
+        if (resizeDirection.includes("e")) w = Math.max(minW, w + dx);
         if (resizeDirection.includes("w")) {
-          const potentialWidth = resizeStartPos.current.width - deltaX;
-          if (potentialWidth >= minWidth) {
-            newWidth = potentialWidth;
-            newX = resizeStartPos.current.posX + deltaX;
+          const pw = w - dx;
+          if (pw >= minW) {
+            w = pw;
+            x = resizeStartPos.current.posX + dx;
           }
         }
-        if (resizeDirection.includes("s")) {
-          newHeight = Math.max(
-            minHeight,
-            resizeStartPos.current.height + deltaY,
-          );
-        }
+        if (resizeDirection.includes("s")) h = Math.max(minH, h + dy);
         if (resizeDirection.includes("n")) {
-          const potentialHeight = resizeStartPos.current.height - deltaY;
-          if (potentialHeight >= minHeight) {
-            newHeight = potentialHeight;
-            newY = resizeStartPos.current.posY + deltaY;
+          const ph = h - dy;
+          if (ph >= minH) {
+            h = ph;
+            y = resizeStartPos.current.posY + dy;
           }
         }
-
-        setSize({ width: newWidth, height: newHeight });
-        setPos({ x: newX, y: newY });
+        setSize({ width: w, height: h });
+        setPos({ x, y });
       }
     };
-
     const handleMouseUp = () => {
       setIsDragging(false);
       setIsResizing(false);
       setResizeDirection("");
     };
-
     if (isDragging || isResizing) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
@@ -166,16 +149,16 @@ const Window: React.FC<WindowProps> = ({
           zIndex: win.zIndex,
         };
 
-  // macOS Tahoe accurate color tokens
+  // macOS Tahoe color tokens
   const contentBg = isDarkMode ? "#1C1C1E" : "#FFFFFF";
   const titleBarBg = isDarkMode
-    ? "rgba(38,38,40,0.96)"
-    : "rgba(236,236,238,0.97)";
+    ? "rgba(38,38,40,0.97)"
+    : "rgba(236,236,238,0.98)";
   const titleBarBorder = isDarkMode
-    ? "1px solid rgba(255,255,255,0.07)"
-    : "1px solid rgba(0,0,0,0.09)";
-  const titleTextClass = isDarkMode ? "text-white/55" : "text-black/55";
-  const mobileTitleClass = isDarkMode ? "text-white" : "text-black";
+    ? "1px solid rgba(255,255,255,0.06)"
+    : "1px solid rgba(0,0,0,0.08)";
+  const titleTextCls = isDarkMode ? "text-white/50" : "text-black/50";
+  const mobileTitleCls = isDarkMode ? "text-white" : "text-black";
 
   return (
     <motion.div
@@ -195,7 +178,8 @@ const Window: React.FC<WindowProps> = ({
           : {
               borderRadius: "12px",
               border: "1px solid rgba(255,255,255,0.10)",
-              boxShadow: "0 50px 100px -20px rgba(0,0,0,0.65), 0 0 0 0.5px rgba(255,255,255,0.08)" /* fallback */,
+              boxShadow:
+                "0 50px 100px -20px rgba(0,0,0,0.65), 0 0 0 0.5px rgba(255,255,255,0.08)",
             }),
       }}
       onClick={onFocus}
@@ -207,11 +191,8 @@ const Window: React.FC<WindowProps> = ({
       {/* Title Bar */}
       <div
         className={`flex items-center px-4 cursor-default select-none shrink-0
-          ${isMobile ? "h-[94px] pt-12" : "h-[40px]"}`}
-        style={{
-          background: titleBarBg,
-          borderBottom: titleBarBorder,
-        }}
+          ${isMobile ? "h-[94px] pt-12" : "h-[44px]"}`}
+        style={{ background: titleBarBg, borderBottom: titleBarBorder }}
         onMouseDown={handleMouseDown}
       >
         {isMobile ? (
@@ -226,26 +207,26 @@ const Window: React.FC<WindowProps> = ({
               <ChevronLeft size={22} /> {lang === "tr" ? "Geri" : "Back"}
             </button>
             <span
-              className={`text-[17px] font-black tracking-tight absolute left-1/2 -translate-x-1/2 ${mobileTitleClass}`}
+              className={`text-[17px] font-black tracking-tight absolute left-1/2 -translate-x-1/2 ${mobileTitleCls}`}
             >
               {win.title}
             </span>
-            <div className="w-16"></div>
+            <div className="w-16" />
           </div>
         ) : (
           <>
-            {/* Traffic lights */}
-            <div className="flex gap-2 w-20">
+            {/* Traffic lights — hover any to reveal all symbols (macOS behavior) */}
+            <div className="flex gap-2 w-20 group/traffic">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onClose();
                 }}
-                className="w-3 h-3 bg-[#FF5F57] rounded-full border border-black/[0.12] group relative flex items-center justify-center hover:brightness-90 transition-all"
+                className="w-3 h-3 bg-[#FF5F57] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all"
               >
                 <X
                   size={7}
-                  className="text-[#4C0000] opacity-0 group-hover:opacity-100"
+                  className="text-[#4C0000] opacity-0 group-hover/traffic:opacity-100 transition-opacity duration-100"
                   strokeWidth={3.5}
                 />
               </button>
@@ -254,11 +235,11 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onMinimize();
                 }}
-                className="w-3 h-3 bg-[#FEBC2E] rounded-full border border-black/[0.12] group relative flex items-center justify-center hover:brightness-90 transition-all"
+                className="w-3 h-3 bg-[#FEBC2E] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all"
               >
                 <Minus
                   size={7}
-                  className="text-[#5C3C00] opacity-0 group-hover:opacity-100"
+                  className="text-[#5C3C00] opacity-0 group-hover/traffic:opacity-100 transition-opacity duration-100"
                   strokeWidth={3.5}
                 />
               </button>
@@ -267,15 +248,16 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onMaximize();
                 }}
-                className="w-3 h-3 bg-[#28C840] rounded-full border border-black/[0.12] group relative flex items-center justify-center hover:brightness-90 transition-all"
+                className="w-3 h-3 bg-[#28C840] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all"
               >
-                <div className="w-[7px] h-[7px] border-[1.5px] border-[#003B00] opacity-0 group-hover:opacity-100 rounded-[1px]" />
+                <div className="w-[7px] h-[7px] border-[1.5px] border-[#003B00] opacity-0 group-hover/traffic:opacity-100 transition-opacity duration-100 rounded-[1px]" />
               </button>
             </div>
+
             {/* Centered title */}
             <div className="flex-1 flex justify-center mr-20">
               <span
-                className={`text-[13px] font-semibold tracking-tight ${titleTextClass}`}
+                className={`text-[13px] font-bold tracking-tight ${titleTextCls}`}
               >
                 {win.title}
               </span>
@@ -284,16 +266,15 @@ const Window: React.FC<WindowProps> = ({
         )}
       </div>
 
+      {/* Content */}
       <div
-        className={`flex-1 relative ${
-          isMobile ? "overflow-y-auto" : "overflow-hidden"
-        } ${isDragging || isResizing ? "pointer-events-none select-none" : ""}`}
+        className={`flex-1 relative ${isMobile ? "overflow-y-auto" : "overflow-hidden"} ${isDragging || isResizing ? "pointer-events-none select-none" : ""}`}
         style={isMobile ? { WebkitOverflowScrolling: "touch" } : undefined}
       >
         {children}
       </div>
 
-      {/* Resize Handles */}
+      {/* Resize handles */}
       {!isMobile && !win.isMaximized && (
         <>
           <div
@@ -331,7 +312,7 @@ const Window: React.FC<WindowProps> = ({
         </>
       )}
 
-      {/* Mobile Home Indicator */}
+      {/* Mobile home indicator */}
       {isMobile && (
         <div className="absolute bottom-0 left-0 right-0 h-7 flex items-end justify-center pb-1.5 z-[40] pointer-events-none">
           <div

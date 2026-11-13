@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   Mail,
@@ -9,6 +9,10 @@ import {
   Github,
   Linkedin,
   Download,
+  FileText,
+  Briefcase,
+  Activity,
+  Info,
 } from "lucide-react";
 import { usePortfolioData, useSiteConfig } from "@/lib/context/DataContext";
 import { Language } from "@/lib/types";
@@ -19,34 +23,41 @@ interface AboutProps {
   isDarkMode?: boolean;
 }
 
-// macOS design tokens
-const tokens = (
-  dark?: boolean) => ({
-  pageBg: dark ? "bg-[#1C1C1E]" : "bg-[#F2F2F7]",
-  cardBg: dark ? "bg-[#2C2C2E]" : "bg-white",
-  headerBg: dark ? "bg-[#1C1C1E]" : "bg-white",
-  text1: dark ? "text-white" : "text-[#1C1C1E]",
-  text2: dark ? "text-white/55" : "text-[#3C3C43]/75",
-  text3: dark ? "text-white/35" : "text-[#3C3C43]/45",
-  border: dark ? "divide-white/[0.07]" : "divide-black/[0.06]",
-  cardBorder: dark ? "border-white/[0.07]" : "border-black/[0.06]",
-  sep: dark ? "border-white/[0.07]" : "border-black/[0.06]",
-  labelFg: dark ? "text-white/40" : "text-[#6C6C70]",
-  iconBg: (color: string) =>
-    dark
-      ? `bg-${color}-500/20 text-${color}-400`
-      : `bg-${color}-50 text-${color}-600`,
-});
+type Section = "summary" | "experience" | "github" | "info";
 
+// ─── Design tokens ────────────────────────────────────────────────────────────
+function tk(dark?: boolean) {
+  return {
+    sidebarBg: dark ? "#252527" : "#F0F0F2",
+    contentBg: dark ? "#1C1C1E" : "#FFFFFF",
+    cardBg: dark ? "#2C2C2E" : "#FFFFFF",
+    sepColor: dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
+    text1: dark ? "text-white" : "text-[#1C1C1E]",
+    text2: dark ? "text-white/55" : "text-[#3C3C43]/75",
+    text3: dark ? "text-white/35" : "text-[#3C3C43]/45",
+    labelFg: dark ? "text-white/35" : "text-[#6C6C70]",
+    navActive: dark
+      ? "bg-[#0A84FF]/20 text-[#0A84FF]"
+      : "bg-[#007AFF]/10 text-[#007AFF]",
+    navHover: dark
+      ? "hover:bg-white/5 text-white/60"
+      : "hover:bg-black/[0.04] text-[#3C3C43]",
+    btnBase: dark
+      ? "bg-white/8 hover:bg-white/12 text-white"
+      : "bg-black/[0.05] hover:bg-black/[0.09] text-[#1C1C1E]",
+  };
+}
+
+// ─── Reusable sub-components ──────────────────────────────────────────────────
 const SectionLabel = ({
   children,
   t,
 }: {
   children: React.ReactNode;
-  t: ReturnType<typeof tokens>;
+  t: ReturnType<typeof tk>;
 }) => (
   <p
-    className={`text-[11px] font-semibold uppercase tracking-[0.12em] px-4 pt-5 pb-2 ${t.labelFg}`}
+    className={`text-[10px] font-semibold uppercase tracking-[0.14em] px-2 pt-4 pb-1.5 ${t.labelFg}`}
   >
     {children}
   </p>
@@ -55,14 +66,13 @@ const SectionLabel = ({
 const Card = ({
   children,
   t,
-  className = "",
 }: {
   children: React.ReactNode;
-  t: ReturnType<typeof tokens>;
-  className?: string;
+  t: ReturnType<typeof tk>;
 }) => (
   <div
-    className={`${t.cardBg} rounded-2xl overflow-hidden border ${t.cardBorder} ${className}`}
+    className="rounded-2xl overflow-hidden border"
+    style={{ background: t.cardBg, borderColor: t.sepColor }}
   >
     {children}
   </div>
@@ -73,7 +83,7 @@ const InfoRow = ({
   label,
   value,
   href,
-  last = false,
+  last,
   t,
 }: {
   icon: React.ReactNode;
@@ -81,188 +91,286 @@ const InfoRow = ({
   value: string;
   href?: string;
   last?: boolean;
-  t: ReturnType<typeof tokens>;
+  t: ReturnType<typeof tk>;
 }) => {
-  const inner = (
+  const row = (
     <div
-      className={`flex items-center gap-3.5 px-4 py-3 ${last ? "" : `border-b ${t.sep}`} ${href ? "cursor-pointer" : ""}`}
+      className={`flex items-center gap-3.5 px-4 py-3 ${href ? "cursor-pointer hover:bg-[#007AFF]/5 transition-colors" : ""}`}
+      style={!last ? { borderBottom: `1px solid ${t.sepColor}` } : undefined}
     >
       <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-[#007AFF]/10 text-[#007AFF]">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className={`text-[11px] font-medium ${t.labelFg} mb-0.5`}>{label}</p>
+        <p
+          className={`text-[10px] font-semibold uppercase tracking-[0.08em] mb-0.5 ${t.labelFg}`}
+        >
+          {label}
+        </p>
         <p className={`text-[13px] font-medium ${t.text1} truncate`}>{value}</p>
       </div>
     </div>
   );
   return href ? (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`block hover:bg-[#007AFF]/5 transition-colors`}
-    >
-      {inner}
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {row}
     </a>
   ) : (
-    <div>{inner}</div>
+    <div>{row}</div>
   );
 };
 
+// ─── Main component ───────────────────────────────────────────────────────────
 export default function About({ lang, isDarkMode }: AboutProps) {
   const DATA = usePortfolioData();
   const config = useSiteConfig();
   const d = DATA[lang].about;
-  const t = tokens(isDarkMode);
+  const t = tk(isDarkMode);
   const isTr = lang === "tr";
+  const [active, setActive] = useState<Section>("summary");
 
-  return (
-    <div
-      className={`h-full ${t.pageBg} flex flex-col font-sans select-text overflow-hidden transition-colors duration-300`}
-    >
-      {/* ── Header: profil + isim + butonlar ─────────────────────── */}
-      <div className={`${t.headerBg} border-b ${t.sep} shrink-0 px-6 py-5`}>
-        <div className="flex items-center gap-5">
-          {/* Profil fotoğrafı */}
-          <div className="relative w-20 h-20 shrink-0">
-            <Image
-              src={config?.profile_picture_url ?? ""}
-              alt="Profile"
-              fill
-              className="object-cover rounded-full shadow-md"
-              sizes="80px"
-              priority
-            />
-            {/* Online badge */}
-            <span
-              className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-green-500 rounded-full border-2"
-              style={{ borderColor: isDarkMode ? "#1C1C1E" : "white" }}
-            />
+  const navItems: { id: Section; icon: React.ElementType; label: string }[] = [
+    { id: "summary", icon: FileText, label: isTr ? "Özet" : "Summary" },
+    {
+      id: "experience",
+      icon: Briefcase,
+      label: isTr ? "Deneyim" : "Experience",
+    },
+    { id: "github", icon: Activity, label: "GitHub" },
+    { id: "info", icon: Info, label: isTr ? "Bilgiler" : "Information" },
+  ];
+
+  // ─── Section content ──────────────────────────────────────────────────────
+  const renderContent = () => {
+    switch (active) {
+      case "summary":
+        return (
+          <div className="p-6 max-w-2xl">
+            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
+              {isTr ? "Özet" : "Summary"}
+            </h2>
+            <Card t={t}>
+              <p className={`px-4 py-4 text-[14px] leading-relaxed ${t.text2}`}>
+                {d.summary}
+              </p>
+            </Card>
           </div>
+        );
 
-          {/* İsim, rol, butonlar */}
-          <div className="flex-1 min-w-0">
-            <h1
-              className={`text-[20px] font-bold ${t.text1} leading-tight tracking-tight`}
-            >
-              {d.name}
-            </h1>
-            <p className={`text-[13px] ${t.text2} mt-0.5 truncate`}>{d.role}</p>
+      case "experience":
+        return (
+          <div className="p-6 max-w-2xl">
+            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
+              {isTr ? "Deneyim" : "Experience"}
+            </h2>
+            <Card t={t}>
+              {d.experience.map((exp, i) => (
+                <div
+                  key={i}
+                  className="px-4 py-4"
+                  style={
+                    i < d.experience.length - 1
+                      ? { borderBottom: `1px solid ${t.sepColor}` }
+                      : undefined
+                  }
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex flex-col items-center pt-1.5 shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-[#007AFF]" />
+                      {i < d.experience.length - 1 && (
+                        <div
+                          className="w-px flex-1 mt-1"
+                          style={{ minHeight: 24, background: t.sepColor }}
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 flex-wrap">
+                        <div>
+                          <h3
+                            className={`text-[14px] font-semibold ${t.text1}`}
+                          >
+                            {exp.role}
+                          </h3>
+                          <p className="text-[12px] font-medium text-[#007AFF] mt-0.5">
+                            {exp.company}
+                          </p>
+                        </div>
+                        <span
+                          className={`text-[11px] ${t.text3} whitespace-nowrap`}
+                        >
+                          {exp.period}
+                        </span>
+                      </div>
+                      <p
+                        className={`text-[13px] ${t.text2} mt-2 leading-relaxed`}
+                      >
+                        {exp.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          </div>
+        );
 
-            {/* Aksiyon butonları */}
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-              <a
+      case "github":
+        return (
+          <div className="p-6 max-w-3xl">
+            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
+              {isTr ? "GitHub Aktivitesi" : "GitHub Activity"}
+            </h2>
+            <Card t={t}>
+              <div className={`px-4 py-4 ${t.text1}`}>
+                <GitHubCalendar isDarkMode={isDarkMode} lang={lang} />
+              </div>
+            </Card>
+          </div>
+        );
+
+      case "info":
+        return (
+          <div className="p-6 max-w-2xl">
+            <h2 className={`text-[20px] font-bold ${t.text1} mb-4`}>
+              {isTr ? "Bilgiler" : "Information"}
+            </h2>
+            <Card t={t}>
+              <InfoRow
+                t={t}
+                icon={<MapPin size={15} />}
+                label={isTr ? "Konum" : "Location"}
+                value={d.location}
+              />
+              <InfoRow
+                t={t}
+                icon={<GraduationCap size={15} />}
+                label={isTr ? "Eğitim" : "Education"}
+                value={d.education}
+              />
+              <InfoRow
+                t={t}
+                icon={<Mail size={15} />}
+                label={isTr ? "E-posta" : "Email"}
+                value={d.email}
                 href={`mailto:${d.email}`}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors
-                  ${isDarkMode ? "bg-white/10 hover:bg-white/15 text-white" : "bg-[#007AFF]/10 hover:bg-[#007AFF]/20 text-[#007AFF]"}`}
-              >
-                <Mail size={12} /> {isTr ? "E-posta" : "Email"}
-              </a>
-              <a
-                href={config?.github_url ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors
-                  ${isDarkMode ? "bg-white/10 hover:bg-white/15 text-white" : "bg-black/[0.06] hover:bg-black/10 text-[#1C1C1E]"}`}
-              >
-                <Github size={12} /> GitHub
-              </a>
-              <a
-                href={config?.linkedin_url ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2]"
-              >
-                <Linkedin size={12} /> LinkedIn
-              </a>
-              <a
-                href={config?.cv_url ?? "#"}
-                download="Hasan_Semih_Aktas_CV.pdf"
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors
-                  ${
-                    isDarkMode
-                      ? "bg-white/10 hover:bg-white/15 text-white"
-                      : "bg-[#34C759]/10 hover:bg-[#34C759]/20 text-[#34C759]"
-                  }`}
-              >
-                <Download size={12} /> {isTr ? "CV İndir" : "Download CV"}
-              </a>
-            </div>
+                last
+              />
+            </Card>
           </div>
+        );
+    }
+  };
+
+  // ─── Mobile: single-column fallback ──────────────────────────────────────
+  const MobileLayout = () => (
+    <div
+      className="h-full overflow-auto custom-scrollbar"
+      style={{ background: t.contentBg }}
+    >
+      {/* Profile header */}
+      <div
+        className="px-4 pt-6 pb-5 flex flex-col items-center text-center gap-3"
+        style={{ borderBottom: `1px solid ${t.sepColor}` }}
+      >
+        <div className="relative w-20 h-20">
+          <Image
+            src={config?.profile_picture_url ?? ""}
+            alt="Profile"
+            fill
+            className="object-cover rounded-full shadow-md"
+            sizes="80px"
+          />
+          <span
+            className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-green-500 rounded-full border-2"
+            style={{ borderColor: t.contentBg }}
+          />
+        </div>
+        <div>
+          <h1 className={`text-[20px] font-bold ${t.text1}`}>{d.name}</h1>
+          <p className={`text-[13px] ${t.text2} mt-0.5`}>{d.role}</p>
+        </div>
+        <div className="flex flex-wrap gap-2 justify-center mt-1">
+          {[
+            {
+              href: `mailto:${d.email}`,
+              icon: <Mail size={12} />,
+              label: isTr ? "E-posta" : "Email",
+            },
+            {
+              href: config?.github_url ?? "#",
+              icon: <Github size={12} />,
+              label: "GitHub",
+            },
+            {
+              href: config?.linkedin_url ?? "#",
+              icon: <Linkedin size={12} />,
+              label: "LinkedIn",
+            },
+          ].map((btn) => (
+            <a
+              key={btn.label}
+              href={btn.href}
+              target="_blank"
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium ${t.btnBase}`}
+            >
+              {btn.icon} {btn.label}
+            </a>
+          ))}
+          <a
+            href={config?.cv_url ?? "#"}
+            download
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium bg-[#34C759]/10 text-[#34C759] hover:bg-[#34C759]/20"
+          >
+            <Download size={12} /> CV
+          </a>
         </div>
       </div>
 
-      {/* ── Scrollable body ───────────────────────────────────────── */}
-      <div className="flex-1 overflow-auto custom-scrollbar pb-8">
-        {/* ÖZET / SUMMARY */}
+      {/* All sections stacked */}
+      <div className="pb-8">
         <SectionLabel t={t}>{isTr ? "ÖZET" : "SUMMARY"}</SectionLabel>
         <div className="px-4">
           <Card t={t}>
-            <p
-              className={`px-4 py-4 text-[13.5px] leading-relaxed font-normal ${t.text2}`}
-            >
+            <p className={`px-4 py-4 text-[13.5px] leading-relaxed ${t.text2}`}>
               {d.summary}
             </p>
           </Card>
         </div>
 
-        {/* DENEYİM / EXPERIENCE */}
         <SectionLabel t={t}>{isTr ? "DENEYİM" : "EXPERIENCE"}</SectionLabel>
         <div className="px-4">
           <Card t={t}>
             {d.experience.map((exp, i) => (
               <div
                 key={i}
-                className={`px-4 py-4 ${i < d.experience.length - 1 ? `border-b ${t.sep}` : ""}`}
+                className="px-4 py-4"
+                style={
+                  i < d.experience.length - 1
+                    ? { borderBottom: `1px solid ${t.sepColor}` }
+                    : undefined
+                }
               >
-                <div className="flex items-start gap-3">
-                  {/* Dot timeline */}
-                  <div className="flex flex-col items-center pt-1 shrink-0">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#007AFF]" />
-                    {i < d.experience.length - 1 && (
-                      <div
-                        className={`w-px flex-1 mt-1 ${isDarkMode ? "bg-white/10" : "bg-black/8"}`}
-                        style={{ minHeight: 24 }}
-                      />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0 pb-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h3
-                          className={`text-[14px] font-semibold ${t.text1} leading-tight`}
-                        >
-                          {exp.role}
-                        </h3>
-                        <p
-                          className={`text-[12px] font-medium text-[#007AFF] mt-0.5`}
-                        >
-                          {exp.company}
-                        </p>
-                      </div>
-                      <span
-                        className={`text-[11px] font-medium ${t.text3} whitespace-nowrap shrink-0 pt-0.5`}
-                      >
-                        {exp.period}
-                      </span>
-                    </div>
-                    <p
-                      className={`text-[13px] ${t.text2} mt-2 leading-relaxed`}
-                    >
-                      {exp.desc}
+                <div className="flex items-start justify-between gap-2 flex-wrap">
+                  <div>
+                    <h3 className={`text-[14px] font-semibold ${t.text1}`}>
+                      {exp.role}
+                    </h3>
+                    <p className="text-[12px] text-[#007AFF] mt-0.5">
+                      {exp.company}
                     </p>
                   </div>
+                  <span className={`text-[11px] ${t.text3}`}>{exp.period}</span>
                 </div>
+                <p className={`text-[13px] ${t.text2} mt-2 leading-relaxed`}>
+                  {exp.desc}
+                </p>
               </div>
             ))}
           </Card>
         </div>
 
-        {/* GITHUB AKTİVİTESİ */}
-        <SectionLabel t={t}>
-          {isTr ? "GITHUB AKTİVİTESİ" : "GITHUB ACTIVITY"}
-        </SectionLabel>
+        <SectionLabel t={t}>{isTr ? "GITHUB" : "GITHUB"}</SectionLabel>
         <div className="px-4">
           <Card t={t}>
             <div className={`px-4 py-4 ${t.text1}`}>
@@ -271,7 +379,6 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           </Card>
         </div>
 
-        {/* BİLGİLER / INFORMATION */}
         <SectionLabel t={t}>{isTr ? "BİLGİLER" : "INFORMATION"}</SectionLabel>
         <div className="px-4">
           <Card t={t}>
@@ -290,13 +397,132 @@ export default function About({ lang, isDarkMode }: AboutProps) {
             <InfoRow
               t={t}
               icon={<Mail size={15} />}
-              label={isTr ? "E-posta" : "Email"}
+              label="Email"
               value={d.email}
               href={`mailto:${d.email}`}
               last
             />
           </Card>
         </div>
+      </div>
+    </div>
+  );
+
+  // ─── Desktop: Finder sidebar + content ────────────────────────────────────
+  const DesktopLayout = () => (
+    <div className="h-full flex overflow-hidden">
+      {/* ── Sidebar ── */}
+      <div
+        className="w-[220px] shrink-0 flex flex-col border-r"
+        style={{ background: t.sidebarBg, borderColor: t.sepColor }}
+      >
+        {/* Profile */}
+        <div
+          className="px-4 pt-5 pb-4 flex flex-col items-center text-center gap-3"
+          style={{ borderBottom: `1px solid ${t.sepColor}` }}
+        >
+          <div className="relative w-[68px] h-[68px]">
+            <Image
+              src={config?.profile_picture_url ?? ""}
+              alt="Profile"
+              fill
+              className="object-cover rounded-full shadow-md"
+              sizes="68px"
+              priority
+            />
+            <span
+              className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2"
+              style={{ borderColor: t.sidebarBg }}
+            />
+          </div>
+          <div>
+            <p className={`text-[13px] font-semibold ${t.text1} leading-tight`}>
+              {d.name}
+            </p>
+            <p className={`text-[11px] mt-0.5 ${t.text3}`}>{d.role}</p>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex-1 px-2 py-2 overflow-auto">
+          <p
+            className={`text-[10px] font-semibold uppercase tracking-[0.14em] px-2 pt-3 pb-1.5 ${t.labelFg}`}
+          >
+            {isTr ? "BÖLÜMLER" : "SECTIONS"}
+          </p>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActive(item.id)}
+              className={`w-full flex items-center gap-2.5 px-2.5 py-[6px] rounded-lg text-left mb-0.5 transition-all cursor-default ${
+                active === item.id ? t.navActive : t.navHover
+              }`}
+            >
+              <item.icon size={14} className="shrink-0" />
+              <span className="text-[13px] font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Action buttons */}
+        <div className="p-3" style={{ borderTop: `1px solid ${t.sepColor}` }}>
+          <div className="grid grid-cols-2 gap-1.5">
+            {[
+              {
+                href: `mailto:${d.email}`,
+                icon: <Mail size={11} />,
+                label: isTr ? "E-posta" : "Email",
+              },
+              {
+                href: config?.github_url ?? "#",
+                icon: <Github size={11} />,
+                label: "GitHub",
+                target: "_blank",
+              },
+              {
+                href: config?.linkedin_url ?? "#",
+                icon: <Linkedin size={11} />,
+                label: "LinkedIn",
+                target: "_blank",
+              },
+              {
+                href: config?.cv_url ?? "#",
+                icon: <Download size={11} />,
+                label: "CV",
+                download: true,
+              },
+            ].map((btn) => (
+              <a
+                key={btn.label}
+                href={btn.href}
+                target={btn.target}
+                download={btn.download ? "Hasan_Semih_Aktas_CV.pdf" : undefined}
+                className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${t.btnBase}`}
+              >
+                {btn.icon} {btn.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Content ── */}
+      <div
+        className="flex-1 overflow-auto custom-scrollbar"
+        style={{ background: t.contentBg }}
+      >
+        {renderContent()}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="h-full overflow-hidden font-sans select-text transition-colors duration-300">
+      <div className="hidden md:block h-full">
+        <DesktopLayout />
+      </div>
+      <div className="md:hidden h-full">
+        <MobileLayout />
       </div>
     </div>
   );
