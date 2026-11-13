@@ -46,16 +46,27 @@ export default function AppDetail({
             <p className="text-gray-500 mb-4">{app.subtitle}</p>
             <div className="flex space-x-3">
               <button
-                onClick={() => handleStoreRedirect(app)}
+                onClick={() =>
+                  handleStoreRedirect(
+                    app,
+                    data.labels.back === "Geri" ? "tr" : "en",
+                  )
+                }
                 className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-1.5 rounded-full font-bold text-sm transition-colors uppercase"
               >
                 {data.labels.get}
               </button>
-              <button className="p-2 bg-blue-500/10 text-blue-600 rounded-full">
+              <button
+                onClick={() =>
+                  handleStoreRedirect(
+                    app,
+                    data.labels.back === "Geri" ? "tr" : "en",
+                  )
+                }
+                aria-label="Download"
+                className="p-2 bg-blue-500/10 text-blue-600 rounded-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+              >
                 <Download size={18} />
-              </button>
-              <button className="ml-auto md:ml-0 p-2 text-blue-600">
-                {/* Share Icon Placeholder */}
               </button>
             </div>
           </div>
@@ -114,7 +125,9 @@ export default function AppDetail({
                 />
               </div>
             </div>
-            <div className="text-xs text-gray-400 mt-1">Semih</div>
+            <div className="text-xs text-gray-400 mt-1 truncate max-w-[100px]">
+              {app.developer || "Semih"}
+            </div>
           </div>
         </div>
 

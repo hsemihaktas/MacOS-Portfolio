@@ -38,12 +38,14 @@ const Spotlight: React.FC<SpotlightProps> = ({
 }) => {
   const DATA = usePortfolioData();
   const [query, setQuery] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const d = DATA[lang];
 
   useEffect(() => {
     if (isOpen) {
       setQuery("");
+      setSelectedIndex(0);
       // Delay focus to ensure animation is smooth
       const timer = setTimeout(() => inputRef.current?.focus(), 50);
       return () => clearTimeout(timer);
@@ -140,7 +142,31 @@ const Spotlight: React.FC<SpotlightProps> = ({
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setSelectedIndex(0);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setSelectedIndex((prev) =>
+                  Math.min(prev + 1, Math.max(0, results.length - 1)),
+                );
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setSelectedIndex((prev) => Math.max(prev - 1, 0));
+              } else if (e.key === "Enter") {
+                e.preventDefault();
+                const targetItem = results[selectedIndex] ?? results[0];
+                if (targetItem) {
+                  onSelectApp(targetItem.id, targetItem.params);
+                  onClose();
+                }
+              } else if (e.key === "Escape") {
+                e.preventDefault();
+                onClose();
+              }
+            }}
             placeholder={
               lang === "tr"
                 ? "Yetenek veya proje ara..."
@@ -155,34 +181,56 @@ const Spotlight: React.FC<SpotlightProps> = ({
 
         <div className="max-h-[440px] overflow-auto py-2 px-2 custom-scrollbar">
           {results.length > 0 ? (
-            results.map((item, idx) => (
-              <div
-                key={idx}
-                onClick={() => {
-                  onSelectApp(item.id, item.params);
-                  onClose();
-                }}
-                className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-[#007AFF] group transition-all cursor-default"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/80 group-hover:bg-white/20 rounded-xl flex items-center justify-center shadow-sm border border-black/[0.03] transition-colors">
-                    {item.icon}
+            results.map((item, idx) => {
+              const isSelected = idx === selectedIndex;
+              return (
+                <div
+                  key={`${item.id}-${item.title}-${idx}`}
+                  onClick={() => {
+                    onSelectApp(item.id, item.params);
+                    onClose();
+                  }}
+                  onMouseEnter={() => setSelectedIndex(idx)}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all cursor-default ${
+                    isSelected ? "bg-[#007AFF] text-white" : "hover:bg-[#007AFF]/10 text-black/80"
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm border border-black/[0.03] transition-colors ${
+                        isSelected ? "bg-white/20 text-white" : "bg-white/80"
+                      }`}
+                    >
+                      {item.icon}
+                    </div>
+                    <div>
+                      <div
+                        className={`text-[14px] font-bold tracking-tight ${
+                          isSelected ? "text-white" : "text-black/80"
+                        }`}
+                      >
+                        {item.title}
+                      </div>
+                      <div
+                        className={`text-[11px] font-semibold ${
+                          isSelected ? "text-white/70" : "text-black/40"
+                        }`}
+                      >
+                        {item.subtitle}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-[14px] font-bold text-black/80 group-hover:text-white tracking-tight">
-                      {item.title}
-                    </div>
-                    <div className="text-[11px] text-black/40 group-hover:text-white/60 font-semibold">
-                      {item.subtitle}
-                    </div>
+                  <div
+                    className={`flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest ${
+                      isSelected ? "opacity-100 text-white/70" : "opacity-0"
+                    }`}
+                  >
+                    {lang === "tr" ? "Görüntüle" : "View"}{" "}
+                    <ArrowRight size={14} />
                   </div>
                 </div>
-                <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 text-white/50 text-[10px] font-bold uppercase tracking-widest">
-                  {lang === "tr" ? "Görüntüle" : "View"}{" "}
-                  <ArrowRight size={14} />
-                </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="px-6 py-12 text-center">
               <Sparkles className="mx-auto mb-3 text-black/10" size={32} />

@@ -1,15 +1,23 @@
-export const handleStoreRedirect = (app: {
-  appStoreUrl?: string;
-  playStoreUrl?: string;
-}) => {
+export const handleStoreRedirect = (
+  app: {
+    appStoreUrl?: string;
+    playStoreUrl?: string;
+  },
+  lang: "tr" | "en" = "tr",
+) => {
   if (!app) return;
 
-  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isAndroid =
+    typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
   const targetUrl = isAndroid ? app.playStoreUrl : app.appStoreUrl;
 
   if (targetUrl && targetUrl !== "#") {
-    window.open(targetUrl, "_blank");
+    window.open(targetUrl, "_blank", "noopener,noreferrer");
   } else {
-    alert("Store link not available yet!");
+    alert(
+      lang === "tr"
+        ? "Mağaza bağlantısı henüz mevcut değil."
+        : "Store link is not available yet.",
+    );
   }
 };

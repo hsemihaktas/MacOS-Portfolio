@@ -13,6 +13,7 @@ import {
 import { usePortfolioData, useSiteConfig } from "@/lib/context/DataContext";
 import { Language } from "@/lib/types";
 import GitHubCalendar from "@/components/GitHubCalendar";
+import { trackCvDownload } from "@/lib/analytics";
 
 interface AboutProps {
   lang: Language;
@@ -119,18 +120,21 @@ export default function About({ lang, isDarkMode }: AboutProps) {
       icon: <Github size={11} />,
       label: "GitHub",
       target: "_blank" as const,
+      rel: "noopener noreferrer",
     },
     {
       href: config?.linkedin_url ?? "#",
       icon: <Linkedin size={11} />,
       label: "LinkedIn",
       target: "_blank" as const,
+      rel: "noopener noreferrer",
     },
     {
       href: config?.cv_url ?? "#",
       icon: <Download size={11} />,
       label: "CV",
       download: "Hasan_Semih_Aktas_CV.pdf",
+      onClick: trackCvDownload,
     },
   ];
 
@@ -195,14 +199,20 @@ export default function About({ lang, isDarkMode }: AboutProps) {
             style={{ borderBottom: `1px solid ${t.sepColor}` }}
           >
             <div className="relative w-[72px] h-[72px]">
-              <Image
-                src={config?.profile_picture_url ?? ""}
-                alt="Profile"
-                fill
-                className="object-cover rounded-full shadow-md"
-                sizes="72px"
-                priority
-              />
+              {config?.profile_picture_url ? (
+                <Image
+                  src={config.profile_picture_url}
+                  alt="Profile"
+                  fill
+                  className="object-cover rounded-full shadow-md"
+                  sizes="72px"
+                  priority
+                />
+              ) : (
+                <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                  {(d.name || "SA").slice(0, 2).toUpperCase()}
+                </div>
+              )}
               <span
                 className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2"
                 style={{ borderColor: t.sidebarBg }}
@@ -225,7 +235,9 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                   key={btn.label}
                   href={btn.href}
                   target={"target" in btn ? btn.target : undefined}
+                  rel={"rel" in btn ? btn.rel : undefined}
                   download={"download" in btn ? btn.download : undefined}
+                  onClick={"onClick" in btn ? btn.onClick : undefined}
                   className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${t.btnBase}`}
                 >
                   {btn.icon} {btn.label}
@@ -317,13 +329,19 @@ export default function About({ lang, isDarkMode }: AboutProps) {
           style={{ borderBottom: `1px solid ${t.sepColor}` }}
         >
           <div className="relative w-20 h-20">
-            <Image
-              src={config?.profile_picture_url ?? ""}
-              alt="Profile"
-              fill
-              className="object-cover rounded-full shadow-md"
-              sizes="80px"
-            />
+            {config?.profile_picture_url ? (
+              <Image
+                src={config.profile_picture_url}
+                alt="Profile"
+                fill
+                className="object-cover rounded-full shadow-md"
+                sizes="80px"
+              />
+            ) : (
+              <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-2xl shadow-md">
+                {(d.name || "SA").slice(0, 2).toUpperCase()}
+              </div>
+            )}
             <span
               className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-green-500 rounded-full border-2"
               style={{ borderColor: t.contentBg }}
@@ -339,7 +357,9 @@ export default function About({ lang, isDarkMode }: AboutProps) {
                 key={btn.label}
                 href={btn.href}
                 target={"target" in btn ? btn.target : undefined}
+                rel={"rel" in btn ? btn.rel : undefined}
                 download={"download" in btn ? btn.download : undefined}
+                onClick={"onClick" in btn ? btn.onClick : undefined}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium ${t.btnBase}`}
               >
                 {btn.icon} {btn.label}

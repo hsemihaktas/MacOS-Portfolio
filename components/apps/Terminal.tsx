@@ -442,7 +442,7 @@ export default function Terminal({ lang, onOpenApp }: TerminalProps) {
           out = cmds.echo(args);
           break;
         case "history":
-          out = cmds.history(cmdHistory);
+          out = cmds.history([...cmdHistory, trimmed]);
           break;
         case "cd":
           out = cmds.cd(cwd, args, setCwd);

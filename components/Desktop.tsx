@@ -46,9 +46,18 @@ const Desktop: React.FC<DesktopProps> = ({
       {apps.map((app) => (
         <div
           key={app.id}
-          className="group flex flex-col items-center gap-1.5 cursor-default transition-all duration-300 pointer-events-auto [direction:ltr]"
+          role="button"
+          tabIndex={0}
+          aria-label={getAppTitle(app.id)}
+          className="group flex flex-col items-center gap-1.5 cursor-default transition-all duration-300 pointer-events-auto [direction:ltr] focus:outline-none"
           onDoubleClick={() => !isMobile && !isTablet && onIconClick(app.id)}
           onClick={() => (isMobile || isTablet) && onIconClick(app.id)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onIconClick(app.id);
+            }
+          }}
         >
           <div
             className={`relative ${iconSize} transition-all duration-200 group-active:scale-90 group-hover:scale-105 group-active:brightness-90`}

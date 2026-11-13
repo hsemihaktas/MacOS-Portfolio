@@ -90,18 +90,24 @@ const Window: React.FC<WindowProps> = ({
         let y = resizeStartPos.current.posY;
         if (resizeDirection.includes("e")) w = Math.max(minW, w + dx);
         if (resizeDirection.includes("w")) {
-          const pw = w - dx;
+          const pw = resizeStartPos.current.width - dx;
           if (pw >= minW) {
             w = pw;
             x = resizeStartPos.current.posX + dx;
+          } else {
+            w = minW;
+            x = resizeStartPos.current.posX + (resizeStartPos.current.width - minW);
           }
         }
         if (resizeDirection.includes("s")) h = Math.max(minH, h + dy);
         if (resizeDirection.includes("n")) {
-          const ph = h - dy;
+          const ph = resizeStartPos.current.height - dy;
           if (ph >= minH) {
             h = ph;
             y = resizeStartPos.current.posY + dy;
+          } else {
+            h = minH;
+            y = resizeStartPos.current.posY + (resizeStartPos.current.height - minH);
           }
         }
         setSize({ width: w, height: h });
@@ -222,7 +228,8 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onClose();
                 }}
-                className="w-3 h-3 bg-[#FF5F57] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all"
+                aria-label={lang === "tr" ? "Pencereyi kapat" : "Close window"}
+                className="w-3 h-3 bg-[#FF5F57] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all cursor-pointer"
               >
                 <X
                   size={7}
@@ -235,7 +242,12 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onMinimize();
                 }}
-                className="w-3 h-3 bg-[#FEBC2E] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all"
+                aria-label={
+                  lang === "tr"
+                    ? "Pencereyi simge durumuna küçült"
+                    : "Minimize window"
+                }
+                className="w-3 h-3 bg-[#FEBC2E] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all cursor-pointer"
               >
                 <Minus
                   size={7}
@@ -248,7 +260,10 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onMaximize();
                 }}
-                className="w-3 h-3 bg-[#28C840] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all"
+                aria-label={
+                  lang === "tr" ? "Pencereyi tam ekran yap" : "Maximize window"
+                }
+                className="w-3 h-3 bg-[#28C840] rounded-full border border-black/[0.12] relative flex items-center justify-center transition-all cursor-pointer"
               >
                 <div className="w-[7px] h-[7px] border-[1.5px] border-[#003B00] opacity-0 group-hover/traffic:opacity-100 transition-opacity duration-100 rounded-[1px]" />
               </button>

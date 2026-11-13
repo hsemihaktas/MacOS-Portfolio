@@ -36,6 +36,11 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
     ? "border-white/[0.07]"
     : "border-black/[0.05]";
 
+  const handleReset = () => {
+    setFormData({ subject: "", message: "", senderEmail: "" });
+    setEmailError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.message.trim()) return;
@@ -71,8 +76,14 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
         setSent(false);
         setFormData({ subject: "", message: "", senderEmail: "" });
       }, 3000);
-    } catch {
-      // error displayed via emailError state
+    } catch (err) {
+      setEmailError(
+        err instanceof Error
+          ? err.message
+          : lang === "tr"
+            ? "Mesaj gönderilirken bir hata oluştu."
+            : "An error occurred while sending the message.",
+      );
     } finally {
       setSending(false);
     }
@@ -142,13 +153,17 @@ const Contact: React.FC<ContactProps> = ({ lang, isDarkMode }) => {
               } backdrop-blur-md`}
             >
               <div className="flex items-center gap-6 text-[#8E8E93]">
-                <Trash2
-                  size={16}
-                  className="hover:text-red-500 cursor-pointer"
-                />
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  title={lang === "tr" ? "Formu Temizle" : "Clear Form"}
+                  className="hover:text-red-500 cursor-pointer transition-colors"
+                >
+                  <Trash2 size={16} />
+                </button>
                 <Paperclip
                   size={16}
-                  className="hover:text-black/60 cursor-pointer"
+                  className="opacity-50 cursor-not-allowed"
                 />
               </div>
               <button

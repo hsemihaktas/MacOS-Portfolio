@@ -199,7 +199,8 @@ const MenuBar: React.FC<MenuBarProps> = ({
             e.stopPropagation();
             onSearchClick();
           }}
-          className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90"
+          aria-label={lang === "tr" ? "Spotlight Arama (⌘K)" : "Spotlight Search (⌘K)"}
+          className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90 cursor-pointer"
         >
           <Search size={14} strokeWidth={2} />
         </button>
@@ -209,7 +210,8 @@ const MenuBar: React.FC<MenuBarProps> = ({
             e.stopPropagation();
             onControlClick();
           }}
-          className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90"
+          aria-label={lang === "tr" ? "Denetim Merkezi" : "Control Center"}
+          className="p-1.5 hover:bg-white/10 rounded transition-colors opacity-90 cursor-pointer"
         >
           <SlidersHorizontal size={14} strokeWidth={2} />
         </button>

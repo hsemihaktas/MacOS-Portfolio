@@ -553,13 +553,19 @@ export default function Settings({
         className={`${dark ? "bg-[#2C2C2E]" : "bg-white"} border-b ${sep} px-5 py-5 flex items-center gap-4`}
       >
         <div className="relative w-14 h-14 shrink-0">
-          <Image
-            src={config?.profile_picture_url ?? ""}
-            alt="Profile"
-            fill
-            className="object-cover rounded-full"
-            sizes="56px"
-          />
+          {config?.profile_picture_url ? (
+            <Image
+              src={config.profile_picture_url}
+              alt="Profile"
+              fill
+              className="object-cover rounded-full"
+              sizes="56px"
+            />
+          ) : (
+            <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-lg">
+              {(DATA[lang].about.name || "SA").slice(0, 2).toUpperCase()}
+            </div>
+          )}
         </div>
         <div>
           <p className={`text-[16px] font-semibold ${text1}`}>
@@ -579,8 +585,11 @@ export default function Settings({
             <div
               role="button"
               tabIndex={0}
-              onClick={() => setActive(s.id === active ? s.id : s.id)}
-              onKeyDown={(e) => e.key === "Enter" && setActive(s.id)}
+              onClick={() => setActive(s.id === active ? ("" as Section) : s.id)}
+              onKeyDown={(e) =>
+                e.key === "Enter" &&
+                setActive(s.id === active ? ("" as Section) : s.id)
+              }
               className={`flex items-center gap-3 px-4 py-3.5 cursor-default ${dark ? "hover:bg-white/5" : "hover:bg-black/[0.03]"}`}
             >
               <div
@@ -592,7 +601,12 @@ export default function Settings({
                 <p className={`text-[15px] font-medium ${text1}`}>{s.label}</p>
                 <p className={`text-[12px] ${text2}`}>{s.sublabel}</p>
               </div>
-              <ChevronRight size={16} className={text2} />
+              <ChevronRight
+                size={16}
+                className={`${text2} transition-transform duration-200 ${
+                  active === s.id ? "rotate-90" : ""
+                }`}
+              />
             </div>
             {active === s.id && (
               <div className={`border-t ${sep} px-4 py-4`}>
@@ -615,13 +629,19 @@ export default function Settings({
         {/* Profile */}
         <div className="px-4 pt-5 pb-4 flex items-center gap-3">
           <div className="relative w-12 h-12 shrink-0">
-            <Image
-              src={config?.profile_picture_url ?? ""}
-              alt="Profile"
-              fill
-              className="object-cover rounded-full shadow-sm"
-              sizes="48px"
-            />
+            {config?.profile_picture_url ? (
+              <Image
+                src={config.profile_picture_url}
+                alt="Profile"
+                fill
+                className="object-cover rounded-full shadow-sm"
+                sizes="48px"
+              />
+            ) : (
+              <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
+                {(DATA[lang].about.name || "SA").slice(0, 2).toUpperCase()}
+              </div>
+            )}
           </div>
           <div className="min-w-0">
             <p className={`text-[13px] font-semibold ${text1} truncate`}>

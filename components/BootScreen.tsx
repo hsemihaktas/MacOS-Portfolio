@@ -29,6 +29,8 @@ export default function BootScreen({
   const animDoneRef = useRef(false);
   const calledRef = useRef(false);
   const dataReadyRef = useRef(dataReady);
+  const finishTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const maxWaitTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Prop değişince ref'i güncelle + tamamlanma dene
   useEffect(() => {
@@ -40,9 +42,10 @@ export default function BootScreen({
   function finish() {
     if (calledRef.current) return;
     calledRef.current = true;
+    if (maxWaitTimerRef.current) clearTimeout(maxWaitTimerRef.current);
     setWaiting(false);
     setFading(true);
-    setTimeout(onComplete, 650);
+    finishTimerRef.current = setTimeout(onComplete, 650);
   }
 
   useEffect(() => {
@@ -68,6 +71,10 @@ export default function BootScreen({
             finish(); // veri zaten geldiyse hemen bitir
           } else {
             setWaiting(true); // veriyi bekle
+            // Ağ takılırsa en fazla 3.5s bekle ve masaüstünü aç
+            maxWaitTimerRef.current = setTimeout(() => {
+              finish();
+            }, 3500);
           }
         }
       };
@@ -79,6 +86,8 @@ export default function BootScreen({
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
+      if (maxWaitTimerRef.current) clearTimeout(maxWaitTimerRef.current);
+      if (finishTimerRef.current) clearTimeout(finishTimerRef.current);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

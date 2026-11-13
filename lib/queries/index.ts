@@ -1,24 +1,17 @@
 import { supabase } from "@/lib/supabase";
-import type { Language, Project } from "@/lib/types";
+import type { Language, Project, AppStoreApp } from "@/lib/types";
 import type {
   ProjectRow,
   AboutRow,
   ExperienceRow,
   SkillCategoryRow,
   SkillRow,
+  SiteConfigRow,
 } from "@/lib/database.types";
 
-// ── Projects ──────────────────────────────────────────────────────────────────
-export async function fetchProjectItems(lang: Language): Promise<Project[]> {
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .order("sort_order");
-
-  if (error || !data) return [];
-  const rows = data as ProjectRow[];
-
-  return rows.map((row) => ({
+// ── Project Mapper ────────────────────────────────────────────────────────────
+function mapProject(row: ProjectRow, lang: Language): Project {
+  return {
     id: row.id,
     title: lang === "tr" ? row.title_tr : row.title_en,
     description: lang === "tr" ? row.description_tr : row.description_en,
@@ -34,10 +27,144 @@ export async function fetchProjectItems(lang: Language): Promise<Project[]> {
     appStoreLink: row.app_store_link ?? undefined,
     androidStoreLink: row.android_store_link ?? undefined,
     platform: row.platform,
-  }));
+  };
 }
 
-// ── About ─────────────────────────────────────────────────────────────────────
+// ── App Store Mapper ──────────────────────────────────────────────────────────
+function mapAppStoreApp(
+  row: ProjectRow,
+  lang: Language,
+  developerName: string,
+): AppStoreApp {
+  const meta = (row.app_store_meta as Record<string, unknown>) ?? {};
+  const locMeta = (meta[lang] as Record<string, string>) ?? {};
+  return {
+    id: row.id,
+    title: lang === "tr" ? row.title_tr : row.title_en,
+    subtitle: locMeta.subtitle ?? "",
+    developer: developerName,
+    category: locMeta.category ?? "",
+    rating: (meta.rating as number) ?? 0,
+    age: (meta.age as string) ?? "4+",
+    chart: locMeta.chart ?? "",
+    version: (meta.version as string) ?? "1.0.0",
+    size: (meta.size as string) ?? "",
+    description: lang === "tr" ? row.description_tr : row.description_en,
+    icon: (meta.icon as string) ?? "",
+    screenshots: (meta.screenshots as string[]) ?? [],
+    appStoreUrl: row.app_store_link ?? "",
+    playStoreUrl: row.android_store_link ?? "",
+  };
+}
+
+// ── TEK SEFERDE TÜM PORTFOLYO VERİLERİNİ ÇEKEN OPTİMİZE FONKSİYON ────────────
+export async function fetchAllPortfolioData() {
+  const [
+    { data: projectsData },
+    { data: aboutData },
+    { data: expData },
+    { data: catsData },
+    { data: configData },
+  ] = await Promise.all([
+    supabase.from("projects").select("*").order("sort_order"),
+    supabase.from("about").select("*").eq("id", 1).single(),
+    supabase.from("experience").select("*").order("sort_order"),
+    supabase.from("skill_categories").select("*, skills(*)").order("sort_order"),
+    supabase.from("site_config").select("*").eq("id", 1).single(),
+  ]);
+
+  const projectsRows = (projectsData ?? []) as ProjectRow[];
+  const aboutRow = (aboutData ?? null) as AboutRow | null;
+  const expRows = (expData ?? []) as ExperienceRow[];
+  const catRows = (catsData ?? []) as (SkillCategoryRow & { skills: SkillRow[] })[];
+  const config = (configData ?? null) as SiteConfigRow | null;
+
+  // Projeler
+  const projectsTr = projectsRows.map((r) => mapProject(r, "tr"));
+  const projectsEn = projectsRows.map((r) => mapProject(r, "en"));
+
+  // Geliştirici adı
+  const devTr = aboutRow?.name_tr ?? "Hasan Semih Aktaş";
+  const devEn = aboutRow?.name_en ?? "Hasan Semih Aktas";
+
+  // About
+  const aboutTr = aboutRow
+    ? {
+        name: aboutRow.name_tr,
+        role: aboutRow.role_tr,
+        summary: aboutRow.summary_tr,
+        location: aboutRow.location_tr,
+        education: aboutRow.education_tr,
+        email: aboutRow.email,
+        experience: expRows.map((e) => ({
+          company: e.company,
+          role: e.role_tr,
+          period: e.period_tr,
+          desc: e.description_tr,
+        })),
+      }
+    : null;
+
+  const aboutEn = aboutRow
+    ? {
+        name: aboutRow.name_en,
+        role: aboutRow.role_en,
+        summary: aboutRow.summary_en,
+        location: aboutRow.location_en,
+        education: aboutRow.education_en,
+        email: aboutRow.email,
+        experience: expRows.map((e) => ({
+          company: e.company,
+          role: e.role_en,
+          period: e.period_en,
+          desc: e.description_en,
+        })),
+      }
+    : null;
+
+  // Skills
+  const mapSkills = (lang: Language) =>
+    catRows.map((cat) => ({
+      name: lang === "tr" ? cat.name_tr : cat.name_en,
+      items: (cat.skills ?? [])
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((s) => s.name),
+    }));
+
+  const skillsTr = mapSkills("tr");
+  const skillsEn = mapSkills("en");
+
+  // App Store Apps (projelerden süzülür, ek sorgu gerekmez)
+  const mobileProjects = projectsRows.filter(
+    (r) => r.platform === "mobile" && r.app_store_meta,
+  );
+  const appsTr = mobileProjects.map((r) => mapAppStoreApp(r, "tr", devTr));
+  const appsEn = mobileProjects.map((r) => mapAppStoreApp(r, "en", devEn));
+
+  return {
+    projectsTr,
+    projectsEn,
+    aboutTr,
+    aboutEn,
+    skillsTr,
+    skillsEn,
+    appsTr,
+    appsEn,
+    config,
+  };
+}
+
+// ── Bireysel Fonksiyonlar (Geriye Uyumluluk İçin) ──────────────────────────────
+export async function fetchProjectItems(lang: Language): Promise<Project[]> {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("sort_order");
+
+  if (error || !data) return [];
+  return (data as ProjectRow[]).map((row) => mapProject(row, lang));
+}
+
 export async function fetchAbout(lang: Language) {
   const [{ data: about }, { data: exp }] = await Promise.all([
     supabase.from("about").select("*").eq("id", 1).single(),
@@ -64,7 +191,6 @@ export async function fetchAbout(lang: Language) {
   };
 }
 
-// ── Skills ────────────────────────────────────────────────────────────────────
 export async function fetchSkillCategories(lang: Language) {
   const { data: cats } = await supabase
     .from("skill_categories")
@@ -74,16 +200,15 @@ export async function fetchSkillCategories(lang: Language) {
   if (!cats) return [];
   const catRows = cats as (SkillCategoryRow & { skills: SkillRow[] })[];
 
-  return catRows.map((cat: SkillCategoryRow & { skills: SkillRow[] }) => ({
+  return catRows.map((cat) => ({
     name: lang === "tr" ? cat.name_tr : cat.name_en,
     items: (cat.skills ?? [])
-      .sort((a: SkillRow, b: SkillRow) => a.sort_order - b.sort_order)
-      .map((s: SkillRow) => s.name),
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((s) => s.name),
   }));
 }
 
-// ── App Store apps (projects'ten türer) ───────────────────────────────────────
-export async function fetchAppStoreApps(lang: Language) {
+export async function fetchAppStoreApps(lang: Language, developerName?: string) {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
@@ -93,46 +218,9 @@ export async function fetchAppStoreApps(lang: Language) {
 
   if (error || !data) return [];
   const appData = data as ProjectRow[];
-
-  // Geliştirici adını about tablosundan al
-  const { data: aboutRow } = await supabase
-    .from("about")
-    .select("name_tr, name_en")
-    .eq("id", 1)
-    .single();
-
-  const DEVELOPER = {
-    tr:
-      (aboutRow as { name_tr: string } | null)?.name_tr ?? "Hasan Semih Aktaş",
-    en:
-      (aboutRow as { name_en: string } | null)?.name_en ?? "Hasan Semih Aktas",
-  };
-
-  return appData.map((row) => {
-    const meta = row.app_store_meta as Record<string, unknown>;
-    const locMeta = (meta?.[lang] as Record<string, string>) ?? {};
-    return {
-      id: row.id,
-      title: lang === "tr" ? row.title_tr : row.title_en,
-      subtitle: locMeta.subtitle ?? "",
-      developer: DEVELOPER[lang],
-      category: locMeta.category ?? "",
-      rating: (meta?.rating as number) ?? 0,
-      age: (meta?.age as string) ?? "4+",
-      chart: locMeta.chart ?? "",
-      version: (meta?.version as string) ?? "1.0.0",
-      size: (meta?.size as string) ?? "",
-      description: lang === "tr" ? row.description_tr : row.description_en,
-      icon: (meta?.icon as string) ?? "",
-      screenshots: (meta?.screenshots as string[]) ?? [],
-      appStoreUrl: row.app_store_link ?? "",
-      playStoreUrl: row.android_store_link ?? "",
-    };
-  });
+  const devName = developerName ?? (lang === "tr" ? "Hasan Semih Aktaş" : "Hasan Semih Aktas");
+  return appData.map((row) => mapAppStoreApp(row, lang, devName));
 }
-
-// ── Site Config ───────────────────────────────────────────────────────────────
-import type { SiteConfigRow } from "@/lib/database.types";
 
 export async function fetchSiteConfig(): Promise<SiteConfigRow | null> {
   const { data, error } = await supabase

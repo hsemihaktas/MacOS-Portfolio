@@ -97,7 +97,9 @@ const SocialLinkItem = ({
       <a
         href={href}
         target="_blank"
+        rel="noopener noreferrer"
         onClick={onClick}
+        aria-label={label}
         style={{ width: size, height: size }}
         className={`backdrop-blur-xl rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg ${bgClass}`}
       >
@@ -113,7 +115,9 @@ const SocialLinkItem = ({
       <a
         href={href}
         target="_blank"
+        rel="noopener noreferrer"
         onClick={onClick}
+        aria-label={label}
         style={{ width: size, height: size }}
         className="flex items-center justify-center transition-all duration-300 transform origin-bottom
           group-hover:scale-[1.28] group-hover:-translate-y-3.5
@@ -314,8 +318,17 @@ const Dock: React.FC<DockProps> = ({
           return (
             <div
               key={app.id}
-              className="relative group cursor-default flex flex-col items-center"
+              role="button"
+              tabIndex={0}
+              aria-label={getAppTitle(app.id)}
+              className="relative group cursor-default flex flex-col items-center focus:outline-none"
               onClick={() => onAppClick(app.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onAppClick(app.id);
+                }
+              }}
             >
               <DockTooltip label={getAppTitle(app.id)} />
 

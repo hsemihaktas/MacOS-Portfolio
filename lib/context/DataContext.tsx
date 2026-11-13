@@ -9,13 +9,7 @@ import {
   ReactNode,
 } from "react";
 import { DATA } from "@/lib/data";
-import {
-  fetchProjectItems,
-  fetchAbout,
-  fetchSkillCategories,
-  fetchAppStoreApps,
-  fetchSiteConfig,
-} from "@/lib/queries";
+import { fetchAllPortfolioData } from "@/lib/queries";
 import type { Language } from "@/lib/types";
 import type { SiteConfigRow } from "@/lib/database.types";
 
@@ -47,7 +41,7 @@ export function DataProvider({
 
     async function load() {
       try {
-        const [
+        const {
           projectsTr,
           projectsEn,
           aboutTr,
@@ -57,23 +51,13 @@ export function DataProvider({
           appsTr,
           appsEn,
           config,
-        ] = await Promise.all([
-          fetchProjectItems("tr"),
-          fetchProjectItems("en"),
-          fetchAbout("tr"),
-          fetchAbout("en"),
-          fetchSkillCategories("tr"),
-          fetchSkillCategories("en"),
-          fetchAppStoreApps("tr"),
-          fetchAppStoreApps("en"),
-          fetchSiteConfig(),
-        ]);
+        } = await fetchAllPortfolioData();
 
         if (cancelled) return;
 
         if (config) setSiteConfig(config);
 
-        // Kritik resimleri önceden yükle (boot kapanmadan önce)
+        // Kritik resimleri önceden yükle (boot kapanmadan önce, maks 3s timeout ile)
         if (config) {
           const toPreload = [
             config.wallpaper_url,
@@ -86,8 +70,15 @@ export function DataProvider({
               (url) =>
                 new Promise<void>((resolve) => {
                   const img = new window.Image();
-                  img.onload = () => resolve();
-                  img.onerror = () => resolve(); // hata olsa da bekletme
+                  const timer = setTimeout(() => resolve(), 3000);
+                  img.onload = () => {
+                    clearTimeout(timer);
+                    resolve();
+                  };
+                  img.onerror = () => {
+                    clearTimeout(timer);
+                    resolve();
+                  };
                   img.src = url;
                 }),
             ),

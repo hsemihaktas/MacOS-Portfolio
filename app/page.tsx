@@ -54,6 +54,7 @@ import {
   trackContactOpen,
   trackSettingsOpen,
   trackSafariOpen,
+  trackLanguageChange,
 } from "@/lib/analytics";
 
 export default function Home() {
@@ -65,9 +66,10 @@ export default function Home() {
     return "tr";
   });
 
-  // Lang değişince kaydet
+  // Lang değişince kaydet ve analitik gönder
   const handleSetLang = (l: Language) => {
     setLang(l);
+    trackLanguageChange(l);
     if (typeof window !== "undefined")
       localStorage.setItem("portfolio-lang", l);
   };
@@ -116,13 +118,27 @@ export default function Home() {
   );
 
   const [activeApp, setActiveApp] = useState<AppID | null>(null);
-  const [, setTopZ] = useState(INITIAL_Z_INDEX + 1);
   // null ile başla — WallpaperSync DB'den gelince günceller
   const [wallpaper, setWallpaper] = useState<string | null>(null);
   const [wallpaperPos, setWallpaperPos] = useState({
     mobile: "0% center",
     desktop: "center",
   });
+
+  // Global macOS kısayolları (Cmd+K / Ctrl+K -> Spotlight, Escape -> kapat)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsSpotlightOpen((prev) => !prev);
+      } else if (e.key === "Escape") {
+        setIsSpotlightOpen(false);
+        setIsControlCenterOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const getAppTitle = useCallback(
     (id: AppID): string => {
@@ -175,7 +191,6 @@ export default function Home() {
           return w;
         });
       });
-      setTopZ((prev) => prev + 5);
       setActiveApp(id);
 
       setIsSpotlightOpen(false);
@@ -217,7 +232,6 @@ export default function Home() {
         w.id === id ? { ...w, zIndex: highestZ + 1 } : w,
       );
     });
-    setTopZ((prev) => prev + 2);
     setActiveApp(id);
   }, []);
 
