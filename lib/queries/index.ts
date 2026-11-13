@@ -66,17 +66,22 @@ export async function fetchAllPortfolioData() {
     { data: catsData },
     { data: configData },
   ] = await Promise.all([
-    supabase.from("projects").select("*").order("sort_order"),
+    supabase.from("projects").select("*").order("id", { ascending: false }),
     supabase.from("about").select("*").eq("id", 1).single(),
     supabase.from("experience").select("*").order("sort_order"),
-    supabase.from("skill_categories").select("*, skills(*)").order("sort_order"),
+    supabase
+      .from("skill_categories")
+      .select("*, skills(*)")
+      .order("sort_order"),
     supabase.from("site_config").select("*").eq("id", 1).single(),
   ]);
 
   const projectsRows = (projectsData ?? []) as ProjectRow[];
   const aboutRow = (aboutData ?? null) as AboutRow | null;
   const expRows = (expData ?? []) as ExperienceRow[];
-  const catRows = (catsData ?? []) as (SkillCategoryRow & { skills: SkillRow[] })[];
+  const catRows = (catsData ?? []) as (SkillCategoryRow & {
+    skills: SkillRow[];
+  })[];
   const config = (configData ?? null) as SiteConfigRow | null;
 
   // Projeler
@@ -159,7 +164,7 @@ export async function fetchProjectItems(lang: Language): Promise<Project[]> {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
-    .order("sort_order");
+    .order("id", { ascending: false });
 
   if (error || !data) return [];
   return (data as ProjectRow[]).map((row) => mapProject(row, lang));
@@ -208,7 +213,10 @@ export async function fetchSkillCategories(lang: Language) {
   }));
 }
 
-export async function fetchAppStoreApps(lang: Language, developerName?: string) {
+export async function fetchAppStoreApps(
+  lang: Language,
+  developerName?: string,
+) {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
@@ -218,7 +226,9 @@ export async function fetchAppStoreApps(lang: Language, developerName?: string) 
 
   if (error || !data) return [];
   const appData = data as ProjectRow[];
-  const devName = developerName ?? (lang === "tr" ? "Hasan Semih Aktaş" : "Hasan Semih Aktas");
+  const devName =
+    developerName ??
+    (lang === "tr" ? "Hasan Semih Aktaş" : "Hasan Semih Aktas");
   return appData.map((row) => mapAppStoreApp(row, lang, devName));
 }
 
