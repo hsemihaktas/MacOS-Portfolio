@@ -94,7 +94,19 @@ export async function fetchAppStoreApps(lang: Language) {
   if (error || !data) return [];
   const appData = data as ProjectRow[];
 
-  const DEVELOPER = { tr: "Hasan Semih Aktaş", en: "Hasan Semih Aktas" };
+  // Geliştirici adını about tablosundan al
+  const { data: aboutRow } = await supabase
+    .from("about")
+    .select("name_tr, name_en")
+    .eq("id", 1)
+    .single();
+
+  const DEVELOPER = {
+    tr:
+      (aboutRow as { name_tr: string } | null)?.name_tr ?? "Hasan Semih Aktaş",
+    en:
+      (aboutRow as { name_en: string } | null)?.name_en ?? "Hasan Semih Aktas",
+  };
 
   return appData.map((row) => {
     const meta = row.app_store_meta as Record<string, unknown>;

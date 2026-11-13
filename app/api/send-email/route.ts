@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: ["hsemihaktas@gmail.com"],
+      to: [process.env.CONTACT_EMAIL ?? "hsemihaktas@gmail.com"],
       subject: `${subject || "Portfolio İletişim Formu"} - ${senderEmail}`,
       replyTo: senderEmail || "noreply@example.com",
       html: `
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to send email" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

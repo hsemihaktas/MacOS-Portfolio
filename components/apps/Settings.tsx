@@ -467,7 +467,7 @@ export default function Settings({
               },
               {
                 label: isTr ? "Geliştirici" : "Developer",
-                value: "Hasan Semih Aktaş",
+                value: DATA[lang].about.name || "Hasan Semih Aktaş",
               },
               { label: isTr ? "Derleme" : "Build Date", value: buildDate },
             ];
@@ -534,7 +534,7 @@ export default function Settings({
                 </div>
 
                 <p className={`text-center text-[11px] ${text2} pb-2`}>
-                  © {new Date().getFullYear()} Hasan Semih Aktaş.{" "}
+                  © {new Date().getFullYear()} {DATA.tr.about.name || "Hasan Semih Aktaş"}.{" "}
                   {isTr ? "Tüm hakları saklıdır." : "All rights reserved."}
                 </p>
               </div>
@@ -561,9 +561,7 @@ export default function Settings({
           />
         </div>
         <div>
-          <p className={`text-[16px] font-semibold ${text1}`}>
-            Hasan Semih Aktaş
-          </p>
+          <p className={`text-[16px] font-semibold ${text1}`}>{DATA[lang].about.name || "Hasan Semih Aktaş"}</p>
           <p className={`text-[12px] ${text2}`}>Apple ID · iCloud</p>
         </div>
       </div>
@@ -623,9 +621,7 @@ export default function Settings({
             />
           </div>
           <div className="min-w-0">
-            <p className={`text-[13px] font-semibold ${text1} truncate`}>
-              Hasan Semih Aktaş
-            </p>
+            <p className={`text-[13px] font-semibold ${text1} truncate`}>{DATA[lang].about.name || "Hasan Semih Aktaş"}</p>
             <p className={`text-[11px] ${text2}`}>Apple ID</p>
           </div>
         </div>
